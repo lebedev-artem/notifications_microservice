@@ -1,10 +1,10 @@
-package noifications.example.demo;
+package noificationsTests;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class DemoApplicationTests {
+class NotificationsMicroserviceApplicationTests {
 
 	@Test
 	void contextLoads() {
