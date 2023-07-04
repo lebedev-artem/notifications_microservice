@@ -14,7 +14,7 @@ public class NotificationController {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")})
-    @RequestMapping(value = "/api/v1/account",
+    @RequestMapping(value = "/api/v1/notifications/settings",
             method = RequestMethod.GET)
     ResponseEntity<NotificationSettingsDto> notification() {
         return new ResponseEntity<dto.NotificationSettingsDto>(HttpStatus.OK);
