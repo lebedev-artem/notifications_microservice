@@ -1,11 +1,12 @@
 package dto;
 
 import java.util.UUID;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import java.time.LocalDateTime;
 
-//Dto события доп
 @Data
+@Schema(description = "Dto события доп.")
 public class NotificationDto {
     public UUID id;
 

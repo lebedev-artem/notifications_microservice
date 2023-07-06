@@ -1,9 +1,10 @@
 package dto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import java.util.UUID;
 
-//Dto настроек оповещений
 @Data
+@Schema(description = "Dto настроек оповещений")
 public class NotificationSettingsDto {
     public UUID id;
 

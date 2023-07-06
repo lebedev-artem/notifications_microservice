@@ -1,7 +1,9 @@
 package dto;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
+@Schema(description = "Dto уведомлений страниц")
 public class PageNotificationsDto {
     public Integer totalPages;
     public Long totalElements;
