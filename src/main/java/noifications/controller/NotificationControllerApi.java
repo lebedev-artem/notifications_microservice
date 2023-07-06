@@ -12,7 +12,7 @@ public interface NotificationControllerApi {
     ResponseEntity<NotificationSettingsDto> getSetting(@PathVariable String id);
 
     @PutMapping(value = "/settings")
-    ResponseEntity<NotificationUpdateDto> updateSetting(@PathVariable String id);
+    ResponseEntity<NotificationSettingsDto> updateSetting(@PathVariable String id);
 
     @PutMapping(value = "/readed")
     ResponseEntity<NotificationUpdateDto> setIsRead(@PathVariable String id);

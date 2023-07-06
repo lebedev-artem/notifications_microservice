@@ -20,50 +20,39 @@ public class NotificationController implements NotificationControllerApi{
     }
 
     @Override
-    public ResponseEntity<NotificationUpdateDto> updateSetting(String id) {
-        return null;
+    @Operation(summary = "Коррекция настроек оповещений")
+    public ResponseEntity<NotificationSettingsDto> updateSetting(String id) {
+        return ResponseEntity.ok(new NotificationSettingsDto());
     }
 
     @Override
+    @Operation(summary = "Отметить все события, как прочитанные")
     public ResponseEntity<NotificationUpdateDto> setIsRead(String id) {
-        return null;
+        return ResponseEntity.ok(new NotificationUpdateDto());
     }
 
     @Override
+    @Operation(summary = "Создание настроек оповещений")
     public ResponseEntity<NotificationUpdateDto> createSetting(String id) {
-        return null;
+        return ResponseEntity.ok(new NotificationUpdateDto());
     }
 
     @Override
+    @Operation(summary = "Создание события")
     public ResponseEntity<EventNotificationDto> addEvent(String id) {
-        return null;
+        return ResponseEntity.ok(new EventNotificationDto());
     }
 
     @Override
+    @Operation(summary = "Получение событий")
     public ResponseEntity<PageNotificationsDto> getNotifications(String id) {
-        return null;
+        return ResponseEntity.ok(new PageNotificationsDto());
     }
 
     @Override
+    @Operation(summary = "Получить счетчик количества событий")
     public ResponseEntity<NotificationSettingsDto> getCount(String id) {
-        return null;
+        return ResponseEntity.ok(new NotificationSettingsDto());
     }
-
 }
 
-
-
-
-
-
-
-
-
-//import dto.NotificationSettingsDto;
-//import io.swagger.v3.oas.annotations.Operation;
-//import io.swagger.v3.oas.annotations.responses.ApiResponse;
-//import io.swagger.v3.oas.annotations.responses.ApiResponses;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RequestMethod;
