@@ -2,7 +2,6 @@ package controller;
 import dto.NotificationSettingsDto;
 import dto.NotificationUpdateDto;
 import dto.EventNotificationDto;
-import dto.PageNotificationsDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,9 +21,6 @@ public interface NotificationControllerApi {
 
     @PostMapping(value = "/add")
     ResponseEntity<EventNotificationDto> addEvent(@PathVariable String id);
-
-    @GetMapping
-    ResponseEntity<PageNotificationsDto> getNotifications(@PathVariable String id);
 
     @GetMapping(value = "/count")
     ResponseEntity<NotificationSettingsDto> getCount(@PathVariable String id);

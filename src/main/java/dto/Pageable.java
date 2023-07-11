@@ -11,5 +11,5 @@ public class Pageable {
 
     //minimum: 1
     int size = 1;
-    PageableSort sort;
+    dto.PageableSort sort;
 }

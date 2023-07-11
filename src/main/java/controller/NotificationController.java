@@ -3,7 +3,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import dto.EventNotificationDto;
 import dto.NotificationSettingsDto;
 import dto.NotificationUpdateDto;
-import dto.PageNotificationsDto;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Tag(name = "Notification service", description = "Сервис сообщений")
 
-public class NotificationController implements NotificationControllerApi{
+public class NotificationController implements controller.NotificationControllerApi {
 
     @Override
     @Operation(summary = "Получение настроек оповещений")
@@ -41,12 +40,6 @@ public class NotificationController implements NotificationControllerApi{
     @Operation(summary = "Создание события")
     public ResponseEntity<EventNotificationDto> addEvent(String id) {
         return ResponseEntity.ok(new EventNotificationDto());
-    }
-
-    @Override
-    @Operation(summary = "Получение событий")
-    public ResponseEntity<PageNotificationsDto> getNotifications(String id) {
-        return ResponseEntity.ok(new PageNotificationsDto());
     }
 
     @Override
