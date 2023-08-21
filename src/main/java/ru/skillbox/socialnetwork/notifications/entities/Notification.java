@@ -18,13 +18,13 @@ public class Notification {
 	@Column(name = "id")
 	private String id;
 
-	@Column(name = "authorId")
-	private String authorId;
+	@Column(name = "author_id")
+	private Integer authorId;
 
 	@Column(name = "text")
 	private String notifyText;
 
-	public Notification(String authorId, String notifyText) {
+	public Notification(Integer authorId, String notifyText) {
 		this.authorId = authorId;
 		this.notifyText = notifyText;
 	}

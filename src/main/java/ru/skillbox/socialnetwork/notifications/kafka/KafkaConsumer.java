@@ -27,8 +27,14 @@ public class KafkaConsumer {
 	@Transactional
 	@KafkaListener(topics = "notify-topic", groupId = "notify-group", containerFactory = "kafkaListenerContainerFactory")
 	public void listenGroupAuth(String message) {
-//		notificationsRepository.save(new Notification("randomAuthorId", message));
 		log.info("<-- message '{}' received from group '{}'", message, groupId);
+		try {
+			notificationsRepository.save(new Notification(123, message));
+			log.info(" > Notification saved into DB");
+		}
+		catch (Exception e){
+			log.error(e.getMessage());
+		}
 	}
 //
 //	@KafkaListener(topics = "${kafka.topics.auth}", groupId = "${spring.application.name}", containerFactory = "filteredKafkaListenerContainerFactory")

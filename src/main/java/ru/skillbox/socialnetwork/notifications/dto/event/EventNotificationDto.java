@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Schema(description = "Dto получения уведомлений о событии")
 public class EventNotificationDto {
 
-    private String authorId;
+    private Integer authorId;
 
     private String receiverId;
 

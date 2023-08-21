@@ -1,6 +1,5 @@
 package ru.skillbox.socialnetwork.notifications.dto.notify;
 
-import java.util.UUID;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,7 +16,7 @@ public class NotificationDto {
 	private String id;
 
 	//Id пользователя, создавшего событие
-	private String authorId;
+	private Integer authorId;
 
 	//Описание события
 	private String content;
