@@ -5,5 +5,5 @@ import ru.skillbox.socialnetwork.notifications.entities.Notification;
 
 
 public interface NotificationsRepository extends JpaRepository<Notification, Integer> {
-	Notification findByAuthorId(String authorId);
+	Notification findByAuthorId(Integer authorId);
 }
