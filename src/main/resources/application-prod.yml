@@ -10,7 +10,7 @@ jpa:
 
 spring:
   application:
-    name: notify-micro-service
+    name: notification
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
