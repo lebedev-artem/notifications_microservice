@@ -1,6 +1,9 @@
-package ru.skillbox.socialnetwork.notifications.kafka;
+package ru.skillbox.socialnetwork.notifications.kafka.consumer;
 
-import ru.skillbox.socialnetwork.notifications.dto.kafka.JsonMessage;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.util.backoff.BackOff;
+import org.springframework.util.backoff.FixedBackOff;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +15,7 @@ import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +28,12 @@ public class KafkaConsumerConfig {
 
 	@Value(value = "${spring.application.name")
 	private String groupId;
+
+	@Value(value = "${kafka.backoff.interval}")
+	private Long interval;
+
+	@Value(value = "${kafka.backoff.max_failure}")
+	private Long maxAttempts;
 
 	private final String KEYWORD_FOR_CONSUMER = "WORLD";
 
@@ -53,20 +63,32 @@ public class KafkaConsumerConfig {
 	}
 
 	@Bean
-	public ConsumerFactory<String, JsonMessage> jsonConsumerFactory() {
+	public ConsumerFactory<String, Object> objectConsumerFactory() {
 		Map<String, Object> props = new HashMap<>();
 		props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		props.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		props.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>(JsonMessage.class));
+		return new DefaultKafkaConsumerFactory<>(props, new StringDeserializer(), new JsonDeserializer<>());
 	}
 
 	@Bean
-	public ConcurrentKafkaListenerContainerFactory<String, JsonMessage>	jsonKafkaListenerContainerFactory() {
-		ConcurrentKafkaListenerContainerFactory<String, JsonMessage> factory = new ConcurrentKafkaListenerContainerFactory<>();
-		factory.setConsumerFactory(jsonConsumerFactory());
+	public ConcurrentKafkaListenerContainerFactory<String, Object>	objectKafkaListenerContainerFactory() {
+		ConcurrentKafkaListenerContainerFactory<String, Object> factory = new ConcurrentKafkaListenerContainerFactory<>();
+		factory.setConsumerFactory(objectConsumerFactory());
+		factory.setCommonErrorHandler(errorHandler());
+		factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
+		factory.afterPropertiesSet();
 		return factory;
+	}
+
+	@Bean
+	public DefaultErrorHandler errorHandler() {
+		BackOff fixedBackOff = new FixedBackOff(interval, maxAttempts);
+		DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, e) -> {}, fixedBackOff);
+		errorHandler.addRetryableExceptions(SocketTimeoutException.class);
+		errorHandler.addNotRetryableExceptions(NullPointerException.class);
+		return errorHandler;
 	}
 
 }

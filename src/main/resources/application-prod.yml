@@ -49,7 +49,7 @@ kafka:
       #        protocol: SASL_PLAINTEXT
       protocol: PLAINTEXT
       # Тип, для которого определяем конкретные сериализаторы
-      spring.json.value.default.type: kafka.dto.ru.skillbox.socialnetwork.JsonMessage.java
+      spring.json.value.default.type: kafka.dto.ru.skillbox.socialnetwork.KafkaMessage.java
       spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
       spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
   consumer:
@@ -85,3 +85,6 @@ kafka:
     notify: notify-topic
     friends: friends-topic
     admin: admin-topic
+  backoff:
+    interval: 1000
+    max_failure: 3

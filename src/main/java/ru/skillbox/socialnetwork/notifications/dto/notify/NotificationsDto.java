@@ -1,20 +1,23 @@
 package ru.skillbox.socialnetwork.notifications.dto.notify;
-import io.swagger.v3.oas.annotations.media.Schema;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * @author Artem Lebedev | 24/08/2023 - 17:46 <p>
+ * description - dto события <p>
+ * timeStamp - время отправки события <p>
+ * data - dto события доп. <p>
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Dto события")
 public class NotificationsDto {
 
-    //Врямя отправки события
-    LocalDateTime timeStamp;
-
-    //Dto события доп
-    NotificationDto data;
+    private LocalDateTime timeStamp;
+    private NotificationDto data;
 }

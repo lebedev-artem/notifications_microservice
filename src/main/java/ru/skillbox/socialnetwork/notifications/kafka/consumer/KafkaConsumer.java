@@ -1,6 +1,7 @@
-package ru.skillbox.socialnetwork.notifications.kafka;
+package ru.skillbox.socialnetwork.notifications.kafka.consumer;
 
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class KafkaConsumer {
 
 	@Transactional
 	@KafkaListener(topics = "notify-topic", groupId = "notify-group", containerFactory = "kafkaListenerContainerFactory")
-	public void listenGroupAuth(String message) {
+	public void listenGroupNotify(@NotNull String message) {
 		log.info("<-- message '{}' received from group '{}'", message, groupId);
 		try {
 			notificationsRepository.save(new Notification(123, message));
@@ -36,6 +37,7 @@ public class KafkaConsumer {
 			log.error(e.getMessage());
 		}
 	}
+
 //
 //	@KafkaListener(topics = "${kafka.topics.auth}", groupId = "${spring.application.name}", containerFactory = "filteredKafkaListenerContainerFactory")
 //	public void listenFilteredMessage(String message) {
@@ -43,7 +45,7 @@ public class KafkaConsumer {
 //	}
 //
 //	@KafkaListener(topics = "${kafka.topics.auth}", groupId = "${spring.application.name}", containerFactory = "jsonKafkaListenerContainerFactory")
-//	public void jsonListener(@NotNull JsonMessage jsonMessage) {
+//	public void jsonListener(@NotNull KafkaMessage jsonMessage) {
 //		log.info("◀ JSON message '{}' received from group '{}'", jsonMessage.toString(), groupId);
 //	}
 
