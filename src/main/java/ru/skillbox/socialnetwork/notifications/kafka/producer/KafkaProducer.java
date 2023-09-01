@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.notifications.kafka;
+package ru.skillbox.socialnetwork.notifications.kafka.producer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,7 +56,7 @@ public class KafkaProducer {
 //        log.info("▶ JWT tokens '{}' sent to {}", dto, topicName);
 //    }
 
-//    public void sendJsonMessage(@NotNull JsonMessage jsonMessage) {
+//    public void sendJsonMessage(@NotNull KafkaMessage jsonMessage) {
 //        jsonMessage.setTimestamp(new Date());
 //        jsonMessage.setNumber(new Random().nextInt(564758473));
 //        jsonKafkaTemplate.send(topicName, jsonMessage);

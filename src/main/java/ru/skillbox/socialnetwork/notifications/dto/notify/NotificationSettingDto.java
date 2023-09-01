@@ -1,38 +1,32 @@
 package ru.skillbox.socialnetwork.notifications.dto.notify;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author Artem Lebedev | 24/08/2023 - 17:46 <p>
+ * enableLike - Разрешить события с типом LIKE <p>
+ * enablePost - Разрешить события с типом POST <p>
+ * enablePostComment - Разрешить события с типом POST_COMMENT <p>
+ * enableCommentComment - Разрешить события с типом COMMENT_COMMENT <p>
+ * enableMessage - Разрешить события с типом MESSAGE <p>
+ * enableFriendRequest - Разрешить события с типом FRIEND_REQUEST <p>
+ * enableFriendBirthday - Разрешить события с типом FRIEND_BIRTHDAY <p>
+ * enableSendEmailMessage - Разрешить события с типом SEND_EMAIL_MESSAGE
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "Dto настроек оповещений")
 public class NotificationSettingDto {
 
     private String id;
-
-    //Разрешить события с типом LIKE
     private Boolean enableLike;
-
-    //Разрешить события с типом POST
     private Boolean enablePost;
-
-    //Разрешить события с типом POST_COMMENT
     private Boolean enablePostComment;
-
-    //Разрешить события с типом COMMENT_COMMENT
     private Boolean enableCommentComment;
-
-    //Разрешить события с типом MESSAGE
     private Boolean enableMessage;
-
-    //Разрешить события с типом FRIEND_REQUEST
     private Boolean enableFriendRequest;
-
-    //Разрешить события с типом FRIEND_BIRTHDAY
     private Boolean enableFriendBirthday;
-
-    //Разрешить события с типом SEND_EMAIL_MESSAGE
     private Boolean enableSendEmailMessage;
 }

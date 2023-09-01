@@ -1,6 +1,6 @@
-package ru.skillbox.socialnetwork.notifications.kafka;
+package ru.skillbox.socialnetwork.notifications.kafka.producer;
 
-import ru.skillbox.socialnetwork.notifications.dto.kafka.JsonMessage;
+import ru.skillbox.socialnetwork.notifications.kafka.KafkaMessage;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +30,7 @@ public class KafkaProducerConfig {
 	}
 
 	@Bean
-	public ProducerFactory<String, JsonMessage> producerFactoryJSON() {
+	public ProducerFactory<String, KafkaMessage> producerFactoryJSON() {
 		Map<String, Object> configProps = new HashMap<>();
 		configProps.put(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapAddress);
 		configProps.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class);
@@ -39,7 +39,7 @@ public class KafkaProducerConfig {
 	}
 
 	@Bean
-	public KafkaTemplate<String, JsonMessage> jsonKafkaTemplate() {
+	public KafkaTemplate<String, KafkaMessage> jsonKafkaTemplate() {
 		return new KafkaTemplate<>(producerFactoryJSON());
 	}
 
