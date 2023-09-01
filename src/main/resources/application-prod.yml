@@ -10,7 +10,7 @@ jpa:
 
 spring:
   application:
-    name: notification
+    name: notifications
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
