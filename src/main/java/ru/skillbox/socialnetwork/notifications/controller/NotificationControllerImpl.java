@@ -25,7 +25,7 @@ import javax.validation.constraints.NotNull;
 import java.io.IOException;
 
 @RestController
-@Tag(name = "Notification service", description = "Сервис сообщений")
+@Tag(name = "NotificationModel service", description = "Сервис сообщений")
 @Slf4j
 public class NotificationControllerImpl implements NotificationController {
 

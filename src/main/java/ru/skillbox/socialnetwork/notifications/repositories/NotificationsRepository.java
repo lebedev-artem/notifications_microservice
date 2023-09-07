@@ -1,9 +1,11 @@
 package ru.skillbox.socialnetwork.notifications.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.skillbox.socialnetwork.notifications.entities.Notification;
+import org.springframework.stereotype.Repository;
+import ru.skillbox.socialnetwork.notifications.model.NotificationModel;
 
 
-public interface NotificationsRepository extends JpaRepository<Notification, Integer> {
-	Notification findByAuthorId(Integer authorId);
+@Repository
+public interface NotificationsRepository extends JpaRepository<NotificationModel, Integer> {
+	NotificationModel findByAuthorId(Integer authorId);
 }
