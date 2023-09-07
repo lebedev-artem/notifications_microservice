@@ -83,6 +83,7 @@ kafka:
     posts: posts-topic
     msg: msg-topic
     notify: notify-topic
+    notify-common: notify-topic-common
     friends: friends-topic
     admin: admin-topic
   backoff:

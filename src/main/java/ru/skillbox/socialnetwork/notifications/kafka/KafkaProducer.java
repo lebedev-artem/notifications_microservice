@@ -1,4 +1,4 @@
-package ru.skillbox.socialnetwork.notifications.kafka.producer;
+package ru.skillbox.socialnetwork.notifications.kafka;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,11 +11,14 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class KafkaProducer {
 
-    @Value("${kafka.topics.auth}")
+    @Value("${kafka.topics.notify}")
     private String topicName;
-    private int messageNumber = 0;
     private final KafkaTemplate<String, String> kafkaTemplate;
-//    private final KafkaTemplate<String, AuthenticateResponseDto> jsonKafkaTemplate;
+
+    public void sendMessage(String message) {
+        kafkaTemplate.send(topicName, message);
+        log.info("--|> message '{}' sent to topic {}", message, topicName);
+    }
 
     /**
      * Use with Kafka 3.x.x
@@ -44,23 +47,6 @@ public class KafkaProducer {
 //    public ListenableFuture<SendResult<String, String>> sendMessage(String message) {
 //        log.info("Sending {}", message);
 //	    return kafkaTemplate.send(topicName, message);
-//    }
-
-    public void sendMessage(String message) {
-        kafkaTemplate.send(topicName, message);
-        log.info("▶ message '{}' sent", message);
-    }
-
-//    public void sendJWTToken(AuthenticateResponseDto dto) {
-//        jsonKafkaTemplate.send(topicName, dto);
-//        log.info("▶ JWT tokens '{}' sent to {}", dto, topicName);
-//    }
-
-//    public void sendJsonMessage(@NotNull KafkaMessage jsonMessage) {
-//        jsonMessage.setTimestamp(new Date());
-//        jsonMessage.setNumber(new Random().nextInt(564758473));
-//        jsonKafkaTemplate.send(topicName, jsonMessage);
-//        log.info("▶ message '{}' sent", jsonMessage.toString());
 //    }
 
 }

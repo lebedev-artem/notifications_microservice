@@ -9,5 +9,5 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         <runningAs  username="selectel"/>
 </preConditions>
         <include file="create-changeset-notifications.xml" relativeToChangelogFile="true"/>
-<!--        <include file="insert-changelog-notify-table.xml" relativeToChangelogFile="true"/>-->
+        <include file="create-changeset-commonnotifications.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

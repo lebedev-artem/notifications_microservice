@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 19:30 <p>
@@ -24,5 +24,5 @@ public class NotificationDto {
 	private Integer authorId;
 	private String content;
 	private NotificationType notificationType;
-	private LocalDateTime sentTime;
+	private Timestamp sentTime;
 }
