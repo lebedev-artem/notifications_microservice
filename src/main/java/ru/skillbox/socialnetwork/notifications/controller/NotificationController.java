@@ -61,12 +61,11 @@ public interface NotificationController {
             security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationModel service"})
     @ApiResponses(
             value = {@ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(mediaType = "*/*", schema = @Schema(implementation = NotificationCountDto.class))),
+                    content = @Content(schema = @Schema(implementation = NotificationCountDto.class))),
                     @ApiResponse(responseCode = "400", description = "Bad request"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(
             value = "/count",
-            produces = {"*/*"},
             method = RequestMethod.GET)
     ResponseEntity<NotificationCountDto> getCount();
 
