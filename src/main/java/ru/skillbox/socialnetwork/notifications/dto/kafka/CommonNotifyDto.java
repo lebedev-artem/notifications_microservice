@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.notifications.dto.kafka;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -28,6 +29,7 @@ to - Id Васи в базе users;
  */
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonNotifyDto {
 	private Long id;
 	private String fromUserId;

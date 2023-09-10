@@ -33,9 +33,9 @@ public class SecurityConfiguration {
         http
                 .headers().frameOptions().disable()
                 .and().csrf().disable()
-                .cors().configurationSource(corsConfigurationSource())
-                .and().authorizeRequests()
-                .antMatchers("/login/**", "/register/**", "/captcha/**", "/password/recovery/**").permitAll()
+//                .cors().configurationSource(corsConfigurationSource())
+                .authorizeRequests()
+                .antMatchers("/**").permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 .and()

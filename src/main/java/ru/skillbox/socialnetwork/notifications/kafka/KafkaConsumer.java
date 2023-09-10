@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.notifications.kafka;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -66,7 +67,6 @@ public class KafkaConsumer {
 		log.info("--|< Common notify data received and map to CommonNotifyModel entity. {}", commonNotifyModel);
 
 		notificationService.saveCommonNotify(commonNotifyModel);
-
 
 	}
 }
