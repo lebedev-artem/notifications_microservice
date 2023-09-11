@@ -21,6 +21,7 @@ import ru.skillbox.socialnetwork.notifications.dto.notify.NotificationSettingDto
 import ru.skillbox.socialnetwork.notifications.dto.notify.NotificationUpdateDto;
 import ru.skillbox.socialnetwork.notifications.dto.notify.PageNotificationsDto;
 import ru.skillbox.socialnetwork.notifications.repositories.CommonNotifyRepository;
+import ru.skillbox.socialnetwork.notifications.service.NotificationService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -37,9 +38,10 @@ public class NotificationControllerImpl implements NotificationController {
 	private final ObjectMapper objectMapper;
 	private final HttpServletRequest request;
 	private final CommonNotifyRepository commonNotifyRepository;
+	private final NotificationService notificationService;
 
-    public ResponseEntity<Void> addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-                                         @Valid @RequestBody EventNotificationDto body) {
+	public ResponseEntity<Void> addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
+	                                     @Valid @RequestBody EventNotificationDto body) {
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -74,18 +76,12 @@ public class NotificationControllerImpl implements NotificationController {
 		return new ResponseEntity<>(notificationCountDto, HttpStatus.OK);
 	}
 
-	public ResponseEntity<PageNotificationsDto> getNotifications(@NotNull @Parameter(in = ParameterIn.QUERY, description = "", required = true, schema = @Schema()) @Valid @RequestParam(value = "page", required = true) Pageable page) {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<PageNotificationsDto>(objectMapper.readValue("{\n  \"number\" : 1,\n  \"size\" : 5,\n  \"last\" : true,\n  \"numberOfElements\" : 5,\n  \"totalPages\" : 0,\n  \"pageable\" : {\n    \"paged\" : true,\n    \"pageNumber\" : 9,\n    \"offset\" : 2,\n    \"pageSize\" : 7,\n    \"unpaged\" : true\n  },\n  \"sort\" : {\n    \"unsorted\" : true,\n    \"sorted\" : true,\n    \"empty\" : true\n  },\n  \"content\" : [ {\n    \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"data\" : {\n      \"sentTime\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"notificationType\" : \"notificationType\",\n      \"authorId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"content\" : \"content\"\n    }\n  }, {\n    \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n    \"data\" : {\n      \"sentTime\" : \"2000-01-23T04:56:07.000+00:00\",\n      \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"notificationType\" : \"notificationType\",\n      \"authorId\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n      \"content\" : \"content\"\n    }\n  } ],\n  \"first\" : true,\n  \"totalElements\" : 6,\n  \"empty\" : true\n}", PageNotificationsDto.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<PageNotificationsDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
+	public Object getNotifications() {
+		log.info(" * GET /");
 
-		return new ResponseEntity<PageNotificationsDto>(HttpStatus.NOT_IMPLEMENTED);
+		//TODO
+		//return NotificationsDTO
+		return notificationService.getAllNotifications();
 	}
 
 	public ResponseEntity<NotificationSettingDto> getSetting() {

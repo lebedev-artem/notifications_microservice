@@ -32,19 +32,19 @@ to - Id Васи в базе users;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class CommonNotifyDto {
 	private Long id;
-	private String fromUserId;
+	private Long fromUserId;
 	private String text;
 	private UUID eventId;
 	private ServiceNameEnum service;
 	private Timestamp timestamp;
 	private CommonNotifyTypeEnum type;
-	private String toUserId;
+	private Long toUserId;
 
-	public CommonNotifyDto(String fromUserId,
+	public CommonNotifyDto(Long fromUserId,
 	                       String text,
 	                       UUID eventId,
 	                       CommonNotifyTypeEnum type,
-	                       String toUserId) {
+	                       Long toUserId) {
 		this.fromUserId = fromUserId;
 		this.text = text;
 		this.eventId = eventId;

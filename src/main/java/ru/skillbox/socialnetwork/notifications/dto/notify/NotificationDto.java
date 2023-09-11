@@ -3,6 +3,7 @@ package ru.skillbox.socialnetwork.notifications.dto.notify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.Timestamp;
 
@@ -20,9 +21,13 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class NotificationDto {
 
-	private String id;
-	private Integer authorId;
+	private Long id;
+	private Long authorId;
 	private String content;
+
+//	TODO
+//	Уточнить по типу уведомлений
+	@Nullable
 	private NotificationType notificationType;
 	private Timestamp sentTime;
 }
