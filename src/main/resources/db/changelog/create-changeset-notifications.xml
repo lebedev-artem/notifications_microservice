@@ -32,3 +32,8 @@
         </createTable>
     </changeSet>
 </databaseChangeLog>
+
+<!--
+TODO
+notification_type must be nullable = false
+-->
