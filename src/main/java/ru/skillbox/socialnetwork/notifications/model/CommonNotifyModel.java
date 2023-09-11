@@ -25,7 +25,7 @@ public class CommonNotifyModel {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Column(name = "from_user_id")
-	private String fromUserId;
+	private Long fromUserId;
 	@Column(name = "text")
 	private String text;
 	@Column(name = "event_id")
@@ -37,7 +37,7 @@ public class CommonNotifyModel {
 	@Column(name = "type")
 	private String type;
 	@Column(name = "to_user_id")
-	private String toUserId;
+	private Long toUserId;
 
 	@Override
 	public String toString() {

@@ -19,6 +19,8 @@ import ru.skillbox.socialnetwork.notifications.dto.notify.PageNotificationsDto;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @RequestMapping("/api/v1/notifications")
 public interface NotificationController {
     @Operation(
@@ -32,7 +34,7 @@ public interface NotificationController {
                     @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(
             value = "/add",
-            consumes = {"application/json"},
+            consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     ResponseEntity<Void> addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
                                   @Valid @RequestBody EventNotificationDto body);
@@ -50,7 +52,7 @@ public interface NotificationController {
                     @ApiResponse(responseCode = "400", description = "Bad request"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(value = "/settings{id}",
-            produces = {"*/*"},
+            produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
     ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, required = true)
                                           @PathVariable("id") String id);
@@ -82,10 +84,9 @@ public interface NotificationController {
                     @ApiResponse(responseCode = "400", description = "Bad request"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(value = "/",
-            produces = {"*/*"},
+            produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
-    ResponseEntity<PageNotificationsDto> getNotifications(@NotNull @Parameter(in = ParameterIn.QUERY, required = true)
-                                                          @Valid @RequestParam(value = "page") Pageable page);
+    Object getNotifications();
 
 
     @Operation(
@@ -101,7 +102,7 @@ public interface NotificationController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(
             value = "/settings",
-            produces = {"*/*"},
+            produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
     ResponseEntity<NotificationSettingDto> getSetting();
 
@@ -130,7 +131,7 @@ public interface NotificationController {
             @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(
             value = "/settings",
-            consumes = {"application/json"},
+            consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.PUT)
     ResponseEntity<Void> updateSetting(
             @Parameter(in = ParameterIn.DEFAULT, required = true)

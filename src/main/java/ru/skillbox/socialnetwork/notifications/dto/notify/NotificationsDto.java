@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 17:46 <p>
@@ -18,6 +20,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class NotificationsDto {
 
-    private LocalDateTime timeStamp;
-    private NotificationDto data;
+    private Timestamp timeStamp;
+    private List<NotificationDto> data;
 }

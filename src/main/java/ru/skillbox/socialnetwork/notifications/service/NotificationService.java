@@ -1,5 +1,6 @@
 package ru.skillbox.socialnetwork.notifications.service;
 
+import ru.skillbox.socialnetwork.notifications.dto.notify.NotificationsDto;
 import ru.skillbox.socialnetwork.notifications.model.CommonNotifyModel;
 
 /**
@@ -9,4 +10,7 @@ import ru.skillbox.socialnetwork.notifications.model.CommonNotifyModel;
 public interface NotificationService {
 
 	void saveCommonNotify(CommonNotifyModel model);
+
+//	GET /
+	NotificationsDto getAllNotifications();
 }

@@ -24,7 +24,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="notification_type" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="sent_time" type="TIMESTAMP">
                 <constraints nullable="false"/>
