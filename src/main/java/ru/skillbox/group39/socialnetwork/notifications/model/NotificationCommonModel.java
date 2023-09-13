@@ -19,8 +19,8 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "commonnotifications")
-public class CommonNotifyModel {
+@Table(name = "notifications_common")
+public class NotificationCommonModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -41,7 +41,7 @@ public class CommonNotifyModel {
 
 	@Override
 	public String toString() {
-		return "\n    CommonNotifyModel" +
+		return "\n    NotificationCommonModel" +
 				"\n    id:                '" + id + '\'' +
 				"\n    Sender:            '" + fromUserId + '\'' +
 				"\n    Text of notify:    '" + text + '\'' +

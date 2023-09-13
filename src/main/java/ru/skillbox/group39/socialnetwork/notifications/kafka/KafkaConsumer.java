@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import ru.skillbox.group39.socialnetwork.notifications.dto.common.CommonNotifyDto;
-import ru.skillbox.group39.socialnetwork.notifications.model.CommonNotifyModel;
-import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationsRepository;
+import ru.skillbox.group39.socialnetwork.notifications.model.NotificationCommonModel;
+import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 
 import javax.transaction.Transactional;
@@ -21,7 +21,7 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class KafkaConsumer {
 
-	private final NotificationsRepository notificationsRepository;
+	private final NotificationSimpleRepository notificationSimpleRepository;
 	private final ObjectMapper objectMapper;
 	private final ModelMapper modelMapper;
 	private final NotificationService notificationService;
@@ -40,11 +40,11 @@ public class KafkaConsumer {
 	@KafkaListener(topics = "notify-topic", groupId = "${spring.application.name}", containerFactory = "kafkaListenerContainerFactory")
 	public void listenGroupAuth(@NotNull String message) {
 		log.info("--|< message '{}' received from group '{}' from topic '{}'", message, groupId, notifyTopic);
-//		NotificationModel notificationModel;
+//		NotificationSimpleModel notificationModel;
 //
 //		try {
-//			notificationsRepository.save(new NotificationModel(123, message));
-//			log.info(" * NotificationModel read but not saved into DB");
+//			notificationSimpleRepository.save(new NotificationSimpleModel(123, message));
+//			log.info(" * NotificationSimpleModel read but not saved into DB");
 //		}
 //		catch (Exception e){
 //			log.error(e.getMessage());
@@ -62,10 +62,10 @@ public class KafkaConsumer {
 
 		log.info("--|< Message data received from group '{}' from topic '{}'", groupId, notifyCommonTopic);
 
-		CommonNotifyModel commonNotifyModel = modelMapper.map(commonNotifyDto, CommonNotifyModel.class);
-		log.info("--|< Common notify data received and map to CommonNotifyModel entity. {}", commonNotifyModel);
+		NotificationCommonModel notificationCommonModel = modelMapper.map(commonNotifyDto, NotificationCommonModel.class);
+		log.info(" * Common notify data received and map to NotificationCommonModel entity. {}", notificationCommonModel);
 
-		notificationService.saveCommonNotify(commonNotifyModel);
+		notificationService.processCommonModel(notificationCommonModel);
 
 	}
 }

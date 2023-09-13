@@ -35,7 +35,7 @@ public class PageNotificationsDto {
 
 	@JsonProperty("content")
 	@Valid
-	private List<NotificationsDto> content;
+	private List<NotificationStampedDto> content;
 
 	@JsonProperty("sort")
 	private Sort sort;

@@ -13,9 +13,9 @@
         <sql>
             SET timezone = 'Europe/Moscow';
         </sql>
-        <createTable  tableName="notifications">
+        <createTable tableName="notifications_simple">
             <column autoIncrement="true" name="id" type="BIGINT">
-                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_notification"/>
+                <constraints nullable="false" primaryKey="true" primaryKeyName="pk_simple" unique="true"/>
             </column>
             <column name="author_id" type="BIGINT">
                 <constraints nullable="false"/>
@@ -24,9 +24,9 @@
                 <constraints nullable="false"/>
             </column>
             <column name="notification_type" type="VARCHAR(255)">
-                <constraints nullable="true"/>
+                <constraints nullable="false"/>
             </column>
-            <column name="sent_time" type="TIMESTAMP">
+            <column name="timestamp" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
         </createTable>

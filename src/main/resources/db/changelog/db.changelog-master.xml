@@ -8,6 +8,8 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
 <preConditions>
         <runningAs  username="selectel"/>
 </preConditions>
-        <include file="create-changeset-notifications.xml" relativeToChangelogFile="true"/>
-        <include file="create-changeset-commonnotifications.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-simple.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-common.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-stamped.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-stamped-constraint.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
