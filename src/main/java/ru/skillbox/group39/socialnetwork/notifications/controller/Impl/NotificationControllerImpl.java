@@ -19,7 +19,7 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificati
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationCountDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSettingDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationUpdateDto;
-import ru.skillbox.group39.socialnetwork.notifications.repositories.CommonNotifyRepository;
+import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 import ru.skillbox.group39.socialnetwork.notifications.controller.NotificationController;
 import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
@@ -30,24 +30,24 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @RestController
-@Tag(name = "NotificationModel service", description = "Сервис сообщений")
+@Tag(name = "NotificationSimpleModel service", description = "Сервис сообщений")
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationControllerImpl implements NotificationController {
 
 	private final ObjectMapper objectMapper;
 	private final HttpServletRequest request;
-	private final CommonNotifyRepository commonNotifyRepository;
+	private final NotificationCommonRepository notificationCommonRepository;
 	private final NotificationService notificationService;
 
 	@Override
 	public Object getNotifications(Integer page, Integer size, String sort) {
-		log.info(" * GET /");
+		log.info(" * GET \"/\"");
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
 
-		return notificationService.getPageNotifications(pageable);
+		return notificationService.getPageNotificationStamped(pageable);
 	}
 
 
@@ -82,7 +82,7 @@ public class NotificationControllerImpl implements NotificationController {
 //				return new ResponseEntity<NotificationCountDto>(HttpStatus.INTERNAL_SERVER_ERROR);
 //			}
 //		}
-		Count count = new Count(commonNotifyRepository.count());
+		Count count = new Count(notificationCommonRepository.count());
 		NotificationCountDto notificationCountDto = new NotificationCountDto(LocalDateTime.now(), count);
 		return new ResponseEntity<>(notificationCountDto, HttpStatus.OK);
 	}

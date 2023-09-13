@@ -13,7 +13,7 @@
   ],
   "tags": [
     {
-      "name": "NotificationModel service",
+      "name": "NotificationSimpleModel service",
       "description": "Сервис оповещений"
     }
   ],
@@ -21,7 +21,7 @@
     "/api/v1/notifications/settings": {
       "get": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Получение настроек оповещений",
         "operationId": "getSetting",
@@ -51,7 +51,7 @@
       },
       "put": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Коррекция настроек оповещений",
         "operationId": "updateSetting",
@@ -86,7 +86,7 @@
     "/api/v1/notifications/readed": {
       "put": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Отметить все события, как прочитанные",
         "operationId": "setIsRead",
@@ -111,7 +111,7 @@
     "/api/v1/notifications/settings{id}": {
       "post": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Создание настроек оповещений",
         "operationId": "createSetting",
@@ -154,7 +154,7 @@
     "/api/v1/notifications/add": {
       "post": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Создание события",
         "operationId": "addEvent",
@@ -189,7 +189,7 @@
     "/api/v1/notifications": {
       "get": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Получение событий",
         "operationId": "getNotifications",
@@ -231,7 +231,7 @@
     "/api/v1/notifications/count": {
       "get": {
         "tags": [
-          "NotificationModel service"
+          "NotificationSimpleModel service"
         ],
         "description": "Получить счетчик количества событий",
         "operationId": "getCount",
@@ -382,7 +382,7 @@
           "content": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NotificationsDto"
+              "$ref": "#/components/schemas/NotificationStampedDto"
             }
           },
           "sort": {

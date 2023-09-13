@@ -25,7 +25,7 @@ public interface NotificationController {
 
     @Operation(
             description = "Получение страницы событий",
-            security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationModel service"})
+            security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
     @ApiResponses(
             value = {
                     @ApiResponse(
@@ -40,14 +40,14 @@ public interface NotificationController {
     Object getNotifications(
             @RequestParam (required = false, defaultValue = "0") Integer page,
             @RequestParam (required = false, defaultValue = "5") Integer size,
-            @RequestParam (required = false, defaultValue = "sentTime") @Nullable String sort);
+            @RequestParam (required = false, defaultValue = "timestamp") @Nullable String sort);
 
 // ---------------------------------------------------------------------------------------------------------------------
 
     @Operation(
             description = "Создание события",
             security = {@SecurityRequirement(name = "JWT")},
-            tags = {"NotificationModel service"})
+            tags = {"NotificationSimpleModel service"})
     @ApiResponses(
             value = {
                     @ApiResponse(responseCode = "200", description = "Successful operation"),
@@ -65,7 +65,7 @@ public interface NotificationController {
     @Operation(
             description = "Создание настроек оповещений",
             security = {@SecurityRequirement(name = "JWT")},
-            tags = {"NotificationModel service"})
+            tags = {"NotificationSimpleModel service"})
     @ApiResponses(
             value = {@ApiResponse(
                     responseCode = "200",
@@ -83,7 +83,7 @@ public interface NotificationController {
 
     @Operation(
             description = "Получить счетчик количества событий",
-            security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationModel service"})
+            security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
     @ApiResponses(
             value = {@ApiResponse(responseCode = "200", description = "Successful operation",
                     content = @Content(schema = @Schema(implementation = NotificationCountDto.class))),
@@ -99,7 +99,7 @@ public interface NotificationController {
     @Operation(
             description = "Получение настроек оповещений",
             security = {@SecurityRequirement(name = "JWT")},
-            tags = {"NotificationModel service"})
+            tags = {"NotificationSimpleModel service"})
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "200",
@@ -118,7 +118,7 @@ public interface NotificationController {
     @Operation(
             description = "Отметить все события, как прочитанные",
             security = {@SecurityRequirement(name = "JWT")},
-            tags = {"NotificationModel service"})
+            tags = {"NotificationSimpleModel service"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "400", description = "Bad request"),
@@ -132,7 +132,7 @@ public interface NotificationController {
     @Operation(
             description = "Коррекция настроек оповещений",
             security = {@SecurityRequirement(name = "JWT")},
-            tags = {"NotificationModel service"})
+            tags = {"NotificationSimpleModel service"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "400", description = "Bad request"),

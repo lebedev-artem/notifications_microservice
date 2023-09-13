@@ -25,6 +25,6 @@ public class NotificationDto {
 	private Author author;
 	private Long id;
 	private CommonNotifyTypeEnum notificationType;
-	private Timestamp sentTime;
+	private Timestamp timestamp;
 	private String content;
 }

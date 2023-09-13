@@ -4,6 +4,7 @@ server:
     address: 5.63.154.191
 
 jpa:
+  show-sql: true
   defer-datasource-initialization: true
   hibernate:
     ddl-auto: none

@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationsDto {
+public class NotificationStampedDto {
 
     private Timestamp timeStamp;
     private NotificationDto data;
