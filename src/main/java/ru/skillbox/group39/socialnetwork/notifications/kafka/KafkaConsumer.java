@@ -65,7 +65,7 @@ public class KafkaConsumer {
 		NotificationCommonModel notificationCommonModel = modelMapper.map(commonNotifyDto, NotificationCommonModel.class);
 		log.info(" * Common notify data received and map to NotificationCommonModel entity. {}", notificationCommonModel);
 
-		notificationService.saveCommonNotify(notificationCommonModel);
+		notificationService.processCommonModel(notificationCommonModel);
 
 	}
 }

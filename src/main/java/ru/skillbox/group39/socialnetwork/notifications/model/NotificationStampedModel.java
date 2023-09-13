@@ -26,12 +26,11 @@ public class NotificationStampedModel {
 	@Column(name = "timestamp", nullable = false)
 	private Timestamp timestamp;
 
-	@OneToOne(fetch = FetchType.LAZY, optional = false, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
 	@JoinColumn(unique = true, name = "data")
 	private NotificationSimpleModel data;
 
 	public NotificationStampedModel(@NotNull NotificationSimpleModel data) {
-//		this.id = data.getId();
 		this.timestamp = data.getTimestamp();
 		this.data = data;
 	}

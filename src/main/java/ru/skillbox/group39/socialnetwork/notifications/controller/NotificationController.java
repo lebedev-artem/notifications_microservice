@@ -24,6 +24,21 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public interface NotificationController {
 
     @Operation(
+            description = "Получить счетчик количества событий",
+            security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
+    @ApiResponses(
+            value = {@ApiResponse(responseCode = "200", description = "Successful operation",
+                    content = @Content(schema = @Schema(implementation = NotificationCountDto.class))),
+                    @ApiResponse(responseCode = "400", description = "Bad request"),
+                    @ApiResponse(responseCode = "401", description = "Unauthorized")})
+    @RequestMapping(
+            value = "/count",
+            method = RequestMethod.GET)
+    ResponseEntity<NotificationCountDto> getCount();
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+    @Operation(
             description = "Получение страницы событий",
             security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
     @ApiResponses(
@@ -78,21 +93,6 @@ public interface NotificationController {
             method = RequestMethod.POST)
     ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, required = true)
                                           @PathVariable("id") String id);
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-    @Operation(
-            description = "Получить счетчик количества событий",
-            security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
-    @ApiResponses(
-            value = {@ApiResponse(responseCode = "200", description = "Successful operation",
-                    content = @Content(schema = @Schema(implementation = NotificationCountDto.class))),
-                    @ApiResponse(responseCode = "400", description = "Bad request"),
-                    @ApiResponse(responseCode = "401", description = "Unauthorized")})
-    @RequestMapping(
-            value = "/count",
-            method = RequestMethod.GET)
-    ResponseEntity<NotificationCountDto> getCount();
 
 // ---------------------------------------------------------------------------------------------------------------------
 

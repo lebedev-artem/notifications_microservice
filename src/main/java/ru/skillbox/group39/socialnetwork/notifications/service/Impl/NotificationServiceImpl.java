@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationStampedDto;
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationCommonModel;
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationSimpleModel;
@@ -41,53 +42,48 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationStampedRepository notificationStampedRepository;
 	private final UsersClient usersClient;
 
+
+	@Override
+	public Count getCount(Pageable pageable) {
+		return new Count(notificationStampedRepository.findAll(pageable).getTotalElements());
+	}
+
 	@Override
 	@Transactional
-	public void saveCommonNotify(NotificationCommonModel notificationCommonModel) {
-
+	public void processCommonModel(NotificationCommonModel notificationCommonModel) {
 		notificationCommonRepository.save(notificationCommonModel);
 		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common");
 
-		NotificationSimpleModel notificationSimpleModel = replicateToNotificationModel(notificationCommonModel);
-
-//		NotificationStampedModel notificationStampedModel = replicateToNotificationStampedModel(notificationSimpleModel);
+		processNativeModels(notificationCommonModel);
 	}
 
+	@Override
 	@Transactional
-	private @NotNull NotificationStampedModel replicateToNotificationStampedModel(NotificationSimpleModel notificationSimpleModel) {
-		log.info(" * Creating NotificationStampedModel");
-		Optional<NotificationSimpleModel> n = Optional.of(notificationSimpleRepository.findById(notificationSimpleModel.getId()).orElseThrow());
-		NotificationStampedModel notificationStampedModel = new NotificationStampedModel();
+	public void processNativeModels(@NotNull NotificationCommonModel notificationCommonModel) {
 
-		notificationStampedModel.setTimestamp(new Timestamp(System.currentTimeMillis()));
-		notificationStampedModel.setData(n.get());
+		NotificationSimpleModel notificationSimpleModel = createSimpleNotification(notificationCommonModel);
 
+		log.info(" * Wrap simple model to stamped model");
+		NotificationStampedModel notificationStampedModel = new NotificationStampedModel(notificationSimpleModel);
 
-		notificationStampedRepository.save(notificationStampedModel);
-		log.info(" * NotificationStampedModel saved to DB/notifications/notifications_stamped");
-		return notificationStampedModel;
+		try {
+			notificationStampedRepository.save(notificationStampedModel);
+			log.info(" * NotificationSimpleModel saved to DB/notifications/notifications_simple");
+			log.info(" * NotificationStampedModel saved to DB/notifications/notifications_stamped");
+		} catch (RuntimeException e) {
+			log.error(" ! Exception during persisting notification models");
+		}
 	}
 
-	@Transactional
-	private @NotNull NotificationSimpleModel replicateToNotificationModel(@NotNull NotificationCommonModel notificationCommonModel) {
-		log.info(" * Transfer fields from NotificationCommonModel to NotificationSimpleModel.");
+	@NotNull
+	private static NotificationSimpleModel createSimpleNotification(@NotNull NotificationCommonModel notificationCommonModel) {
+		log.info(" * Transfer fields from NotificationCommonModel to NotificationSimpleModel");
 		NotificationSimpleModel notificationSimpleModel = new NotificationSimpleModel();
 
 		notificationSimpleModel.setAuthorId(notificationCommonModel.getFromUserId());
 		notificationSimpleModel.setContent(notificationCommonModel.getText());
 		notificationSimpleModel.setTimestamp(notificationCommonModel.getTimestamp());
 		notificationSimpleModel.setNotificationType(notificationCommonModel.getType());
-
-
-
-		NotificationStampedModel notificationStampedModel = new NotificationStampedModel(notificationSimpleModel);
-
-//		notificationSimpleRepository.save(notificationSimpleModel);
-//		log.info(" * NotificationSimpleModel saved to DB/notifications/notifications_simple");
-
-		notificationStampedRepository.save(notificationStampedModel);
-		log.info(" * NotificationStampedModel saved to DB/notifications/notifications_stamped");
-
 		return notificationSimpleModel;
 	}
 
@@ -101,8 +97,28 @@ public class NotificationServiceImpl implements NotificationService {
 		return notificationStampedDto;
 	}
 
+	/**
+	 * @example <p>
+	 [<p>
+	    {<p>
+	       "timeStamp": "2023-09-13T20:32:02.596+00:00",<p>
+	        "data": {<p>
+	            "author": {<p>
+	                "firstName": "Artem",<p>
+	                "lastName": "Lebedev",<p>
+	                "photo": ""<p>
+	            },<p>
+	        "id": 1,<p>
+	        "notificationType": "POST",<p>
+	        "timestamp": "2023-09-13T19:47:04.538+00:00",<p>
+	        "content": "Пользователь 7 опубликовал пост: 'JPA vs LiquiBase. Я создал changeset c OnetoOne'"<p>
+	        }<p>
+	    },<p>
+	 */
+
+
 	@Override
-	public Object getPageNotifications(Pageable pageable) {
+	public Object getPageSimpleNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotifications");
 		Page<NotificationSimpleModel> page = notificationSimpleRepository.findAll(pageable);
 		List<NotificationSimpleModel> notificationSimpleModelList = page.getContent();
@@ -122,11 +138,12 @@ public class NotificationServiceImpl implements NotificationService {
 			notificationStampedDtoList.add(notificationStampedDto);
 		}
 
-		return new ResponseEntity<>(page, HttpStatus.OK);
+		return new ResponseEntity<>(notificationStampedDtoList, HttpStatus.OK);
 	}
 
+
 	@Override
-	public Object getPageNotificationStamped(Pageable pageable) {
+	public Object getPageStampedNotification(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
 		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(pageable);
 		List<NotificationStampedModel> notificationStampedModelList = page.getContent();

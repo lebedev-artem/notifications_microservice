@@ -41,22 +41,33 @@ public class NotificationControllerImpl implements NotificationController {
 	private final NotificationService notificationService;
 
 	@Override
+	public ResponseEntity<NotificationCountDto> getCount() {
+		log.info(" * GET /count");
+
+		Pageable pageable = PageRequest.of(0, 1, Sort.by("timestamp"));
+		Count count = notificationService.getCount(pageable);
+
+		NotificationCountDto notificationCountDto = new NotificationCountDto(LocalDateTime.now(), count);
+		return new ResponseEntity<>(notificationCountDto, HttpStatus.OK);
+	}
+
+	@Override
 	public Object getNotifications(Integer page, Integer size, String sort) {
 		log.info(" * GET \"/\"");
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
 
-		return notificationService.getPageNotificationStamped(pageable);
+		return notificationService.getPageSimpleNotifications(pageable);
 	}
 
-
+	@Override
 	public ResponseEntity<Void> addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
 	                                     @Valid @RequestBody EventNotificationDto body) {
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
 	}
-
+	@Override
 	public ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id") String id) {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
@@ -70,25 +81,7 @@ public class NotificationControllerImpl implements NotificationController {
 
 		return new ResponseEntity<Boolean>(HttpStatus.NOT_IMPLEMENTED);
 	}
-
-	public ResponseEntity<NotificationCountDto> getCount() {
-		log.info(" * GET /count");
-//		String accept = request.getHeader("Accept");
-//		if (accept != null && accept.contains("application/json")) {
-//			try {
-//				return new ResponseEntity<NotificationCountDto>(objectMapper.readValue("{\n  \"timeStamp\" : \"2000-01-23T04:56:07.000+00:00\",\n  \"data\" : {\n    \"count\" : 0\n  }\n}", NotificationCountDto.class), HttpStatus.NOT_IMPLEMENTED);
-//			} catch (IOException e) {
-//				log.error("Couldn't serialize response for content type application/json", e);
-//				return new ResponseEntity<NotificationCountDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-//			}
-//		}
-		Count count = new Count(notificationCommonRepository.count());
-		NotificationCountDto notificationCountDto = new NotificationCountDto(LocalDateTime.now(), count);
-		return new ResponseEntity<>(notificationCountDto, HttpStatus.OK);
-	}
-
-
-
+	@Override
 	public ResponseEntity<NotificationSettingDto> getSetting() {
 		String accept = request.getHeader("Accept");
 		if (accept != null && accept.contains("application/json")) {
@@ -102,12 +95,12 @@ public class NotificationControllerImpl implements NotificationController {
 
 		return new ResponseEntity<NotificationSettingDto>(HttpStatus.NOT_IMPLEMENTED);
 	}
-
+	@Override
 	public ResponseEntity<Void> setIsRead() {
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
 	}
-
+	@Override
 	public ResponseEntity<Void> updateSetting(@Parameter(in = ParameterIn.DEFAULT, description = "", required = true, schema = @Schema()) @Valid @RequestBody NotificationUpdateDto body) {
 		String accept = request.getHeader("Accept");
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
