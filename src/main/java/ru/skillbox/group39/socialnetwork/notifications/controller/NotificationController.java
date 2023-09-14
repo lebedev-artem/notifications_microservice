@@ -34,7 +34,7 @@ public interface NotificationController {
     @RequestMapping(
             value = "/count",
             method = RequestMethod.GET)
-    ResponseEntity<NotificationCountDto> getCount();
+    Object getCount();
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ public interface NotificationController {
     @RequestMapping(value = "/",
             produces = APPLICATION_JSON_VALUE,
             method = RequestMethod.GET)
-    Object getNotifications(
+    Object getPageNotifications(
             @RequestParam (required = false, defaultValue = "0") Integer page,
             @RequestParam (required = false, defaultValue = "5") Integer size,
             @RequestParam (required = false, defaultValue = "timestamp") @Nullable String sort);
@@ -72,7 +72,7 @@ public interface NotificationController {
             value = "/add",
             consumes = APPLICATION_JSON_VALUE,
             method = RequestMethod.POST)
-    ResponseEntity<Void> addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
+    Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
                                   @Valid @RequestBody EventNotificationDto body);
 
     // ---------------------------------------------------------------------------------------------------------------------

@@ -16,18 +16,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationCountDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSettingDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationUpdateDto;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 import ru.skillbox.group39.socialnetwork.notifications.controller.NotificationController;
-import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.time.LocalDateTime;
 
 @RestController
 @Tag(name = "NotificationSimpleModel service", description = "Сервис сообщений")
@@ -41,31 +38,33 @@ public class NotificationControllerImpl implements NotificationController {
 	private final NotificationService notificationService;
 
 	@Override
-	public ResponseEntity<NotificationCountDto> getCount() {
+	public Object getCount() {
 		log.info(" * GET /count");
 
 		Pageable pageable = PageRequest.of(0, 1, Sort.by("timestamp"));
-		Count count = notificationService.getCount(pageable);
 
-		NotificationCountDto notificationCountDto = new NotificationCountDto(LocalDateTime.now(), count);
-		return new ResponseEntity<>(notificationCountDto, HttpStatus.OK);
+		return notificationService.getCount(pageable);
 	}
 
 	@Override
-	public Object getNotifications(Integer page, Integer size, String sort) {
+	public Object getPageNotifications(Integer page, Integer size, String sort) {
 		log.info(" * GET \"/\"");
 
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
 
-		return notificationService.getPageSimpleNotifications(pageable);
+		// TODO
+		// + must return stamped page
+		// 2. check fields id
+		// + create AuthorModel model
+		return notificationService.getPageStampedNotifications(pageable);
 	}
 
 	@Override
-	public ResponseEntity<Void> addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-	                                     @Valid @RequestBody EventNotificationDto body) {
-		String accept = request.getHeader("Accept");
-		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
+	public Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
+	                                     @Valid @RequestBody EventNotificationDto request) {
+
+		return notificationService.addEvent(request);
 	}
 	@Override
 	public ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id") String id) {
