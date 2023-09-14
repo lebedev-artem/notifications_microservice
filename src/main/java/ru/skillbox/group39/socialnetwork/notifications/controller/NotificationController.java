@@ -11,10 +11,9 @@ import org.jetbrains.annotations.Nullable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationCountDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSettingDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationUpdateDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.PageNotificationsDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.*;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationSettingDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationUpdateDto;
 
 import javax.validation.Valid;
 
@@ -46,7 +45,7 @@ public interface NotificationController {
                     @ApiResponse(
                             responseCode = "200",
                             description = "Successful operation",
-                            content = @Content(mediaType = "*/*", schema = @Schema(implementation = PageNotificationsDto.class))),
+                            content = @Content(mediaType = "*/*", schema = @Schema(implementation = NotificationStampedDto.class))),
                     @ApiResponse(responseCode = "400", description = "Bad request"),
                     @ApiResponse(responseCode = "401", description = "Unauthorized")})
     @RequestMapping(value = "/",

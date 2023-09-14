@@ -12,7 +12,7 @@ import java.util.UUID;
  * @author Artem Lebedev | 06/09/2023 - 23:42 <p><p>
  *
  * @description <p>
- *     See <b>CommonNotifyDto.java</b>
+ *     See <b>NotificationCommonDto.java</b>
  */
 
 @Data
@@ -24,31 +24,31 @@ public class NotificationCommonModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "from_user_id")
-	private Long fromUserId;
-	@Column(name = "text")
-	private String text;
+	@Column(name = "producer_id")
+	private Long producerId;
+	@Column(name = "content")
+	private String content;
 	@Column(name = "event_id")
 	private UUID eventId;
 	@Column(name = "service")
 	private String service;
 	@Column(name = "timestamp")
-	private Timestamp timestamp;
-	@Column(name = "type")
-	private String type;
-	@Column(name = "to_user_id")
-	private Long toUserId;
+	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	@Column(name = "notification_type")
+	private String notificationType;
+	@Column(name = "consumer_id")
+	private Long consumerId;
 
 	@Override
 	public String toString() {
 		return "\n    NotificationCommonModel" +
 				"\n    id:                '" + id + '\'' +
-				"\n    Sender:            '" + fromUserId + '\'' +
-				"\n    Text of notify:    '" + text + '\'' +
+				"\n    Producer           '" + producerId + '\'' +
+				"\n    Text of notify:    '" + content + '\'' +
 				"\n    Id of event:       '" + eventId + '\'' +
 				"\n    Service-initiator: '" + service + '\'' +
 				"\n    Timestamp:         '" + timestamp + '\'' +
-				"\n    Type of event:     '" + type + '\'' +
-				"\n    Acceptor:          '" + toUserId + "'\n";
+				"\n    Type of event:     '" + notificationType + '\'' +
+				"\n    Consumer:          '" + consumerId + "'\n";
 	}
 }

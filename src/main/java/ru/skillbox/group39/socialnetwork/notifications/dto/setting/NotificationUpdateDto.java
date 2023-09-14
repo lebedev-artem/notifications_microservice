@@ -1,8 +1,9 @@
-package ru.skillbox.group39.socialnetwork.notifications.dto.notify;
+package ru.skillbox.group39.socialnetwork.notifications.dto.setting;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationSettingType;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 17:46 <p>

@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.dto.common;
+package ru.skillbox.group39.socialnetwork.notifications.dto;
 
 import lombok.Getter;
 
@@ -15,7 +15,7 @@ import lombok.Getter;
  */
 
 @Getter
-public enum CommonNotifyTypeEnum {
+public enum NotifyTypeEnum {
 	POST(1L),
 	POST_COMMENT(2L),
 	COMMENT_COMMENT(3L),
@@ -26,7 +26,7 @@ public enum CommonNotifyTypeEnum {
 
 	private final Long id;
 
-	CommonNotifyTypeEnum(Long id){
+	NotifyTypeEnum(Long id){
 		this.id = id;
 	}
 }
