@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 
 @Getter
-public enum NotificationType {
+public enum NotificationSettingType {
 	ENABLE_LIKE("ENABLE_LIKE"),
 	ENABLE_POST("ENABLE_POST"),
 	ENABLE_POST_COMMENT("ENABLE_POST_COMMENT"),
@@ -21,7 +21,7 @@ public enum NotificationType {
 
 	private final String type;
 
-	NotificationType(String type) {
+	NotificationSettingType(String type) {
 		this.type = type;
 	}
 }

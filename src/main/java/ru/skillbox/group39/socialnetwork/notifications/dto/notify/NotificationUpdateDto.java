@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 public class NotificationUpdateDto {
 
     private boolean enable;
-    private NotificationType notificationType;
+    private NotificationSettingType notificationSettingType;
 }

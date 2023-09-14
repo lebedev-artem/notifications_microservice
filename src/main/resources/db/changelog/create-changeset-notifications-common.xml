@@ -21,7 +21,7 @@
                 <constraints nullable="true"/>
             </column>
             <column name="text" type="VARCHAR(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="true"/>
             </column>
             <column name="event_id" type="UUID">
                 <constraints nullable="false"/>

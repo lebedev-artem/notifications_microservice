@@ -66,6 +66,13 @@ public class NotificationControllerImpl implements NotificationController {
 
 		return notificationService.addEvent(request);
 	}
+
+	@Override
+	public Object getSetting() {
+
+		return new ResponseEntity<NotificationSettingDto>(HttpStatus.NOT_IMPLEMENTED);
+	}
+
 	@Override
 	public ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, description = "", required = true, schema = @Schema()) @PathVariable("id") String id) {
 		String accept = request.getHeader("Accept");
@@ -80,20 +87,7 @@ public class NotificationControllerImpl implements NotificationController {
 
 		return new ResponseEntity<Boolean>(HttpStatus.NOT_IMPLEMENTED);
 	}
-	@Override
-	public ResponseEntity<NotificationSettingDto> getSetting() {
-		String accept = request.getHeader("Accept");
-		if (accept != null && accept.contains("application/json")) {
-			try {
-				return new ResponseEntity<NotificationSettingDto>(objectMapper.readValue("{\n  \"enableMessage\" : true,\n  \"enableFriendBirthday\" : true,\n  \"enablePostComment\" : true,\n  \"enablePost\" : true,\n  \"enableFriendRequest\" : true,\n  \"id\" : \"046b6c7f-0b8a-43b9-b35d-6489e6daee91\",\n  \"enableCommentComment\" : true,\n  \"enableLike\" : true,\n  \"enableSendEmailMessage\" : true\n}", NotificationSettingDto.class), HttpStatus.NOT_IMPLEMENTED);
-			} catch (IOException e) {
-				log.error("Couldn't serialize response for content type application/json", e);
-				return new ResponseEntity<NotificationSettingDto>(HttpStatus.INTERNAL_SERVER_ERROR);
-			}
-		}
 
-		return new ResponseEntity<NotificationSettingDto>(HttpStatus.NOT_IMPLEMENTED);
-	}
 	@Override
 	public ResponseEntity<Void> setIsRead() {
 		String accept = request.getHeader("Accept");

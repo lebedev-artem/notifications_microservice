@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class NotificationSettingDto {
 
-    private String id;
+    private Long id;
     private Boolean enableLike;
     private Boolean enablePost;
     private Boolean enablePostComment;
