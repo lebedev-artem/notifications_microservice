@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  * @author Artem Lebedev | 24/08/2023 - 19:30 <p>
  * description - dto события доп. <p>
  * id - DB id <p>
- * authorId - Id пользователя, создавшего событие <p>
+ * producerId - Id пользователя, создавшего событие <p>
  * content - описание события <p>
  * notificationType - тип уведомления <p>
  * sentTime - время события
@@ -33,8 +33,8 @@ public class NotificationSimpleModel {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "author_id")
-	private Long authorId;
+	@Column(name = "producer_id")
+	private Long producerId;
 
 	@Column(name = "content")
 	private String content;
@@ -44,7 +44,7 @@ public class NotificationSimpleModel {
 	private String notificationType;
 
 	@Column(name = "timestamp")
-	private Timestamp timestamp;
+	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 	@OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(unique = true, name = "author")

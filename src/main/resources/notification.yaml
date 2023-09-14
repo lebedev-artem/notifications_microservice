@@ -280,7 +280,7 @@
       "EventNotificationDto": {
         "type": "object",
         "properties": {
-          "authorId": {
+          "producerId": {
             "type": "string",
             "format": "uuid"
           },
@@ -325,7 +325,7 @@
             "description": "Id",
             "format": "uuid"
           },
-          "authorId": {
+          "producerId": {
             "type": "string",
             "description": "Id пользователя, создавшего событие",
             "format": "uuid"

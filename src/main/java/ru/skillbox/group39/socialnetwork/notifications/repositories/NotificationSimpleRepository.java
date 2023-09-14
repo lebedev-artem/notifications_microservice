@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public interface NotificationSimpleRepository extends JpaRepository<NotificationSimpleModel, Long>, PagingAndSortingRepository<NotificationSimpleModel,Long> {
 
-	NotificationSimpleModel findByAuthorId(Long authorId);
+	NotificationSimpleModel findByProducerId(Long producerId);
 
 	@Query("select n from NotificationSimpleModel n")
 	@NotNull Page<NotificationSimpleModel> findAll(@NotNull Pageable pageable);

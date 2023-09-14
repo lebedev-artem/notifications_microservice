@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.dto.notify;
+package ru.skillbox.group39.socialnetwork.notifications.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationStampedDto;
 
 import javax.validation.Valid;
 import java.util.List;
