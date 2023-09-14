@@ -2,6 +2,7 @@ package ru.skillbox.group39.socialnetwork.notifications.dto.event;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.skillbox.group39.socialnetwork.notifications.dto.common.CommonNotifyTypeEnum;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationType;
 
 /**
@@ -19,8 +20,8 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationTy
 @AllArgsConstructor
 public class EventNotificationDto {
 
-    private Integer authorId;
+    private Long authorId;
     private String receiverId;
-    private NotificationType notificationType;
+    private CommonNotifyTypeEnum notificationType;
     private String content;
 }

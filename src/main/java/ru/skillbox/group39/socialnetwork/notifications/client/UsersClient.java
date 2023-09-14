@@ -21,4 +21,9 @@ public interface UsersClient {
 			produces = {"application/json"})
 	AccountDto getUserDetails(@RequestParam String email);
 
+	@GetMapping(
+			value = "/{id}/account",
+			produces = {"application/json"})
+	AccountDto getUserDetailsById(@RequestParam Long id);
+
 }

@@ -30,5 +30,11 @@
                                  baseColumnNames="data"
                                  referencedTableName="notifications_simple"
                                  referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint constraintName="fk_simple_author"
+                                 baseTableName="notifications_simple"
+                                 baseColumnNames="author"
+                                 referencedTableName="author_of_notification"
+                                 referencedColumnNames="id"/>
     </changeSet>
 </databaseChangeLog>

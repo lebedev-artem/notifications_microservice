@@ -3,7 +3,15 @@ package ru.skillbox.group39.socialnetwork.notifications.dto.common;
 import lombok.Getter;
 
 /**
- * @author Artem Lebedev | 05/09/2023 - 20:42
+ * @author Artem Lebedev | 05/09/2023 - 20:42 <p>
+ *
+ * 	POST<p>
+ * 	POST_COMMENT<p>
+ * 	COMMENT_COMMENT<p>
+ * 	FRIEND_REQUEST<p>
+ * 	FRIEND_BIRTHDAY<p>
+ * 	MESSAGE<p>
+ * 	LIKE<p>
  */
 
 @Getter

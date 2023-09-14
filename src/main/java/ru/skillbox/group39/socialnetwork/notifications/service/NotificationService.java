@@ -2,7 +2,7 @@ package ru.skillbox.group39.socialnetwork.notifications.service;
 
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Pageable;
-import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
+import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationCommonModel;
 
 /**
@@ -12,10 +12,12 @@ import ru.skillbox.group39.socialnetwork.notifications.model.NotificationCommonM
 public interface NotificationService {
 
 	void processCommonModel(NotificationCommonModel model);
-	void processNativeModels(@NotNull NotificationCommonModel notificationCommonModel);
-	Count getCount(Pageable pageable);
+	void processNativeModels(@NotNull NotificationCommonModel model);
+
+	Object getCount(Pageable pageable);
 	Object getAllNotifications();
 	Object getPageSimpleNotifications(Pageable pageable);
-	Object getPageStampedNotification(Pageable pageable);
+	Object getPageStampedNotifications(Pageable pageable);
+	Object addEvent(EventNotificationDto eventNotificationDto);
 
 }
