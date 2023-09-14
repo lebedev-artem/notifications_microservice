@@ -89,28 +89,24 @@ public class NotificationServiceImpl implements NotificationService {
 	@NotNull
 	private NotificationSimpleModel createSimpleNotification(@NotNull NotificationCommonModel notificationCommonModel) {
 		log.info(" * Transfer fields from NotificationCommonModel to NotificationSimpleModel");
-		NotificationSimpleModel notificationSimpleModel = new NotificationSimpleModel();
 
-		notificationSimpleModel.setAuthorId(notificationCommonModel.getFromUserId());
-		notificationSimpleModel.setContent(notificationCommonModel.getText());
-		notificationSimpleModel.setTimestamp(notificationCommonModel.getTimestamp());
-		notificationSimpleModel.setNotificationType(notificationCommonModel.getType());
-
-		AccountDto accountDto = usersClient.getUserDetailsById(notificationSimpleModel.getAuthorId());
-
-//		TODO
-//		Нужна ли обработка на null полей от юзера
+		AccountDto accountDto = usersClient.getUserDetailsById(notificationCommonModel.getFromUserId());
 
 		AuthorModel authorModel = authorRepository.findById(
-				accountDto.getId()).orElseThrow();
-		AuthorModel.builder()
+				accountDto.getId()).orElse(AuthorModel.builder()
 				.id(accountDto.getId())
 				.firstName(accountDto.getFirstName())
 				.lastName(accountDto.getLastName())
-				.build();
+				.photo(accountDto.getPhoto())
+				.build());
 
-		notificationSimpleModel.setAuthor(authorModel);
-		return notificationSimpleModel;
+		return NotificationSimpleModel.builder()
+				.authorId(notificationCommonModel.getFromUserId())
+				.content(notificationCommonModel.getText())
+				.timestamp(notificationCommonModel.getTimestamp())
+				.notificationType(notificationCommonModel.getType())
+				.author(authorModel)
+				.build();
 	}
 
 
@@ -165,6 +161,12 @@ public class NotificationServiceImpl implements NotificationService {
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
+	@Override
+	public Object getSetting(Long userId) {
+
+		return null;
+	}
+
 	/**
 	 * @deprecated
 	 */
@@ -185,12 +187,12 @@ public class NotificationServiceImpl implements NotificationService {
 		AccountDto accountDto = usersClient.getUserDetailsById(eventNotificationDto.getAuthorId());
 
 		AuthorModel authorModel = authorRepository.findById(
-				accountDto.getId()).orElseThrow();
-				AuthorModel.builder()
-						.id(accountDto.getId())
-						.firstName(accountDto.getFirstName())
-						.lastName(accountDto.getLastName())
-						.build();
+				accountDto.getId()).orElse(AuthorModel.builder()
+				.id(accountDto.getId())
+				.firstName(accountDto.getFirstName())
+				.lastName(accountDto.getLastName())
+				.photo(accountDto.getPhoto())
+				.build());
 
 		NotificationSimpleModel notificationSimpleModel = NotificationSimpleModel.builder()
 				.authorId(authorModel.getId())

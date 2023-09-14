@@ -78,6 +78,25 @@ public interface NotificationController {
     // ---------------------------------------------------------------------------------------------------------------------
 
     @Operation(
+            description = "Получение настроек оповещений",
+            security = {@SecurityRequirement(name = "JWT")},
+            tags = {"NotificationSimpleModel service"})
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Successful operation",
+                    content = @Content(mediaType = "*/*", schema = @Schema(implementation = NotificationSettingDto.class))),
+            @ApiResponse(responseCode = "400", description = "Bad request"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")})
+    @RequestMapping(
+            value = "/settings",
+            produces = APPLICATION_JSON_VALUE,
+            method = RequestMethod.GET)
+    Object getSetting();
+
+// ---------------------------------------------------------------------------------------------------------------------
+
+    @Operation(
             description = "Создание настроек оповещений",
             security = {@SecurityRequirement(name = "JWT")},
             tags = {"NotificationSimpleModel service"})
@@ -95,26 +114,9 @@ public interface NotificationController {
                                           @PathVariable("id") String id);
 
 // ---------------------------------------------------------------------------------------------------------------------
-
-    @Operation(
-            description = "Получение настроек оповещений",
-            security = {@SecurityRequirement(name = "JWT")},
-            tags = {"NotificationSimpleModel service"})
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Successful operation",
-                    content = @Content(mediaType = "*/*", schema = @Schema(implementation = NotificationSettingDto.class))),
-            @ApiResponse(responseCode = "400", description = "Bad request"),
-            @ApiResponse(responseCode = "401", description = "Unauthorized")})
-    @RequestMapping(
-            value = "/settings",
-            produces = APPLICATION_JSON_VALUE,
-            method = RequestMethod.GET)
-    ResponseEntity<NotificationSettingDto> getSetting();
-
-// ---------------------------------------------------------------------------------------------------------------------
-
+//TODO
+//пока что удаляем уведомления
+//    но эндпоинт реализовать и удалять
     @Operation(
             description = "Отметить все события, как прочитанные",
             security = {@SecurityRequirement(name = "JWT")},

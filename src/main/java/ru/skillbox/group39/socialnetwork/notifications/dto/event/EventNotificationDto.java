@@ -3,7 +3,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.group39.socialnetwork.notifications.dto.common.CommonNotifyTypeEnum;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationType;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 17:46 <p>
