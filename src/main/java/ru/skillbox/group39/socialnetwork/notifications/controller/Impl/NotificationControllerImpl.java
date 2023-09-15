@@ -1,10 +1,10 @@
 package ru.skillbox.group39.socialnetwork.notifications.controller.Impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -14,9 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationSettingDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationUpdateDto;
@@ -35,14 +33,13 @@ public class NotificationControllerImpl implements NotificationController {
 	private final NotificationService notificationService;
 
 	@Override
-	public Object getCount(@RequestHeader("Authorization") @NonNull String bearerToken) {
+	public Object getCount() {
 		log.info(" * GET /count");
-		Pageable pageable = PageRequest.of(0, 1, Sort.by("timestamp"));
-		return notificationService.getCount(pageable);
+		return notificationService.getCount();
 	}
 
 	@Override
-	public Object getPageNotifications(@RequestHeader("Authorization") @NonNull String bearerToken, Integer page, Integer size, String sort) {
+	public Object getPageNotifications(Integer page, Integer size, String sort) {
 		log.info(" * GET \"/\"");
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
@@ -51,14 +48,13 @@ public class NotificationControllerImpl implements NotificationController {
 
 	@Override
 	public Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-	                       @RequestHeader("Authorization") @NonNull String bearerToken,
 	                       @Valid @RequestBody EventNotificationDto request) {
 		log.info(" * POST \"/addEvent\"");
 		return notificationService.addEvent(request);
 	}
 
 	@Override
-	public Object setAllRead(@RequestHeader("Authorization") @NonNull String bearerToken, @NotNull HttpServletRequest request) {
+	public Object setAllRead(@NotNull HttpServletRequest request) {
 		log.info(" * PUT \"/read\"");
 		if (!(request.getParameterMap().isEmpty()) | (request.getHeader("Content-Type") != null)) {
 			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Wrong args/method/headers/etc"), HttpStatus.BAD_REQUEST);
@@ -67,7 +63,7 @@ public class NotificationControllerImpl implements NotificationController {
 	}
 
 	@Override
-	public Object getSetting(@RequestHeader("Authorization") @NonNull String bearerToken) {
+	public Object getSetting() {
 		return new ResponseEntity<NotificationSettingDto>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
@@ -78,7 +74,6 @@ public class NotificationControllerImpl implements NotificationController {
 					description = "",
 					required = true,
 					schema = @Schema())
-			@RequestHeader("Authorization") @NonNull String bearerToken,
 			@PathVariable("id") String id) {
 		return new ResponseEntity<Boolean>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -90,7 +85,6 @@ public class NotificationControllerImpl implements NotificationController {
 					description = "",
 					required = true,
 					schema = @Schema())
-			@RequestHeader("Authorization") @NonNull String bearerToken,
 			@Valid @RequestBody NotificationUpdateDto body) {
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
 	}

@@ -6,6 +6,8 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.common.NotificationCo
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationCommonModel;
 
+import java.security.Principal;
+
 /**
  * @author Artem Lebedev | 07/09/2023 - 08:26
  */
@@ -15,7 +17,7 @@ public interface NotificationService {
 	void processCommonNotification(NotificationCommonDto notificationCommonDto);
 	void processNativeModels(@NotNull NotificationCommonDto notificationCommonDto);
 
-	Object getCount(Pageable pageable);
+	Object getCount();
 	Object getPageStampedNotifications(Pageable pageable);
 	Object getSetting(Long userId);
 	Object setAllRead();
