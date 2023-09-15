@@ -27,7 +27,6 @@ import ru.skillbox.group39.socialnetwork.notifications.model.NotificationSimpleM
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationStampedModel;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.AuthorRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
-import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationStampedRepository;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
@@ -39,8 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import static ru.skillbox.group39.socialnetwork.notifications.utils.TimestampUtils.NOW;
 
 /**
  * @author Artem Lebedev | 07/09/2023 - 08:26
@@ -143,6 +140,11 @@ public class NotificationServiceImpl implements NotificationService {
 	 * ],<p>
 	 */
 
+	/*
+	TODO
+	Выборку делать по id consumerId
+	 */
+
 	@Override
 	public Object getPageStampedNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
@@ -153,10 +155,13 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationStampedRepository.deleteAll(pageListToDel);
 
+<<<<<<< src/main/java/ru/skillbox/group39/socialnetwork/notifications/service/Impl/NotificationServiceImpl.java
+=======
 		/*
 		TODO
 		Кк узнать какие уведомления уже показаны?
 		 */
+>>>>>>> src/main/java/ru/skillbox/group39/socialnetwork/notifications/service/Impl/NotificationServiceImpl.java
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
@@ -189,7 +194,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	/**
-	 * @param anyDto
+	 * @param anyDto any dto with field's name as on NotificationStampedDto
 	 * @return NotificationCommonDto
 	 * @throws JsonProcessingException
 	 */
