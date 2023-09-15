@@ -18,6 +18,7 @@ public interface NotificationService {
 	Object getCount(Pageable pageable);
 	Object getPageStampedNotifications(Pageable pageable);
 	Object getSetting(Long userId);
+	Object setAllRead();
 
 	Object addEvent(EventNotificationDto eventNotificationDto);
 

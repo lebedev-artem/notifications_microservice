@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.hibernate.annotations.Filter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.stylesheets.LinkStyle;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.config.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
@@ -32,6 +35,8 @@ import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -141,8 +146,17 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public Object getPageStampedNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
+
 		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(pageable);
 
+		List<NotificationStampedModel> pageListToDel = page.getContent();
+
+		notificationStampedRepository.deleteAll(pageListToDel);
+
+		/*
+		TODO
+		Кк узнать какие уведомления уже показаны?
+		 */
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
@@ -193,4 +207,16 @@ public class NotificationServiceImpl implements NotificationService {
 		return null;
 	}
 
+	@Override
+	public Object setAllRead() {
+		try {
+			log.info(" * Attempt to mark all notifications as read");
+			notificationStampedRepository.deleteAll();
+		} catch (RuntimeException e) {
+			log.error(" ! Exception during marking notifications as read");
+			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Fault during marking notifications as read"), HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
@@ -26,6 +28,8 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @Builder
 @Table(name = "notifications_simple")
+@SQLDelete(sql = "UPDATE notifications_simple SET read = true WHERE id=?")
+@Where(clause = "read=false")
 public class NotificationSimpleModel {
 
 	@Id
@@ -45,6 +49,9 @@ public class NotificationSimpleModel {
 
 	@Column(name = "timestamp")
 	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+
+	@Column(name = "read")
+	private boolean read = Boolean.FALSE;
 
 	@OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
 	@JoinColumn(unique = true, name = "author")

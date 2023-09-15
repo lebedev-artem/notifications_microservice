@@ -3,6 +3,8 @@ package ru.skillbox.group39.socialnetwork.notifications.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.jetbrains.annotations.NotNull;
 
 import javax.persistence.*;
@@ -16,6 +18,8 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE notifications_stamped SET read = true WHERE id=?")
+@Where(clause = "read=false")
 @Table(name = "notifications_stamped")
 public class NotificationStampedModel {
 
@@ -29,6 +33,9 @@ public class NotificationStampedModel {
 	@OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
 	@JoinColumn(unique = true, name = "data")
 	private NotificationSimpleModel data;
+
+	@Column(name = "read")
+	private boolean read = Boolean.FALSE;
 
 	public NotificationStampedModel(@NotNull NotificationSimpleModel data) {
 		this.timestamp = data.getTimestamp();
