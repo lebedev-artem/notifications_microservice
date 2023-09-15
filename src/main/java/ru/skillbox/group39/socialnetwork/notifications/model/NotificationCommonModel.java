@@ -3,8 +3,11 @@ package ru.skillbox.group39.socialnetwork.notifications.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.util.UUID;
 
@@ -20,6 +23,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "notifications_common")
+@SQLDelete(sql = "UPDATE notifications_common SET read = true WHERE id=?")
+@Where(clause = "read=false")
 public class NotificationCommonModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +43,8 @@ public class NotificationCommonModel {
 	private String notificationType;
 	@Column(name = "consumer_id")
 	private Long consumerId;
+	@Column(name = "read")
+	private boolean read = Boolean.FALSE;
 
 	@Override
 	public String toString() {
