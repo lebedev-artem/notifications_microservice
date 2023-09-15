@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.w3c.dom.stylesheets.LinkStyle;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
@@ -28,6 +29,7 @@ import ru.skillbox.group39.socialnetwork.notifications.model.NotificationStamped
 import ru.skillbox.group39.socialnetwork.notifications.repositories.AuthorRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationStampedRepository;
+import ru.skillbox.group39.socialnetwork.notifications.security.model.Person;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
@@ -150,7 +152,10 @@ public class NotificationServiceImpl implements NotificationService {
 	public Object getPageStampedNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
 
-		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(pageable);
+		Person person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long consumerId = person.getId();
+
+		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(consumerId, pageable);
 
 		List<NotificationStampedModel> pageListToDel = page.getContent();
 
