@@ -14,5 +14,5 @@ import ru.skillbox.group39.socialnetwork.notifications.model.NotificationStamped
 public interface NotificationStampedRepository extends JpaRepository<NotificationStampedModel, Long>, PagingAndSortingRepository<NotificationStampedModel,Long> {
 
 	@Query("select n from NotificationStampedModel n")
-	@NotNull Page<NotificationStampedModel> findAll(@NotNull Pageable pageable);
+	@NotNull Page<NotificationStampedModel> findAll(Long consumerId, @NotNull Pageable pageable);
 }

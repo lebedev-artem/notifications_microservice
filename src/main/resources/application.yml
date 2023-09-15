@@ -28,6 +28,10 @@ liquibase:
   drop-first: false
   default-schema: public
 
+jwt:
+  access-token-duration: 43_200_000
+  refresh-token-duration: 86_400_000
+  token_alg: SignatureAlgorithm.HS256
 
 gtw:
   users-service: http://${eureka.instance.hostname}:8088/users

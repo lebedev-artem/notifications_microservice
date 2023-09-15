@@ -5,15 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
-import org.hibernate.annotations.Filter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.stylesheets.LinkStyle;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.config.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
@@ -27,7 +24,6 @@ import ru.skillbox.group39.socialnetwork.notifications.model.NotificationSimpleM
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationStampedModel;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.AuthorRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
-import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationStampedRepository;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
@@ -35,12 +31,9 @@ import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
-
-import static ru.skillbox.group39.socialnetwork.notifications.utils.TimestampUtils.NOW;
 
 /**
  * @author Artem Lebedev | 07/09/2023 - 08:26
@@ -143,6 +136,11 @@ public class NotificationServiceImpl implements NotificationService {
 	 * ],<p>
 	 */
 
+	/*
+	TODO
+	Выборку делать по id consumerId
+	 */
+
 	@Override
 	public Object getPageStampedNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
@@ -153,10 +151,6 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationStampedRepository.deleteAll(pageListToDel);
 
-		/*
-		TODO
-		Кк узнать какие уведомления уже показаны?
-		 */
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
@@ -189,7 +183,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	/**
-	 * @param anyDto
+	 * @param anyDto any dto with field's name as on NotificationStampedDto
 	 * @return NotificationCommonDto
 	 * @throws JsonProcessingException
 	 */
