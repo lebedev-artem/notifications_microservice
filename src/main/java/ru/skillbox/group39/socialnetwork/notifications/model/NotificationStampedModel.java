@@ -18,8 +18,8 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE notifications_stamped SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE notifications_stamped SET read = true WHERE id=?")
+@Where(clause = "read=false")
 @Table(name = "notifications_stamped")
 public class NotificationStampedModel {
 
@@ -34,8 +34,8 @@ public class NotificationStampedModel {
 	@JoinColumn(unique = true, name = "data")
 	private NotificationSimpleModel data;
 
-	@Column(name = "deleted")
-	private boolean deleted = Boolean.FALSE;
+	@Column(name = "read")
+	private boolean read = Boolean.FALSE;
 
 	public NotificationStampedModel(@NotNull NotificationSimpleModel data) {
 		this.timestamp = data.getTimestamp();

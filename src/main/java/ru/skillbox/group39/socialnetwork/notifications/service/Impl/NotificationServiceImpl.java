@@ -207,4 +207,16 @@ public class NotificationServiceImpl implements NotificationService {
 		return null;
 	}
 
+	@Override
+	public Object setAllRead() {
+		try {
+			log.info(" * Attempt to mark all notifications as read");
+			notificationStampedRepository.deleteAll();
+		} catch (RuntimeException e) {
+			log.error(" ! Exception during marking notifications as read");
+			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Fault during marking notifications as read"), HttpStatus.BAD_REQUEST);
+		}
+
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
 }

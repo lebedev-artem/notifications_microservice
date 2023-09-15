@@ -15,6 +15,7 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.notify.*;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationSettingDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationUpdateDto;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -113,9 +114,7 @@ public interface NotificationController {
                                           @PathVariable("id") String id);
 
 // ---------------------------------------------------------------------------------------------------------------------
-//TODO
-//пока что удаляем уведомления
-//    но эндпоинт реализовать и удалять
+
     @Operation(
             description = "Отметить все события, как прочитанные",
             security = {@SecurityRequirement(name = "JWT")},
@@ -124,9 +123,9 @@ public interface NotificationController {
             @ApiResponse(responseCode = "200", description = "Successful operation"),
             @ApiResponse(responseCode = "400", description = "Bad request"),
             @ApiResponse(responseCode = "401", description = "Unauthorized")})
-    @RequestMapping(value = "/readed",
+    @RequestMapping(value = "/read",
             method = RequestMethod.PUT)
-    ResponseEntity<Void> setIsRead();
+    Object setAllRead(HttpServletRequest request);
 
 // ---------------------------------------------------------------------------------------------------------------------
 

@@ -38,7 +38,7 @@
             <column name="consumer_id" type="VARCHAR(255)">
                 <constraints nullable="true"/>
             </column>
-            <column name="deleted" type="BOOLEAN">
+            <column name="read" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
         </createTable>

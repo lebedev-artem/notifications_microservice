@@ -23,8 +23,8 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "notifications_common")
-@SQLDelete(sql = "UPDATE notifications_common SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
+@SQLDelete(sql = "UPDATE notifications_common SET read = true WHERE id=?")
+@Where(clause = "read=false")
 public class NotificationCommonModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,8 +43,8 @@ public class NotificationCommonModel {
 	private String notificationType;
 	@Column(name = "consumer_id")
 	private Long consumerId;
-	@Column(name = "deleted")
-	private boolean deleted = Boolean.FALSE;
+	@Column(name = "read")
+	private boolean read = Boolean.FALSE;
 
 	@Override
 	public String toString() {
