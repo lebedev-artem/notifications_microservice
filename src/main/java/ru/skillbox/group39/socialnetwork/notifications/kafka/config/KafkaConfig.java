@@ -36,6 +36,7 @@ public class KafkaConfig {
 	public NewTopic topicNotify() {
 		return new NewTopic("notify-topic", 2, (short) 2);
 	}
+
 	@Bean
 	public NewTopic topicNotifyCommon() {
 		return new NewTopic("notify-topic-common", 2, (short) 2);

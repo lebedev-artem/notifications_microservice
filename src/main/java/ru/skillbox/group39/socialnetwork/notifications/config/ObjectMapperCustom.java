@@ -22,17 +22,14 @@ import java.io.IOException;
 public class ObjectMapperCustom {
 
 	public ObjectMapper objectMapper() {
-
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
 		objectMapper.addHandler(new DeserializationProblemHandler() {
 
 			@Override
 			public boolean handleUnknownProperty(DeserializationContext ctxt,
 			                                     JsonParser jp, JsonDeserializer<?> deserializer,
-			                                     Object beanOrClass, String propertyName)
-					throws IOException, JsonProcessingException {
+			                                     Object beanOrClass, String propertyName) {
 
 				String unknownField = String.format(" ! Ignoring unknown property %s while deserializing %s", propertyName, beanOrClass);
 				log.error(getClass().getSimpleName(), unknownField);
