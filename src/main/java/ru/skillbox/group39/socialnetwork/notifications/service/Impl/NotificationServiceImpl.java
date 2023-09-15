@@ -5,12 +5,15 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.hibernate.annotations.Filter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.w3c.dom.stylesheets.LinkStyle;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.config.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
@@ -31,6 +34,7 @@ import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
@@ -151,6 +155,13 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationStampedRepository.deleteAll(pageListToDel);
 
+<<<<<<< src/main/java/ru/skillbox/group39/socialnetwork/notifications/service/Impl/NotificationServiceImpl.java
+=======
+		/*
+		TODO
+		Кк узнать какие уведомления уже показаны?
+		 */
+>>>>>>> src/main/java/ru/skillbox/group39/socialnetwork/notifications/service/Impl/NotificationServiceImpl.java
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
