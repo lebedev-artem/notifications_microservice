@@ -24,6 +24,9 @@
 <!--                <constraints nullable="false"/>-->
                 <constraints nullable="false" uniqueConstraintName="data" unique="true"/>
             </column>
+            <column name="deleted" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>
