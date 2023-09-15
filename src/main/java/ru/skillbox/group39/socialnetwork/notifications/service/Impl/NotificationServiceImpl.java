@@ -36,6 +36,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
@@ -155,13 +156,6 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationStampedRepository.deleteAll(pageListToDel);
 
-<<<<<<< src/main/java/ru/skillbox/group39/socialnetwork/notifications/service/Impl/NotificationServiceImpl.java
-=======
-		/*
-		TODO
-		Кк узнать какие уведомления уже показаны?
-		 */
->>>>>>> src/main/java/ru/skillbox/group39/socialnetwork/notifications/service/Impl/NotificationServiceImpl.java
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
