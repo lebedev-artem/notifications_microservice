@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,12 +55,25 @@ public class NotificationControllerImpl implements NotificationController {
 		return notificationService.getPageStampedNotifications(pageable);
 	}
 
+
 	@Override
 	public Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
 	                       @RequestHeader("Authorization") @NonNull String bearerToken,
 	                       @Valid @RequestBody EventNotificationDto request) {
 		log.info(" * POST \"/addEvent\"");
 		return notificationService.addEvent(request);
+	}
+
+
+	@Override
+	public Object setAllRead(@NotNull HttpServletRequest request) {
+		log.info(" * PUT \"/read\"");
+
+		if (!(request.getParameterMap().isEmpty()) | (request.getHeader("Content-Type") != null)) {
+			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Wrong args/method/headers/etc"), HttpStatus.BAD_REQUEST);
+		}
+
+		return notificationService.setAllRead();
 	}
 
 	@Override
