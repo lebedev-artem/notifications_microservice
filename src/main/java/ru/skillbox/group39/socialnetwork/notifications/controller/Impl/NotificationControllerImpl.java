@@ -23,8 +23,10 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationU
 import ru.skillbox.group39.socialnetwork.notifications.exception.ErrorResponse;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
 import ru.skillbox.group39.socialnetwork.notifications.controller.NotificationController;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RestController
 @Tag(name = "NotificationSimpleModel service", description = "Сервис сообщений")
@@ -35,14 +37,13 @@ public class NotificationControllerImpl implements NotificationController {
 	private final NotificationService notificationService;
 
 	@Override
-	public Object getCount(@RequestHeader("Authorization") @NonNull String bearerToken) {
+	public Object getCount() {
 		log.info(" * GET /count");
-		Pageable pageable = PageRequest.of(0, 1, Sort.by("timestamp"));
-		return notificationService.getCount(pageable);
+		return notificationService.getCount();
 	}
 
 	@Override
-	public Object getPageNotifications(@RequestHeader("Authorization") @NonNull String bearerToken, Integer page, Integer size, String sort) {
+	public Object getPageNotifications(Integer page, Integer size, String sort) {
 		log.info(" * GET \"/\"");
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
@@ -51,14 +52,13 @@ public class NotificationControllerImpl implements NotificationController {
 
 	@Override
 	public Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-	                       @RequestHeader("Authorization") @NonNull String bearerToken,
 	                       @Valid @RequestBody EventNotificationDto request) {
 		log.info(" * POST \"/addEvent\"");
 		return notificationService.addEvent(request);
 	}
 
 	@Override
-	public Object setAllRead(@RequestHeader("Authorization") @NonNull String bearerToken, @NotNull HttpServletRequest request) {
+	public Object setAllRead(@NotNull HttpServletRequest request) {
 		log.info(" * PUT \"/read\"");
 		if (!(request.getParameterMap().isEmpty()) | (request.getHeader("Content-Type") != null)) {
 			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Wrong args/method/headers/etc"), HttpStatus.BAD_REQUEST);
@@ -67,7 +67,7 @@ public class NotificationControllerImpl implements NotificationController {
 	}
 
 	@Override
-	public Object getSetting(@RequestHeader("Authorization") @NonNull String bearerToken) {
+	public Object getSetting() {
 		return new ResponseEntity<NotificationSettingDto>(HttpStatus.NOT_IMPLEMENTED);
 	}
 
@@ -78,7 +78,6 @@ public class NotificationControllerImpl implements NotificationController {
 					description = "",
 					required = true,
 					schema = @Schema())
-			@RequestHeader("Authorization") @NonNull String bearerToken,
 			@PathVariable("id") String id) {
 		return new ResponseEntity<Boolean>(HttpStatus.NOT_IMPLEMENTED);
 	}
@@ -90,7 +89,6 @@ public class NotificationControllerImpl implements NotificationController {
 					description = "",
 					required = true,
 					schema = @Schema())
-			@RequestHeader("Authorization") @NonNull String bearerToken,
 			@Valid @RequestBody NotificationUpdateDto body) {
 		return new ResponseEntity<Void>(HttpStatus.NOT_IMPLEMENTED);
 	}

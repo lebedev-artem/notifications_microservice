@@ -50,6 +50,9 @@ public class NotificationSimpleModel {
 	@Column(name = "timestamp")
 	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
+	@Column(name = "consumer_id")
+	private Long consumerId;
+
 	@Column(name = "read")
 	private boolean read = Boolean.FALSE;
 

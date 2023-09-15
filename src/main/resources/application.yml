@@ -129,3 +129,4 @@ logging:
     org.apache.kafka.clients.producer.ProducerConfig: WARN
     org.apache.kafka.clients.consumer.internals.ConsumerCoordinator: WARN
     org.apache.kafka.clients.Metadata: WARN
+    org.springframework.kafka.listener.KafkaMessageListenerContainer: WARN

@@ -5,18 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.hibernate.Session;
-import org.hibernate.annotations.Filter;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.w3c.dom.stylesheets.LinkStyle;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
-import ru.skillbox.group39.socialnetwork.notifications.config.ObjectMapperCustom;
+import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
 import ru.skillbox.group39.socialnetwork.notifications.dto.common.NotificationCommonDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
@@ -35,11 +33,12 @@ import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -60,8 +59,18 @@ public class NotificationServiceImpl implements NotificationService {
 
 
 	@Override
-	public Object getCount(Pageable pageable) {
-		Count count = new Count(notificationStampedRepository.findAll(pageable).getTotalElements());
+	public Object getCount() {
+		Person person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long consumerId = person.getId();
+
+		List<NotificationStampedModel> stampedModels = notificationStampedRepository.findAll();
+		int cnt = 0;
+		for (NotificationStampedModel model : stampedModels) {
+			if (Objects.equals(model.getData().getConsumerId(), consumerId)) {
+				cnt++;
+			}
+		}
+		Count count = new Count((long) cnt);
 		return new NotificationCountDto(LocalDateTime.now(), count);
 	}
 
@@ -147,7 +156,6 @@ public class NotificationServiceImpl implements NotificationService {
 	TODO
 	Выборку делать по id consumerId
 	 */
-
 	@Override
 	public Object getPageStampedNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
@@ -155,13 +163,24 @@ public class NotificationServiceImpl implements NotificationService {
 		Person person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		Long consumerId = person.getId();
 
-		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(consumerId, pageable);
-
+		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(pageable);
 		List<NotificationStampedModel> pageListToDel = page.getContent();
 
-		notificationStampedRepository.deleteAll(pageListToDel);
+		List<NotificationStampedModel> listWithExpectedConsumerId =
+				pageListToDel
+						.stream()
+						.filter(nsm -> nsm.getData().getConsumerId().equals(consumerId))
+						.collect(Collectors.toList());
 
-		return new ResponseEntity<>(page, HttpStatus.OK);
+		Page<NotificationStampedModel> pageWithExpectedConsumerId =
+				new PageImpl<>(
+						listWithExpectedConsumerId,
+						pageable,
+						listWithExpectedConsumerId.size());
+
+		notificationStampedRepository.deleteAll(listWithExpectedConsumerId);
+
+		return new ResponseEntity<>(pageWithExpectedConsumerId, HttpStatus.OK);
 	}
 
 	@Override

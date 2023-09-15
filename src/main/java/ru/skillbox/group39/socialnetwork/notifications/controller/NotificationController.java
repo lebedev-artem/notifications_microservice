@@ -20,6 +20,8 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationU
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.security.Principal;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping("/api/v1/notifications")
@@ -36,7 +38,7 @@ public interface NotificationController {
 	@RequestMapping(
 			value = "/count",
 			method = RequestMethod.GET)
-	Object getCount(@RequestHeader("Authorization") @NonNull String bearerToken);
+	Object getCount();
 
 	// ---------------------------------------------------------------------------------------------------------------------
 	@Operation(
@@ -54,13 +56,11 @@ public interface NotificationController {
 			produces = APPLICATION_JSON_VALUE,
 			method = RequestMethod.GET)
 	Object getPageNotifications(
-			@RequestHeader("Authorization") @NonNull String bearerToken,
 			@RequestParam(required = false, defaultValue = "0") Integer page,
 			@RequestParam(required = false, defaultValue = "5") Integer size,
 			@RequestParam(required = false, defaultValue = "timestamp") @Nullable String sort);
 
 // ---------------------------------------------------------------------------------------------------------------------
-
 	@Operation(
 			description = "Создание события",
 			security = {@SecurityRequirement(name = "JWT")},
@@ -75,7 +75,6 @@ public interface NotificationController {
 			consumes = APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-	                @RequestHeader("Authorization") @NonNull String bearerToken,
 	                @Valid @RequestBody EventNotificationDto body);
 
 	// ---------------------------------------------------------------------------------------------------------------------
@@ -95,7 +94,7 @@ public interface NotificationController {
 			value = "/settings",
 			produces = APPLICATION_JSON_VALUE,
 			method = RequestMethod.GET)
-	Object getSetting(@RequestHeader("Authorization") @NonNull String bearerToken);
+	Object getSetting();
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -114,7 +113,6 @@ public interface NotificationController {
 			produces = APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, required = true)
-                                          @RequestHeader("Authorization") @NonNull String bearerToken,
 	                                      @PathVariable("id") String id);
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -129,7 +127,7 @@ public interface NotificationController {
 			@ApiResponse(responseCode = "401", description = "Unauthorized")})
 	@RequestMapping(value = "/read",
 			method = RequestMethod.PUT)
-	Object setAllRead(@RequestHeader("Authorization") @NonNull String bearerToken, HttpServletRequest request);
+	Object setAllRead(HttpServletRequest request);
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -147,6 +145,5 @@ public interface NotificationController {
 			method = RequestMethod.PUT)
 	ResponseEntity<Void> updateSetting(
 			@Parameter(in = ParameterIn.DEFAULT, required = true)
-            @RequestHeader("Authorization") @NonNull String bearerToken,
 			@Valid @RequestBody NotificationUpdateDto body);
 }

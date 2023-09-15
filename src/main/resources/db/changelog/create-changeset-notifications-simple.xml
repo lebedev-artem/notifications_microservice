@@ -32,6 +32,9 @@
             <column name="author" type="BIGINT">
                 <constraints nullable="false" uniqueConstraintName="author" unique="false"/>
             </column>
+            <column name="consumer_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
             <column name="read" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>

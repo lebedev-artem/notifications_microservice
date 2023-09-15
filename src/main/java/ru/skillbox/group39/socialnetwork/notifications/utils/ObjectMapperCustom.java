@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.config;
+package ru.skillbox.group39.socialnetwork.notifications.utils;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
