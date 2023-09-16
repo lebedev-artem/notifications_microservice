@@ -34,6 +34,7 @@ import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -87,6 +88,7 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	@Transactional
 	public void processNativeModels(@NotNull NotificationCommonDto notificationCommonDto) {
+
 		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
 		AuthorModel authorModel = getAuthorModel(notificationCommonDto.getProducerId());
 		notificationSimpleModel.setAuthor(authorModel);
@@ -166,20 +168,18 @@ public class NotificationServiceImpl implements NotificationService {
 
 		List<NotificationStampedModel> pageList = page.getContent();
 
-		List<NotificationStampedModel> listWithExpectedConsumerId =
-				pageList
-						.stream()
-						.filter(nsm -> nsm.getData().getConsumerId().equals(consumerId))
-						.collect(Collectors.toList());
+		List<NotificationStampedModel> listWithExpectedConsumerId =	new ArrayList<>();
+		for (NotificationStampedModel nsm : pageList) {
+			if (nsm.getData().getConsumerId().equals(consumerId)) {
+				listWithExpectedConsumerId.add(nsm);
+			}
+		}
 
 		Page<NotificationStampedModel> pageWithExpectedConsumerId =
 				new PageImpl<>(
 						listWithExpectedConsumerId,
 						pageable,
 						listWithExpectedConsumerId.size());
-
-		//TODO
-		//не корректно работает
 
 		notificationStampedRepository.deleteAll(listWithExpectedConsumerId);
 
@@ -235,8 +235,10 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public Object setAllRead() {
+
+
 		try {
-			log.info(" * Attempt to mark all notifications as read");
+			log.info(" * Attempting to mark all notifications as read");
 			notificationStampedRepository.deleteAll();
 		} catch (RuntimeException e) {
 			log.error(" ! Exception during marking notifications as read");

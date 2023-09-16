@@ -33,7 +33,6 @@ public class UserDetailsServiceImpl implements UserService {
 
 	@Override
 	public Person loadUserByUsername(String email) throws UsernameNotFoundException, EmailNotUniqueException {
-
 		HealthChecker.checkHealthyService(usersHost, Integer.valueOf(usersPort));
 
 		if (email == null | Objects.equals(email, "")) {

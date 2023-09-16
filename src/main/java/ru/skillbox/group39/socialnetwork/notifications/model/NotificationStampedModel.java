@@ -18,7 +18,7 @@ import java.sql.Timestamp;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SQLDelete(sql = "UPDATE notifications_stamped SET read = true WHERE id=?")
+@SQLDelete(sql = "UPDATE notifications_stamped SET read=true WHERE id=?")
 @Where(clause = "read=false")
 @Table(name = "notifications_stamped")
 public class NotificationStampedModel {

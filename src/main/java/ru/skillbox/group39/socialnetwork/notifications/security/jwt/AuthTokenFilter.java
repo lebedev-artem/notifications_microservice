@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,17 +22,21 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class AuthTokenFilter extends OncePerRequestFilter {
 
+	@Value(value = "${gtw.users-service}")
+	private String usersMicroService;
 	private final JwtUtils jwtUtils;
 	private final UserDetailsServiceImpl userDetailsService;
+
 
 	@Override
 	protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
 			throws ServletException, IOException {
+
 		try {
 			String jwt = parseJwt(request);
 			if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
 				String username = jwtUtils.getUserNameFromJwtToken(jwt);
-
+				log.info(" * Attempting to retrieve user's details from {}", usersMicroService);
 				UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
 				UsernamePasswordAuthenticationToken authentication =
@@ -42,6 +47,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 
 				SecurityContextHolder.getContext().setAuthentication(authentication);
+				log.info(" * User authorized {}", authentication.getPrincipal());
 			}
 		} catch (Exception e) {
 			log.error("Cannot set user authentication: {}", e.getMessage());
