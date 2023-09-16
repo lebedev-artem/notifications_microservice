@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.HealthChecker;
@@ -60,4 +61,8 @@ public class UserDetailsServiceImpl implements UserService {
 				.collect(Collectors.toList());
 	}
 
+	public static Long getPrincipalId() {
+		Person person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return person.getId();
+	}
 }
