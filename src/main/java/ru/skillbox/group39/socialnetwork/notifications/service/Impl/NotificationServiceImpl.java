@@ -7,15 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
-import ru.skillbox.group39.socialnetwork.notifications.security.model.Person;
-import ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
 import ru.skillbox.group39.socialnetwork.notifications.dto.common.NotificationCommonDto;
@@ -35,10 +31,8 @@ import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl.getPrincipalId;
@@ -62,17 +56,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public Object getCount() {
-		Person person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long consumerId = person.getId();
-
-		List<NotificationStampedModel> stampedModels = notificationStampedRepository.findAll();
-		int cnt = 0;
-		for (NotificationStampedModel model : stampedModels) {
-			if (Objects.equals(model.getData().getConsumerId(), consumerId)) {
-				cnt++;
-			}
-		}
-		Count count = new Count((long) cnt);
+		Long cnt = notificationStampedRepository.countByData_ConsumerId(getPrincipalId());
+		Count count = new Count(cnt);
 		return new NotificationCountDto(LocalDateTime.now(), count);
 	}
 
@@ -91,10 +76,8 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	@Transactional
 	public void processNativeModels(@NotNull NotificationCommonDto notificationCommonDto) {
-
 		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
-		AuthorModel authorModel = getAuthorModel(notificationCommonDto.getProducerId());
-		notificationSimpleModel.setAuthor(authorModel);
+		notificationSimpleModel.setAuthor(getAuthorModel(notificationCommonDto.getProducerId()));
 
 		log.info(" * Wrap NotificationSimpleModel to NotificationStampedModel");
 		NotificationStampedModel notificationStampedModel = new NotificationStampedModel(notificationSimpleModel);
@@ -155,41 +138,15 @@ public class NotificationServiceImpl implements NotificationService {
 	 * ],<p>
 	 */
 
-	/*
-	TODO
-	Выборку делать по id consumerId
-	 */
-
 	@Override
 	public Object getPageStampedNotifications(Pageable pageable) {
 		log.info(" * service/NotificationServiceImpl/getPageNotificationStamped");
 		Long consumerId = getPrincipalId();
 
-		List<NotificationStampedModel> listWithExpectedConsumerId = getNotificationStampedModelsListWithExpectedConsumerId(pageable, consumerId);
+		Page<NotificationStampedModel> page = notificationStampedRepository.findAllByData_ConsumerId(consumerId, pageable);
 
-		Page<NotificationStampedModel> pageWithExpectedConsumerId =
-				new PageImpl<>(
-						listWithExpectedConsumerId,
-						pageable,
-						listWithExpectedConsumerId.size());
-
-		notificationStampedRepository.deleteAll(listWithExpectedConsumerId);
-
-		return new ResponseEntity<>(pageWithExpectedConsumerId, HttpStatus.OK);
-	}
-
-	@NotNull
-	private List<NotificationStampedModel> getNotificationStampedModelsListWithExpectedConsumerId(Pageable pageable, Long consumerId) {
-		Page<NotificationStampedModel> page = notificationStampedRepository.findAll(pageable);
-		List<NotificationStampedModel> pageList = page.getContent();
-
-		List<NotificationStampedModel> listWithExpectedConsumerId =	new ArrayList<>();
-		for (NotificationStampedModel nsm : pageList) {
-			if (nsm.getData().getConsumerId().equals(consumerId)) {
-				listWithExpectedConsumerId.add(nsm);
-			}
-		}
-		return listWithExpectedConsumerId;
+		notificationStampedRepository.deleteAll(page);
+		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
 
 	@Override
@@ -244,8 +201,8 @@ public class NotificationServiceImpl implements NotificationService {
 		Long consumerId = getPrincipalId();
 		try {
 			log.info(" * Attempting to mark all notifications as read for user with id '{}'", consumerId);
-			List<NotificationStampedModel> listWithExpectedConsumerId = getNotificationStampedModelsListWithExpectedConsumerId(Pageable.unpaged(), consumerId);
-			notificationStampedRepository.deleteAll(listWithExpectedConsumerId);
+			List<NotificationStampedModel> listToMarkAsRead = notificationStampedRepository.findAllByData_ConsumerId(consumerId);
+			notificationStampedRepository.deleteAll(listToMarkAsRead);
 
 		} catch (RuntimeException e) {
 			log.error(" ! Exception during marking notifications as read");

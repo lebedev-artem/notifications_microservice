@@ -8,6 +8,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import ru.skillbox.group39.socialnetwork.notifications.model.NotificationStampedModel;
 
+import java.util.List;
+
 /**
  * @author Artem Lebedev | 13/09/2023 - 00:30
  */
@@ -15,4 +17,7 @@ public interface NotificationStampedRepository extends JpaRepository<Notificatio
 
 //	@Query("select n from NotificationStampedModel n")
 	@NotNull Page<NotificationStampedModel> findAll(@NotNull Pageable pageable);
+	Page<NotificationStampedModel> findAllByData_ConsumerId(Long consumerId, Pageable pageable);
+	List<NotificationStampedModel> findAllByData_ConsumerId(Long consumerId);
+	Long countByData_ConsumerId(Long consumerId);
 }
