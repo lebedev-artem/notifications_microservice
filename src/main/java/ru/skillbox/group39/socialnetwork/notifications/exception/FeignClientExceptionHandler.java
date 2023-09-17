@@ -18,8 +18,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleForbiddenException(@NotNull ForbiddenException exception, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap ForbiddenException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(403),
-				exception.getMessage()),
+				exception.getMessage(), HttpStatus.valueOf(403)
+		),
 				HttpStatus.FORBIDDEN);
 	}
 
@@ -27,8 +27,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleEmailNotUniqueException(@NotNull EmailNotUniqueException exception, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap EmailNotUniqueException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(409),
-				exception.getMessage()),
+				exception.getMessage(), HttpStatus.valueOf(409)
+		),
 				HttpStatus.CONFLICT);
 	}
 
@@ -36,8 +36,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleEmailNotUniqueException(@NotNull EmailNotFoundException exception, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap EmailNotFoundException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(401),
-				exception.getMessage()),
+				exception.getMessage(), HttpStatus.valueOf(401)
+		),
 				HttpStatus.UNAUTHORIZED);
 	}
 
@@ -45,8 +45,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleSettingsNotUniqueException(@NotNull SettingsNotFoundException exception, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap SettingsNotFoundException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(400),
-				exception.getMessage()),
+				exception.getMessage(), HttpStatus.valueOf(400)
+		),
 				HttpStatus.BAD_REQUEST);
 	}
 
@@ -54,8 +54,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleEmailIsBlankException(@NotNull EmailIsBlankException exception, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap EmailIsBlankException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(406),
-				exception.getMessage()),
+				exception.getMessage(), HttpStatus.valueOf(406)
+		),
 				HttpStatus.NOT_ACCEPTABLE);
 	}
 
@@ -63,8 +63,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleEmailIsBlankException(@NotNull BadRequestException exception, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap BadRequestException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(400),
-				exception.getMessage()),
+				exception.getMessage(), HttpStatus.valueOf(400)
+		),
 				HttpStatus.BAD_REQUEST);
 	}
 
@@ -72,8 +72,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleRejectedException(@NotNull RequestRejectedException e, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap RequestRejectedException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(500),
-				e.getMessage()),
+				e.getMessage(), HttpStatus.valueOf(500)
+		),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -81,8 +81,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleConnectException(@NotNull ConnectException e, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap ConnectException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(500),
-				e.getMessage()),
+				e.getMessage(), HttpStatus.valueOf(500)
+		),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
@@ -90,8 +90,8 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 	public ResponseEntity<ErrorResponse> handleCallNotPermittedException(@NotNull CallNotPermittedException e, WebRequest request) {
 		log.error(" ! FeignClientExceptionHandler trap CallNotPermittedException");
 		return new ResponseEntity<>(new ErrorResponse(
-				HttpStatus.valueOf(500),
-				e.getMessage()),
+				e.getMessage(), HttpStatus.valueOf(500)
+		),
 				HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 

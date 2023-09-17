@@ -21,8 +21,8 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class NotificationSimpleDto {
 
-	private Author author;
 	private Long id;
+	private Author author;
 	private ENotificationType notificationType;
 	private Timestamp timestamp;
 	private String content;

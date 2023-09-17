@@ -13,7 +13,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingChangeDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.ErrorResponse;
@@ -61,7 +63,7 @@ public class NotificationControllerImpl implements NotificationController {
 	public Object setAllRead(@NotNull HttpServletRequest request) {
 		log.info(" * PUT \"/read\"");
 		if (!(request.getParameterMap().isEmpty()) | (request.getHeader("Content-Type") != null)) {
-			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Wrong args/method/headers/etc"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponse("Wrong args/method/headers/etc", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
 		}
 		return notificationService.setAllRead();
 	}
@@ -74,12 +76,12 @@ public class NotificationControllerImpl implements NotificationController {
 	@Override
 	public Object createSetting(
 			@Parameter(
-					in = ParameterIn.PATH,
+					in = ParameterIn.QUERY,
 					description = "id пользователя в базе данных",
 					required = false,
 					schema = @Schema())
-			@PathVariable("id") Long userId) {
-		log.info(" * POST /settings/{id}");
+			@RequestParam(required = false) Long userId) {
+		log.info(" * POST /settings");
 		log.info(" * Payload: {}", userId);
 		if (userId == null) {
 			return settingsService.createSettings(getPrincipalId());

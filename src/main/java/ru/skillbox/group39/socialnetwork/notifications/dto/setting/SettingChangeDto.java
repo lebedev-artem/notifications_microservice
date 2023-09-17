@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SettingChangeDto {
 
-    private ESettingsType type;
+    private ESettingsType notificationType;
     private Boolean enable;
 
 }

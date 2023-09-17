@@ -28,7 +28,7 @@ public class ErrorResponse {
 	private String message;
 
 
-	public ErrorResponse(@NotNull HttpStatus httpStatus, String message) {
+	public ErrorResponse(String message, @NotNull HttpStatus httpStatus) {
 		timestamp = new Date();
 		this.code = httpStatus.value();
 		this.status = httpStatus.name();

@@ -12,13 +12,9 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificati
 public interface NotificationService {
 
 	void processCommonNotification(NotificationCommonDto notificationCommonDto);
-	void processNativeModels(@NotNull NotificationCommonDto notificationCommonDto);
-
 	Object getCount();
 	Object getPageStampedNotifications(Pageable pageable);
-	Object getSetting(Long userId);
 	Object setAllRead();
-
 	Object addEvent(EventNotificationDto eventNotificationDto);
 
 }

@@ -20,7 +20,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SettingsDto {
 
-    private Long id;
     private Boolean enableLike;
     private Boolean enablePost;
     private Boolean enablePostComment;

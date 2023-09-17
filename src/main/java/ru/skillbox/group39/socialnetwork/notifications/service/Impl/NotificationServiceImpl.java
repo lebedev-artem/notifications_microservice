@@ -6,12 +6,14 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSimpleDto;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.count.Count;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.common.NotificationCommonDto;
@@ -50,9 +52,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationStampedRepository notificationStampedRepository;
 	private final AuthorRepository authorRepository;
 	private final UsersClient usersClient;
-	private final ObjectMapperCustom objectMapperCustom;
-	private final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
-
+	private final ModelMapper modelMapper;
 
 	@Override
 	public Object getCount() {
@@ -73,7 +73,6 @@ public class NotificationServiceImpl implements NotificationService {
 		processNativeModels(notificationCommonDto);
 	}
 
-	@Override
 	@Transactional
 	public void processNativeModels(@NotNull NotificationCommonDto notificationCommonDto) {
 		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
@@ -153,10 +152,10 @@ public class NotificationServiceImpl implements NotificationService {
 	public Object addEvent(@NotNull EventNotificationDto eventNotificationDto) {
 
 		if (checkEventNotificationDtoFields(eventNotificationDto)) {
-			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Check all fields. Any is null"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponse("Check all fields. Any is null", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
 		}
 
-		NotificationCommonDto notificationCommonDto = mapAnyToCommonNotificationDto(eventNotificationDto);
+		NotificationCommonDto notificationCommonDto = ObjectMapperCustom.mapAnyToCommonNotificationDto(eventNotificationDto);
 		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
 
 		AuthorModel authorModel = getAuthorModel(eventNotificationDto.getProducerId());
@@ -166,7 +165,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		saveStampedModel(notificationStampedModel);
 
-		return new ResponseEntity<>(notificationSimpleModel, HttpStatus.OK);
+		return new ResponseEntity<>(modelMapper.map(notificationSimpleModel, NotificationSimpleDto.class), HttpStatus.OK);
 	}
 
 	@NotNull
@@ -175,25 +174,6 @@ public class NotificationServiceImpl implements NotificationService {
 				eventNotificationDto.getConsumerId(),
 				eventNotificationDto.getNotificationType(),
 				eventNotificationDto.getContent()).anyMatch(Objects::isNull);
-	}
-
-	/**
-	 * @param anyDto any dto with field's name as on NotificationStampedDto
-	 * @return NotificationCommonDto
-	 * @throws JsonProcessingException
-	 */
-	private <T> @NotNull NotificationCommonDto mapAnyToCommonNotificationDto(T anyDto) {
-		try {
-			return objectMapperCustom.objectMapper().readValue(objectWriter.writeValueAsString(anyDto), NotificationCommonDto.class);
-		} catch (JsonProcessingException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
-	@Override
-	public Object getSetting(Long userId) {
-
-		return null;
 	}
 
 	@Override
@@ -206,7 +186,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		} catch (RuntimeException e) {
 			log.error(" ! Exception during marking notifications as read");
-			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Fault during marking notifications as read"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponse("Fault during marking notifications as read", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<>(HttpStatus.OK);
 	}

@@ -58,7 +58,7 @@ public interface NotificationController {
 			@RequestParam(required = false, defaultValue = "5") Integer size,
 			@RequestParam(required = false, defaultValue = "timestamp") @Nullable String sort);
 
-// ---------------------------------------------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------------------------------------------
 	@Operation(
 			description = "Создание события",
 			security = {@SecurityRequirement(name = "JWT")},
@@ -120,11 +120,11 @@ public interface NotificationController {
 					content = @Content(mediaType = "*/*", schema = @Schema(implementation = Boolean.class))),
 					@ApiResponse(responseCode = "400", description = "Bad request"),
 					@ApiResponse(responseCode = "401", description = "Unauthorized")})
-	@RequestMapping(value = "/settings/{id}",
+	@RequestMapping(value = "/settings",
 			produces = APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	Object createSetting(@Parameter(in = ParameterIn.PATH, required = true)
-	                                      @PathVariable("id") Long userId);
+	Object createSetting(@Parameter(in = ParameterIn.QUERY, required = false)
+	                     @RequestParam(required = false) Long userId);
 
 // ---------------------------------------------------------------------------------------------------------------------
 
