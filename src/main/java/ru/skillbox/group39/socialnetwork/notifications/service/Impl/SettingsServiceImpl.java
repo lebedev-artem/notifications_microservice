@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingChangeDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingsDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.ErrorResponse;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.SettingsNotFoundException;
 import ru.skillbox.group39.socialnetwork.notifications.model.settings.SettingsModel;
@@ -34,6 +35,7 @@ public class SettingsServiceImpl implements SettingsService {
 	private final UsersClient usersClient;
 	private final SettingsRepository settingsRepository;
 	private final SettingsRepositoryImpl settingsRepositoryImpl;
+	private final ModelMapper modelMapper;
 
 	@Override
 	public Object getSettings() {
@@ -42,7 +44,7 @@ public class SettingsServiceImpl implements SettingsService {
 						.findByUserId(getPrincipalId())
 						.orElseThrow(() -> new SettingsNotFoundException("User / settings not found")));
 
-		return new ResponseEntity<>(sm, HttpStatus.OK);
+		return new ResponseEntity<>(modelMapper.map(sm, SettingsDto.class), HttpStatus.OK);
 	}
 
 	@Override
@@ -54,13 +56,16 @@ public class SettingsServiceImpl implements SettingsService {
 			user = usersClient.getUserDetailsById(userId);
 		} catch (RuntimeException e) {
 			log.error(" ! User with id '{}' not found", userId);
-			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "User not found"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(
+					new ErrorResponse(
+							"Error while creating a setting for user id " + userId.toString(),
+							HttpStatus.BAD_REQUEST),
+					HttpStatus.BAD_REQUEST);
 		}
+		Optional<SettingsModel> sm = Optional.of(settingsRepository.findByUserId(userId).orElse(new SettingsModel(user.getId())));
+		settingsRepository.save(sm.get());
 
-		SettingsModel nsm = new SettingsModel(user.getId());
-		settingsRepository.save(nsm);
-
-		return new ResponseEntity<>(nsm, HttpStatus.OK);
+		return new ResponseEntity<>(modelMapper.map(sm, SettingsDto.class), HttpStatus.OK);
 	}
 
 	@Override
@@ -72,13 +77,13 @@ public class SettingsServiceImpl implements SettingsService {
 		Long id = sm.get().getId();
 
 		try {
-			String key = scd.getType().getType();
+			String key = scd.getNotificationType().getType();
 			Boolean value = scd.getEnable();
 			settingsRepositoryImpl.updateSetting(id, key, value);
 			log.info(" * Setting '{}' set '{}'", key, value);
 
 		} catch (RuntimeException e) {
-			return new ResponseEntity<>(new ErrorResponse(HttpStatus.BAD_REQUEST, "Error while updating a setting"), HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<>(new ErrorResponse("Error while updating a setting", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
 		}
 
 		return new ResponseEntity<>(HttpStatus.OK);
