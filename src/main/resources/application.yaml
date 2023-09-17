@@ -12,6 +12,10 @@ jpa:
 spring:
   application:
     name: notifications
+  output:
+    ansi:
+      enabled: always
+
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:

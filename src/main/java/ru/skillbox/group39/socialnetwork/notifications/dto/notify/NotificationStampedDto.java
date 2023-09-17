@@ -19,5 +19,5 @@ import java.sql.Timestamp;
 public class NotificationStampedDto {
 
     private Timestamp timeStamp;
-    private NotificationDto data;
+    private NotificationSimpleDto data;
 }

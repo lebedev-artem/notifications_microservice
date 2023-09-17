@@ -1,9 +1,8 @@
-package ru.skillbox.group39.socialnetwork.notifications.dto.notify;
+package ru.skillbox.group39.socialnetwork.notifications.dto.count;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +16,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationCountDto {
+public class NotificationsCountDto {
 
     private LocalDateTime timeStamp;
     private Count count;

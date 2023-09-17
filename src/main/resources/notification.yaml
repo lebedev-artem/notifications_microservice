@@ -31,7 +31,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificationSettingDto"
+                  "$ref": "#/components/schemas/SettingsDto"
                 }
               }
             }
@@ -59,7 +59,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NotificationUpdateDto"
+                "$ref": "#/components/schemas/SettingChangeDto"
               }
             }
           },
@@ -241,7 +241,7 @@
             "content": {
               "*/*": {
                 "schema": {
-                  "$ref": "#/components/schemas/NotificationCountDto"
+                  "$ref": "#/components/schemas/NotificationsCountDto"
                 }
               }
             }
@@ -355,7 +355,7 @@
             "format": "date-time"
           },
           "data": {
-            "$ref": "#/components/schemas/NotificationDto"
+            "$ref": "#/components/schemas/NotificationSimpleDto"
           }
         },
         "description": "Dto события"

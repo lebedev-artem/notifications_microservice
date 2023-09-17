@@ -3,7 +3,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.group39.socialnetwork.notifications.dto.NotifyTypeEnum;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 
 import java.sql.Timestamp;
 
@@ -28,6 +28,6 @@ public class EventNotificationDto {
     private Long producerId;
     private Long consumerId;
     private String content;
-    private NotifyTypeEnum notificationType;
+    private ENotificationType notificationType;
     private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 }

@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import ru.skillbox.group39.socialnetwork.notifications.model.NotificationSimpleModel;
+import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationSimpleModel;
 
 import java.util.Optional;
 

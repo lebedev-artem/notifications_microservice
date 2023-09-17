@@ -3,7 +3,6 @@ package ru.skillbox.group39.socialnetwork.notifications.dto.setting;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationSettingType;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 17:46 <p>
@@ -14,8 +13,9 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationS
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationUpdateDto {
+public class SettingChangeDto {
 
-    private boolean enable;
-    private NotificationSettingType notificationSettingType;
+    private ESettingsType type;
+    private Boolean enable;
+
 }

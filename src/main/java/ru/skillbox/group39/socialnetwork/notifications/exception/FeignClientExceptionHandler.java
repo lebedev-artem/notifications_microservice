@@ -32,13 +32,22 @@ public class FeignClientExceptionHandler extends ResponseEntityExceptionHandler 
 				HttpStatus.CONFLICT);
 	}
 
-	@ExceptionHandler({NotFoundException.class})
-	public ResponseEntity<ErrorResponse> handleEmailNotUniqueException(@NotNull NotFoundException exception, WebRequest request) {
-		log.error(" ! FeignClientExceptionHandler trap NotFoundException");
+	@ExceptionHandler({EmailNotFoundException.class})
+	public ResponseEntity<ErrorResponse> handleEmailNotUniqueException(@NotNull EmailNotFoundException exception, WebRequest request) {
+		log.error(" ! FeignClientExceptionHandler trap EmailNotFoundException");
 		return new ResponseEntity<>(new ErrorResponse(
 				HttpStatus.valueOf(401),
 				exception.getMessage()),
 				HttpStatus.UNAUTHORIZED);
+	}
+
+	@ExceptionHandler({SettingsNotFoundException.class})
+	public ResponseEntity<ErrorResponse> handleSettingsNotUniqueException(@NotNull SettingsNotFoundException exception, WebRequest request) {
+		log.error(" ! FeignClientExceptionHandler trap SettingsNotFoundException");
+		return new ResponseEntity<>(new ErrorResponse(
+				HttpStatus.valueOf(400),
+				exception.getMessage()),
+				HttpStatus.BAD_REQUEST);
 	}
 
 	@ExceptionHandler({EmailIsBlankException.class})
