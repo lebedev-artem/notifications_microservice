@@ -9,19 +9,7 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-    <changeSet author="Artem" id="drop_pk_simple">
-        <dropPrimaryKey  tableName= "notifications_simple" constraintName="pk_simple"/>
-    </changeSet>
-
-    <changeSet author="Artem" id="simple_add_consumer_id">
-        <addColumn tableName="notifications_simple">
-            <column name="consumer_id" type="BIGINT">
-                <constraints nullable="true"/>
-            </column>
-        </addColumn>
-    </changeSet>
-
-    <changeSet author="Artem" id="add_pk_simple">
-        <addPrimaryKey tableName="notifications_simple" columnNames="id" constraintName="pk_simple"/>
+    <changeSet author="Artem" id="add_settings_constraint_user_id">
+        <addUniqueConstraint tableName="notifications_settings" columnNames="user_id"/>
     </changeSet>
 </databaseChangeLog>

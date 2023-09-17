@@ -13,15 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperCustom;
-import ru.skillbox.group39.socialnetwork.notifications.dto.Count;
-import ru.skillbox.group39.socialnetwork.notifications.dto.common.NotificationCommonDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.count.Count;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.common.NotificationCommonDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationCountDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.count.NotificationsCountDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.ErrorResponse;
-import ru.skillbox.group39.socialnetwork.notifications.model.AuthorModel;
-import ru.skillbox.group39.socialnetwork.notifications.model.NotificationCommonModel;
-import ru.skillbox.group39.socialnetwork.notifications.model.NotificationSimpleModel;
-import ru.skillbox.group39.socialnetwork.notifications.model.NotificationStampedModel;
+import ru.skillbox.group39.socialnetwork.notifications.model.notification.AuthorModel;
+import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationCommonModel;
+import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationSimpleModel;
+import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationStampedModel;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.AuthorRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationStampedRepository;
@@ -58,7 +58,7 @@ public class NotificationServiceImpl implements NotificationService {
 	public Object getCount() {
 		Long cnt = notificationStampedRepository.countByData_ConsumerId(getPrincipalId());
 		Count count = new Count(cnt);
-		return new NotificationCountDto(LocalDateTime.now(), count);
+		return new NotificationsCountDto(LocalDateTime.now(), count);
 	}
 
 	@Override

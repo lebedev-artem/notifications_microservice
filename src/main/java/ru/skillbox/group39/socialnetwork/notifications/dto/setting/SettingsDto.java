@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationSettingDto {
+public class SettingsDto {
 
     private Long id;
     private Boolean enableLike;

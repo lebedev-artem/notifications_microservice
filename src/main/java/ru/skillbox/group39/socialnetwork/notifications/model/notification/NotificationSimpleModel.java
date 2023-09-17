@@ -1,12 +1,10 @@
-package ru.skillbox.group39.socialnetwork.notifications.model;
+package ru.skillbox.group39.socialnetwork.notifications.model.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLDeleteAll;
 import org.hibernate.annotations.Where;
 import org.jetbrains.annotations.Nullable;
 

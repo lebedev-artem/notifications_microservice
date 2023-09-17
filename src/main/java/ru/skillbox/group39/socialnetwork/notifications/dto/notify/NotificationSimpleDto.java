@@ -3,7 +3,6 @@ package ru.skillbox.group39.socialnetwork.notifications.dto.notify;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.group39.socialnetwork.notifications.dto.NotifyTypeEnum;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.Author;
 
 import java.sql.Timestamp;
@@ -20,11 +19,11 @@ import java.sql.Timestamp;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class NotificationDto {
+public class NotificationSimpleDto {
 
 	private Author author;
 	private Long id;
-	private NotifyTypeEnum notificationType;
+	private ENotificationType notificationType;
 	private Timestamp timestamp;
 	private String content;
 }

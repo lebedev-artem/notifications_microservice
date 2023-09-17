@@ -8,19 +8,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.NonNull;
 import org.jetbrains.annotations.Nullable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.skillbox.group39.socialnetwork.notifications.dto.count.NotificationsCountDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.*;
-import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationSettingDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.setting.NotificationUpdateDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingsDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingChangeDto;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-
-import java.security.Principal;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -32,7 +29,7 @@ public interface NotificationController {
 			security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
 	@ApiResponses(
 			value = {@ApiResponse(responseCode = "200", description = "Successful operation",
-					content = @Content(schema = @Schema(implementation = NotificationCountDto.class))),
+					content = @Content(schema = @Schema(implementation = NotificationsCountDto.class))),
 					@ApiResponse(responseCode = "400", description = "Bad request"),
 					@ApiResponse(responseCode = "401", description = "Unauthorized")})
 	@RequestMapping(
@@ -41,6 +38,7 @@ public interface NotificationController {
 	Object getCount();
 
 	// ---------------------------------------------------------------------------------------------------------------------
+
 	@Operation(
 			description = "Получение страницы событий",
 			security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
@@ -76,6 +74,19 @@ public interface NotificationController {
 			method = RequestMethod.POST)
 	Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
 	                @Valid @RequestBody EventNotificationDto body);
+// ---------------------------------------------------------------------------------------------------------------------
+
+	@Operation(
+			description = "Отметить все события, как прочитанные",
+			security = {@SecurityRequirement(name = "JWT")},
+			tags = {"NotificationSimpleModel service"})
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Successful operation"),
+			@ApiResponse(responseCode = "400", description = "Bad request"),
+			@ApiResponse(responseCode = "401", description = "Unauthorized")})
+	@RequestMapping(value = "/read",
+			method = RequestMethod.PUT)
+	Object setAllRead(HttpServletRequest request);
 
 	// ---------------------------------------------------------------------------------------------------------------------
 
@@ -87,7 +98,7 @@ public interface NotificationController {
 			@ApiResponse(
 					responseCode = "200",
 					description = "Successful operation",
-					content = @Content(mediaType = "*/*", schema = @Schema(implementation = NotificationSettingDto.class))),
+					content = @Content(mediaType = "*/*", schema = @Schema(implementation = SettingsDto.class))),
 			@ApiResponse(responseCode = "400", description = "Bad request"),
 			@ApiResponse(responseCode = "401", description = "Unauthorized")})
 	@RequestMapping(
@@ -109,25 +120,11 @@ public interface NotificationController {
 					content = @Content(mediaType = "*/*", schema = @Schema(implementation = Boolean.class))),
 					@ApiResponse(responseCode = "400", description = "Bad request"),
 					@ApiResponse(responseCode = "401", description = "Unauthorized")})
-	@RequestMapping(value = "/settings{id}",
+	@RequestMapping(value = "/settings/{id}",
 			produces = APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
-	ResponseEntity<Boolean> createSetting(@Parameter(in = ParameterIn.PATH, required = true)
-	                                      @PathVariable("id") String id);
-
-// ---------------------------------------------------------------------------------------------------------------------
-
-	@Operation(
-			description = "Отметить все события, как прочитанные",
-			security = {@SecurityRequirement(name = "JWT")},
-			tags = {"NotificationSimpleModel service"})
-	@ApiResponses(value = {
-			@ApiResponse(responseCode = "200", description = "Successful operation"),
-			@ApiResponse(responseCode = "400", description = "Bad request"),
-			@ApiResponse(responseCode = "401", description = "Unauthorized")})
-	@RequestMapping(value = "/read",
-			method = RequestMethod.PUT)
-	Object setAllRead(HttpServletRequest request);
+	Object createSetting(@Parameter(in = ParameterIn.PATH, required = true)
+	                                      @PathVariable("id") Long userId);
 
 // ---------------------------------------------------------------------------------------------------------------------
 
@@ -143,7 +140,7 @@ public interface NotificationController {
 			value = "/settings",
 			consumes = APPLICATION_JSON_VALUE,
 			method = RequestMethod.PUT)
-	ResponseEntity<Void> updateSetting(
+	Object changeSetting(
 			@Parameter(in = ParameterIn.DEFAULT, required = true)
-			@Valid @RequestBody NotificationUpdateDto body);
+			@Valid @RequestBody SettingChangeDto body);
 }

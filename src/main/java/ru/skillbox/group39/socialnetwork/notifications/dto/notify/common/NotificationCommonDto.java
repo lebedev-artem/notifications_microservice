@@ -1,9 +1,9 @@
-package ru.skillbox.group39.socialnetwork.notifications.dto.common;
+package ru.skillbox.group39.socialnetwork.notifications.dto.notify.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.group39.socialnetwork.notifications.dto.NotifyTypeEnum;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -14,9 +14,9 @@ import java.util.UUID;
  * <b>Long producerId</b> : Инициатор события <p>
  * <b>String content</b>: Описание события <p>
  * <b>UUID eventId</b>: Id сущности самого ивента, т.е. в post сервисе туда записывается id самого поста, или комментария, или лайка <p>
- * <b>ServiceNameEnum service (ServiceNameEnum.java)</b>: Сервис инициатор <p>
+ * <b>EServiceName service (EServiceName.java)</b>: Сервис инициатор <p>
  * <b>Timestamp timestamp</b>: Дата\Время <p>
- * <b>NotifyTypeEnum (NotifyTypeEnum.java) notificationType</b>: Тип события (пост, коммент, доб. в друзья, ...) <p>
+ * <b>ENotificationType (ENotificationType.java) notificationType</b>: Тип события (пост, коммент, доб. в друзья, ...) <p>
  * <b>Long to</b>: Получатель <p>
  */
 
@@ -28,20 +28,20 @@ public class NotificationCommonDto {
 	private Long producerId;
 	private String content;
 	private UUID eventId;
-	private ServiceNameEnum service;
+	private EServiceName service;
 	private Timestamp timestamp;
-	private NotifyTypeEnum notificationType;
+	private ENotificationType notificationType;
 	private Long consumerId;
 
 	public NotificationCommonDto(Long producerId,
 	                             String content,
 	                             UUID eventId,
-	                             NotifyTypeEnum type,
+	                             ENotificationType type,
 	                             Long consumerId) {
 		this.producerId = producerId;
 		this.content = content;
 		this.eventId = eventId;
-		this.service = ServiceNameEnum.POSTS;
+		this.service = EServiceName.POSTS;
 		this.timestamp = new Timestamp(System.currentTimeMillis());
 		this.notificationType = type;
 		this.consumerId = consumerId;

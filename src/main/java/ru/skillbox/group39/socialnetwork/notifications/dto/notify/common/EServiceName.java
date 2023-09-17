@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.dto.common;
+package ru.skillbox.group39.socialnetwork.notifications.dto.notify.common;
 
 import lombok.Getter;
 
@@ -7,7 +7,7 @@ import lombok.Getter;
  */
 
 @Getter
-public enum ServiceNameEnum {
+public enum EServiceName {
 	MESSAGES(1L),
 	ADMIN(2L),
 	FRIENDS(3L),
@@ -18,7 +18,7 @@ public enum ServiceNameEnum {
 
 	private final Long id;
 
-	ServiceNameEnum(Long id){
+	EServiceName(Long id){
 		this.id = id;
 	}
 }

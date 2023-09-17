@@ -37,7 +37,7 @@ public class RetrieveMessageErrorDecoder implements ErrorDecoder {
 				return new EmailIsBlankException(message.getMessage() != null ? message.getMessage() : "Email cant be blank");
 			}
 			case 404: {
-				return new NotFoundException(message.getMessage() != null ? message.getMessage() : "User not found");
+				return new EmailNotFoundException(message.getMessage() != null ? message.getMessage() : "User not found");
 			}
 			case 400: {
 				return new BadRequestException(message.getMessage() != null ? message.getMessage() : "Bad request");

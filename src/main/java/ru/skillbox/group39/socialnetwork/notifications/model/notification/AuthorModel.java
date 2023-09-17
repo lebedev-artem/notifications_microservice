@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.model;
+package ru.skillbox.group39.socialnetwork.notifications.model.notification;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
