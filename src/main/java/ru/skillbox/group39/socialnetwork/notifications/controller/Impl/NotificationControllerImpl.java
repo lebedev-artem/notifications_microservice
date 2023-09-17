@@ -23,6 +23,7 @@ import ru.skillbox.group39.socialnetwork.notifications.service.SettingsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import static ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl.getPrincipalId;
 
 @RestController
 @Tag(name = "NotificationSimpleModel service", description = "Сервис сообщений")
@@ -42,6 +43,7 @@ public class NotificationControllerImpl implements NotificationController {
 	@Override
 	public Object getPageNotifications(Integer page, Integer size, String sort) {
 		log.info(" * GET \"/\"");
+		log.info(" * Payload: page?{}, size?{}, sort?{}", page, size, sort);
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
 		return notificationService.getPageStampedNotifications(pageable);
@@ -49,9 +51,10 @@ public class NotificationControllerImpl implements NotificationController {
 
 	@Override
 	public Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-	                       @Valid @RequestBody EventNotificationDto request) {
+	                       @Valid @RequestBody EventNotificationDto eventNotificationDto) {
 		log.info(" * POST \"/addEvent\"");
-		return notificationService.addEvent(request);
+		log.info(" * Payload: {}", eventNotificationDto);
+		return notificationService.addEvent(eventNotificationDto);
 	}
 
 	@Override
@@ -73,10 +76,14 @@ public class NotificationControllerImpl implements NotificationController {
 			@Parameter(
 					in = ParameterIn.PATH,
 					description = "id пользователя в базе данных",
-					required = true,
+					required = false,
 					schema = @Schema())
 			@PathVariable("id") Long userId) {
-
+		log.info(" * POST /settings/{id}");
+		log.info(" * Payload: {}", userId);
+		if (userId == null) {
+			return settingsService.createSettings(getPrincipalId());
+		}
 		return settingsService.createSettings(userId);
 	}
 
@@ -88,6 +95,8 @@ public class NotificationControllerImpl implements NotificationController {
 					required = true,
 					schema = @Schema())
 			@Valid @RequestBody SettingChangeDto settingChangeDto) {
+		log.info(" * PUT /settings");
+		log.info(" * Payload: {}", settingChangeDto);
 
 		return settingsService.changeSetting(settingChangeDto);
 	}
