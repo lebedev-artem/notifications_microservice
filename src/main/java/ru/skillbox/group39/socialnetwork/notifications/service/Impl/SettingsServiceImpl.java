@@ -70,9 +70,10 @@ public class SettingsServiceImpl implements SettingsService {
 				.orElseThrow(() -> new SettingsNotFoundException("User / settings not found")));
 
 		Long id = sm.get().getId();
-		String key = scd.getType().getType();
-		Boolean value = scd.getEnable();
+
 		try {
+			String key = scd.getType().getType();
+			Boolean value = scd.getEnable();
 			settingsRepositoryImpl.updateSetting(id, key, value);
 			log.info(" * Setting '{}' set '{}'", key, value);
 
