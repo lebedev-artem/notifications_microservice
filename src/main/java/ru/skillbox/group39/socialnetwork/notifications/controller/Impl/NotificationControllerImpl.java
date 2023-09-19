@@ -3,6 +3,7 @@ package ru.skillbox.group39.socialnetwork.notifications.controller.Impl;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,8 @@ import javax.validation.Valid;
 import static ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl.getPrincipalId;
 
 @RestController
-@Tag(name = "NotificationSimpleModel service", description = "Сервис сообщений")
+@SecurityRequirement(name = "JWT")
+@Tag(name = "Notifications service", description = "Сервис уведомлений")
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationControllerImpl implements NotificationController {

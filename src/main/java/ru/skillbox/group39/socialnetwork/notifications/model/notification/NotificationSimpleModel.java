@@ -19,6 +19,9 @@ import java.sql.Timestamp;
  * content - описание события <p>
  * notificationType - тип уведомления <p>
  * sentTime - время события
+ * consumerId - получатель сообщения
+ * read - статус прочтения
+ * Author - автор уведомления. Dto на основе producerId
  */
 
 @Entity

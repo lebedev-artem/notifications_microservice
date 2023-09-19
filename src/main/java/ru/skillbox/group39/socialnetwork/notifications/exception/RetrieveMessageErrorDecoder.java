@@ -25,7 +25,7 @@ public class RetrieveMessageErrorDecoder implements ErrorDecoder {
 		} catch (IOException e) {
 			return new Exception(e.getMessage());
 		}
-		log.info(" * Try decode feign exceptions message {} with method key {}", message, methodKey);
+		log.info(" * Try decode exception message {} with method key {}", message, methodKey);
 		switch (response.status()) {
 			case 500: {
 				return new ConnectException(message.getMessage() != null ? message.getMessage() : "Connection refused. Remote service unavailable");

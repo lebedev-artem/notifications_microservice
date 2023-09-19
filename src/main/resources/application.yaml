@@ -39,6 +39,7 @@ jwt:
 
 gtw:
   users-service: http://${eureka.instance.hostname}:8088/users
+  friends-service: http://${eureka.instance.hostname}:8088/friends
 
 cloud:
   openfeign:

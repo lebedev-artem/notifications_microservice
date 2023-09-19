@@ -10,14 +10,14 @@ import lombok.Getter;
 
 @Getter
 public enum ESettingsType {
-	ENABLE_LIKE("enableLike"),
-	ENABLE_POST("enablePost"),
-	ENABLE_POST_COMMENT("enablePostComment"),
-	ENABLE_COMMENT_COMMENT("enableCommentComment"),
-	ENABLE_MESSAGE("enableMessage"),
-	ENABLE_FRIEND_REQUEST("enableFriendRequest"),
-	ENABLE_FRIEND_BIRTHDAY("enableFriendBirthday"),
-	ENABLE_SEND_EMAIL_MESSAGE("enableSendEmailMessage");
+	LIKE("enableLike"),
+	POST("enablePost"),
+	POST_COMMENT("enablePostComment"),
+	COMMENT_COMMENT("enableCommentComment"),
+	MESSAGE("enableMessage"),
+	FRIEND_REQUEST("enableFriendRequest"),
+	FRIEND_BIRTHDAY("enableFriendBirthday"),
+	SEND_EMAIL_MESSAGE("enableSendEmailMessage");
 
 	private final String type;
 

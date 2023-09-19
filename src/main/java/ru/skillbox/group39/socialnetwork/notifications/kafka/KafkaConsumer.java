@@ -48,7 +48,7 @@ public class KafkaConsumer {
 			throw new RuntimeException(e);
 		}
 
-		log.info("--|< Message data received from group '{}' from topic '{}'", groupId, notifyCommonTopic);
+		log.info("--|< Message data received from group '{}' from topic '{}': {}", groupId, notifyCommonTopic, notificationCommonDto);
 
 		notificationService.processCommonNotification(notificationCommonDto);
 
