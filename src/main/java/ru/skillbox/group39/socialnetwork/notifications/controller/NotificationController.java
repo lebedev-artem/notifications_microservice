@@ -73,7 +73,7 @@ public interface NotificationController {
 			consumes = APPLICATION_JSON_VALUE,
 			method = RequestMethod.POST)
 	Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
-	                @Valid @RequestBody EventNotificationDto body);
+	                @Valid @RequestBody EventNotificationDto eventNotificationDto);
 // ---------------------------------------------------------------------------------------------------------------------
 
 	@Operation(

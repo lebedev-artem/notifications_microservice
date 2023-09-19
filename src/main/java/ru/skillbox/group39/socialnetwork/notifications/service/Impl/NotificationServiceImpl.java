@@ -12,7 +12,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import ru.skillbox.group39.socialnetwork.notifications.client.FriendsClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSimpleDto;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.count.Count;
@@ -35,6 +37,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import static ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl.getPrincipalId;
@@ -52,6 +55,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationStampedRepository notificationStampedRepository;
 	private final AuthorRepository authorRepository;
 	private final UsersClient usersClient;
+	private final FriendsClient friendsClient;
 	private final ModelMapper modelMapper;
 
 	@Override
@@ -63,21 +67,55 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	@Transactional
-	public void processCommonNotification(NotificationCommonDto notificationCommonDto) {
+	public void processCommonNotification(@NotNull NotificationCommonDto notificationCommonDto) {
+////		Обработка в зависимости от статуса уведомления
+//		switch (notificationCommonDto.getNotificationType()) {
+////			сохраняем
+//			case LIKE:
+//			case POST_COMMENT:
+//				repeatedEvent(notificationCommonDto);
+//			case POST:
+////				создаем уведомления для каждого
+//				Optional<AccountDto> accountDto =
+//						Optional.ofNullable(
+//								usersClient.getUserDetailsById(notificationCommonDto.getProducerId()));
+//				if (accountDto.isPresent()){
+//					Optional<List<Long>> friendsIdList = Optional.ofNullable(friendsClient.getFriendsListById(notificationCommonDto.getProducerId()));
+//					if (friendsIdList.isPresent()) {
+//						for (Long id : friendsIdList.get()) {
+//
+//							NotificationSimpleModel nsm = NotificationSimpleModel.builder()
+//									.producerId(notificationCommonDto.getProducerId())
+//									.content(notificationCommonDto.getContent())
+//									.notificationType(notificationCommonDto.getNotificationType().toString())
+//									.timestamp(notificationCommonDto.getTimestamp())
+//									.consumerId(id)
+//									.read(false)
+//									.author(getAuthorModel(notificationCommonDto.getId()))
+//									.build();
+//							processNativeModels(nsm);
+//						}
+//					}
+//				}
+//		}
+	}
+
+	@Transactional
+	private void repeatedEvent(NotificationCommonDto notificationCommonDto) {
 		NotificationCommonModel notificationCommonModel = ObjectMapperUtils.map(notificationCommonDto, NotificationCommonModel.class);
 		log.info(" * NotificationCommonDto mapped to NotificationCommonModel entity. {}", notificationCommonModel);
 
 		notificationCommonRepository.save(notificationCommonModel);
-		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common");
+		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common. '{}'", notificationCommonModel);
 
-		processNativeModels(notificationCommonDto);
+		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
+		notificationSimpleModel.setAuthor(getAuthorModel(notificationCommonDto.getProducerId()));
+		processNativeModels(notificationSimpleModel);
+
 	}
 
 	@Transactional
-	public void processNativeModels(@NotNull NotificationCommonDto notificationCommonDto) {
-		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
-		notificationSimpleModel.setAuthor(getAuthorModel(notificationCommonDto.getProducerId()));
-
+	public void processNativeModels(@NotNull NotificationSimpleModel notificationSimpleModel) {
 		log.info(" * Wrap NotificationSimpleModel to NotificationStampedModel");
 		NotificationStampedModel notificationStampedModel = new NotificationStampedModel(notificationSimpleModel);
 
@@ -108,9 +146,9 @@ public class NotificationServiceImpl implements NotificationService {
 	private void saveStampedModel(NotificationStampedModel notificationStampedModel) {
 		try {
 			notificationStampedRepository.save(notificationStampedModel);
-			log.info(" * AuthorModel persist into DB/notifications/author_of_notification");
-			log.info(" * NotificationSimpleModel saved into DB/notifications/notifications_simple");
-			log.info(" * NotificationStampedModel saved into DB/notifications/notifications_stamped");
+			log.info(" * AuthorModel persist into DB/notifications/author_of_notification. '{}'", notificationStampedModel.getData().getAuthor());
+			log.info(" * NotificationSimpleModel saved into DB/notifications/notifications_simple. '{}'", notificationStampedModel.getData());
+			log.info(" * NotificationStampedModel saved into DB/notifications/notifications_stamped. '{}'", notificationStampedModel);
 		} catch (RuntimeException e) {
 			log.error(" ! Exception during persisting notification models. {}", e.getMessage());
 		}

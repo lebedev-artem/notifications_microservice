@@ -21,7 +21,7 @@ import java.io.IOException;
 public class ObjectMapperCustom {
 	private static final ObjectWriter objectWriter = new ObjectMapper().writer().withDefaultPrettyPrinter();
 
-	public static ObjectMapper objectMapper() {
+	public static @NotNull ObjectMapper objectMapper() {
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		objectMapper.addHandler(new DeserializationProblemHandler() {
