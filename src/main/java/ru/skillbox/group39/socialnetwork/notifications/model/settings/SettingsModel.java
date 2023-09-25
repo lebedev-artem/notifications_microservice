@@ -25,28 +25,28 @@ public class SettingsModel {
 	private Long id;
 	@JsonProperty("LIKE")
 	@Column(name = "LIKE")
-	private Boolean LIKE = false;
+	private Boolean LIKE;
 	@Column(name = "POST")
 	@JsonProperty("POST")
-	private Boolean POST = true;
-	@Column(name = "COMMENT")
-	@JsonProperty("COMMENT")
-	private Boolean POST_COMMENT = true;
+	private Boolean POST;
+	@Column(name = "POST_COMMENT")
+	@JsonProperty("POST_COMMENT")
+	private Boolean POST_COMMENT;
 	@Column(name = "COMMENT_COMMENT")
 	@JsonProperty("COMMENT_COMMENT")
-	private Boolean COMMENT_COMMENT = false;
+	private Boolean COMMENT_COMMENT;
 	@Column(name = "MESSAGE")
 	@JsonProperty("MESSAGE")
-	private Boolean MESSAGE = true;
+	private Boolean MESSAGE;
 	@Column(name = "FRIEND_REQUEST")
 	@JsonProperty("FRIEND_REQUEST")
-	private Boolean FRIEND_REQUEST = false;
+	private Boolean FRIEND_REQUEST;
 	@Column(name = "FRIEND_BIRTHDAY")
 	@JsonProperty("FRIEND_BIRTHDAY")
-	private Boolean FRIEND_BIRTHDAY = false;
+	private Boolean FRIEND_BIRTHDAY;
 	@Column(name = "SEND_EMAIL_MESSAGE")
 	@JsonProperty("SEND_EMAIL_MESSAGE")
-	private Boolean ENABLE_EMAIL_MESSAGE = false;
+	private Boolean ENABLE_EMAIL_MESSAGE;
 	@Column(name = "user_id")
 	private Long userId;
 

@@ -67,7 +67,19 @@ public class SettingsServiceImpl implements SettingsService {
 							HttpStatus.BAD_REQUEST),
 					HttpStatus.BAD_REQUEST);
 		}
-		Optional<SettingsModel> sm = Optional.of(settingsRepository.findByUserId(userId).orElse(new SettingsModel(user.getId())));
+		Optional<SettingsModel> sm = Optional.of(settingsRepository
+				.findByUserId(userId)
+				.orElse(SettingsModel.builder()
+						.POST(true)
+						.POST_COMMENT(false)
+						.COMMENT_COMMENT(false)
+						.LIKE(true)
+						.ENABLE_EMAIL_MESSAGE(false)
+						.FRIEND_BIRTHDAY(true)
+						.FRIEND_REQUEST(true)
+						.id(user.getId())
+						.MESSAGE(true)
+						.build()));
 		settingsRepository.save(sm.get());
 
 		return new ResponseEntity<>(modelMapper.map(sm, SettingsDto.class), HttpStatus.OK);
