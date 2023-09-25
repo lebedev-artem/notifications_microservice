@@ -5,28 +5,28 @@ import lombok.Getter;
 /**
  * @author Artem Lebedev | 05/09/2023 - 20:42 <p>
  *
- * 	POST<p>
- * 	POST_COMMENT<p>
- * 	COMMENT_COMMENT<p>
- * 	FRIEND_REQUEST<p>
- * 	FRIEND_BIRTHDAY<p>
- * 	MESSAGE<p>
- * 	LIKE<p>
+POST(0L)<p>
+POST_COMMENT(1L)<p>
+COMMENT_COMMENT(2L)<p>
+FRIEND_REQUEST(3L)<p>
+FRIEND_BIRTHDAY(4L)<p>
+MESSAGE(5L)<p>
+LIKE(6L)<p>
  */
 
 @Getter
 public enum ENotificationType {
-	POST(1L),
-	POST_COMMENT(2L),
-	COMMENT_COMMENT(3L),
-	FRIEND_REQUEST(4L),
-	FRIEND_BIRTHDAY(5L),
-	MESSAGE(6L),
-	LIKE(7L);
+	POST(0L),
+	POST_COMMENT(1L),
+	COMMENT_COMMENT(2L),
+	FRIEND_REQUEST(3L),
+	FRIEND_BIRTHDAY(4L),
+	MESSAGE(5L),
+	LIKE(6L);
 
-	private final Long id;
+	private final Long num;
 
-	ENotificationType(Long id){
-		this.id = id;
+	ENotificationType(Long num){
+		this.num = num;
 	}
 }

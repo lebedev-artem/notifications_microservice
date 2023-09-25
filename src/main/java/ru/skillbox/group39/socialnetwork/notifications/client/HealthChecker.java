@@ -1,7 +1,6 @@
 package ru.skillbox.group39.socialnetwork.notifications.client;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.ConnectException;
 
 import java.net.Socket;
@@ -19,7 +18,7 @@ public class HealthChecker {
 
 	public static void checkHealthyService(String host, Integer port) {
 		try {
-			Socket clientSocket = new Socket("5.63.154.191", 8085);
+			Socket clientSocket = new Socket(host, port);
 			log.info(" * Host '{}:{}' available", host, port);
 			clientSocket.close();
 		} catch (ConnectException e) {

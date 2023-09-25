@@ -11,7 +11,7 @@ jpa:
 
 spring:
   application:
-    name: notifications
+    name: notifications-prod
   output:
     ansi:
       enabled: always
@@ -56,6 +56,10 @@ users-service:
   url: http://${server.remote.address}:8085/api/v1
   host: 5.63.154.191
   port: 8085
+friends-service:
+  url: http://${server.remote.address}:8083/api/v1
+  host: 5.63.154.191
+  port: 8083
 
 eureka:
   client:
@@ -105,7 +109,7 @@ kafka:
     concurrency: 1
     # ack-mode: manual_immediate
     # Получение каждой записи должно быть подтверждено
-    ack-mode: record
+    ack-mode: RECORD
   topics:
     auth: auth-topic
     users: users-topic
@@ -117,7 +121,7 @@ kafka:
     admin: admin-topic
   backoff:
     interval: 1000
-    max_failure: 3
+    max_attempts: 3
 
 logging:
   level:

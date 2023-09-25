@@ -1,6 +1,7 @@
 package ru.skillbox.group39.socialnetwork.notifications.dto.notify.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
@@ -17,14 +18,14 @@ import java.util.UUID;
  * <b>EServiceName service (EServiceName.java)</b>: Сервис инициатор <p>
  * <b>Timestamp timestamp</b>: Дата\Время <p>
  * <b>ENotificationType (ENotificationType.java) notificationType</b>: Тип события (пост, коммент, доб. в друзья, ...) <p>
- * <b>Long to</b>: Получатель <p>
+ * <b>Long consumerId</b>: Получатель <p>
  */
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NotificationCommonDto {
-	private Long id;
 	private Long producerId;
 	private String content;
 	private UUID eventId;
@@ -33,23 +34,9 @@ public class NotificationCommonDto {
 	private ENotificationType notificationType;
 	private Long consumerId;
 
-	public NotificationCommonDto(Long producerId,
-	                             String content,
-	                             UUID eventId,
-	                             ENotificationType type,
-	                             Long consumerId) {
-		this.producerId = producerId;
-		this.content = content;
-		this.eventId = eventId;
-		this.service = EServiceName.POSTS;
-		this.timestamp = new Timestamp(System.currentTimeMillis());
-		this.notificationType = type;
-		this.consumerId = consumerId;
-	}
-
 	@Override
 	public String toString() {
-		return "\n    NotificationCommonDto" +
+		return  "\n    Common notification object" +
 				"\n    Producer:          '" + producerId + '\'' +
 				"\n    Text of notify:    '" + content + '\'' +
 				"\n    Id of event:       '" + eventId + '\'' +
