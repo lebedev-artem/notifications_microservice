@@ -1,5 +1,8 @@
 package ru.skillbox.group39.socialnetwork.notifications.service.Impl;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -36,6 +39,7 @@ public class SettingsServiceImpl implements SettingsService {
 	private final SettingsRepository settingsRepository;
 	private final SettingsRepositoryImpl settingsRepositoryImpl;
 	private final ModelMapper modelMapper;
+	private final ObjectMapper objectMapper;
 
 	@Override
 	public Object getSettings() {
@@ -44,8 +48,8 @@ public class SettingsServiceImpl implements SettingsService {
 						.findByUserId(getPrincipalId())
 						.orElseThrow(() -> new SettingsNotFoundException("User / settings not found")));
 		SettingsDto d = new SettingsDto();
-		modelMapper.map(sm, SettingsDto.class);
-		return new ResponseEntity<>(modelMapper.map(sm, SettingsDto.class), HttpStatus.OK);
+		d = objectMapper.convertValue(sm, SettingsDto.class);
+		return new ResponseEntity<>(d, HttpStatus.OK);
 	}
 
 	@Override

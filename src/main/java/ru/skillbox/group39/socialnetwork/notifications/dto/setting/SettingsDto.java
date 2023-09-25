@@ -1,7 +1,11 @@
 package ru.skillbox.group39.socialnetwork.notifications.dto.setting;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 17:46 <p>
@@ -18,14 +22,23 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+//@JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 public class SettingsDto {
 
+    @JsonProperty("LIKE")
     private Boolean LIKE;
+    @JsonProperty("POST")
     private Boolean POST;
+    @JsonProperty("POST_COMMENT")
     private Boolean POST_COMMENT;
+    @JsonProperty("COMMENT_COMMENT")
     private Boolean COMMENT_COMMENT;
+    @JsonProperty("MESSAGE")
     private Boolean MESSAGE;
+    @JsonProperty("FRIEND_REQUEST")
     private Boolean FRIEND_REQUEST;
+    @JsonProperty("FRIEND_BIRTHDAY")
     private Boolean FRIEND_BIRTHDAY;
+    @JsonProperty("SEND_EMAIL_MESSAGE")
     private Boolean SEND_EMAIL_MESSAGE;
 }

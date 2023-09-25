@@ -143,11 +143,12 @@
 			<artifactId>spring-cloud-starter-openfeign</artifactId>
 			<version>4.0.3</version>
 		</dependency>
-		<dependency>
-			<groupId>org.json</groupId>
-			<artifactId>json</artifactId>
-			<version>20230618</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.json</groupId>-->
+<!--			<artifactId>json</artifactId>-->
+<!--			<version>20230618</version>-->
+<!--		</dependency>-->
+
 	</dependencies>
 
 	<build>
