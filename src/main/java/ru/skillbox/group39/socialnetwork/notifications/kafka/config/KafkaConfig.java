@@ -12,7 +12,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
+import org.springframework.kafka.listener.ContainerProperties;
+import org.springframework.kafka.listener.DefaultErrorHandler;
+import org.springframework.util.backoff.BackOff;
+import org.springframework.util.backoff.FixedBackOff;
 
+import java.net.SocketTimeoutException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,9 +26,12 @@ public class KafkaConfig {
 
 	@Value(value = "${kafka.bootstrap-servers}")
 	private String bootstrapAddress;
-
 	@Value(value = "${spring.application.name")
 	private String groupId;
+	@Value(value = "${kafka.backoff.interval")
+	private String interval;
+	@Value(value = "${kafka.backoff.max-attempts")
+	private String maxAttempts;
 
 	@Bean
 	public KafkaAdmin kafkaAdmin() {
@@ -70,11 +78,25 @@ public class KafkaConfig {
 	public ConcurrentKafkaListenerContainerFactory<String, String> kafkaListenerContainerFactory() {
 		ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
+		factory.setCommonErrorHandler(errorHandler());
+		factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.RECORD);
+		factory.afterPropertiesSet();
 		return factory;
 	}
 
 	@Bean
 	public ModelMapper modelMapper() {
 		return new ModelMapper();
+	}
+
+	@Bean
+	public DefaultErrorHandler errorHandler() {
+		BackOff fixedBackOff = new FixedBackOff();
+		DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, e) -> {
+			// logic to execute when all the retry attemps are exhausted
+		}, fixedBackOff);
+		errorHandler.addRetryableExceptions(SocketTimeoutException.class);
+		errorHandler.addNotRetryableExceptions(NullPointerException.class);
+		return errorHandler;
 	}
 }

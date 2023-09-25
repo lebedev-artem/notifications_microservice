@@ -20,12 +20,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SettingsDto {
 
-    private Boolean enableLike;
-    private Boolean enablePost;
-    private Boolean enablePostComment;
-    private Boolean enableCommentComment;
-    private Boolean enableMessage;
-    private Boolean enableFriendRequest;
-    private Boolean enableFriendBirthday;
-    private Boolean enableSendEmailMessage;
+    private Boolean LIKE;
+    private Boolean POST;
+    private Boolean POST_COMMENT;
+    private Boolean COMMENT_COMMENT;
+    private Boolean MESSAGE;
+    private Boolean FRIEND_REQUEST;
+    private Boolean FRIEND_BIRTHDAY;
+    private Boolean SEND_EMAIL_MESSAGE;
 }

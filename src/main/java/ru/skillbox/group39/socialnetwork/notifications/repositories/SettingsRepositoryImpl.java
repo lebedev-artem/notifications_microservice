@@ -5,8 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.jdbc.core.JdbcTemplate;
 
-import javax.transaction.Transactional;
-
 /**
  * @author Artem Lebedev | 17/09/2023 - 14:35
  */
@@ -19,8 +17,7 @@ public class SettingsRepositoryImpl{
 	@Modifying
 	public void updateSetting(Long id, String typeKey, Boolean typeValue) {
 		String snakeKey = toSnakeCase(typeKey);
-
-		String sql = "UPDATE notifications_settings SET " + snakeKey + " = ? WHERE id = ?";
+		String sql = "UPDATE notifications_settings SET " + "\"" + snakeKey + "\"" + " = ? WHERE id = ?";
 		jdbcTemplate.update(sql, typeValue, id);
 	}
 

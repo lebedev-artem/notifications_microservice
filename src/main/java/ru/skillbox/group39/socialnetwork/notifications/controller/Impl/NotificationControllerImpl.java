@@ -13,7 +13,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +33,6 @@ import static ru.skillbox.group39.socialnetwork.notifications.security.service.U
 @Slf4j
 @RequiredArgsConstructor
 public class NotificationControllerImpl implements NotificationController {
-
 	private final NotificationService notificationService;
 	private final SettingsService settingsService;
 
@@ -80,7 +78,6 @@ public class NotificationControllerImpl implements NotificationController {
 			@Parameter(
 					in = ParameterIn.QUERY,
 					description = "id пользователя в базе данных",
-					required = false,
 					schema = @Schema())
 			@RequestParam(required = false) Long userId) {
 		log.info(" * POST /settings");

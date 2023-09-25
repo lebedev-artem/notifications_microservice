@@ -39,26 +39,26 @@ public class NotificationSimpleModel {
 	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "producer_id")
+	@Column(name = "producer_id", nullable = false)
 	private Long producerId;
 
 	@Column(name = "content")
 	private String content;
 
-	@Column(name = "notification_type")
+	@Column(name = "notification_type", nullable = false)
 	@Nullable
 	private String notificationType;
 
-	@Column(name = "timestamp")
+	@Column(name = "timestamp", nullable = false)
 	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
 	@Column(name = "consumer_id")
 	private Long consumerId;
 
-	@Column(name = "read")
+	@Column(name = "read", nullable = false)
 	private boolean read = Boolean.FALSE;
 
 	@OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-	@JoinColumn(unique = true, name = "author")
+	@JoinColumn(unique = true, name = "author", nullable = false)
 	private AuthorModel author;
 }

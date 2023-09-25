@@ -3,22 +3,29 @@ package ru.skillbox.group39.socialnetwork.notifications.dto.notify.common;
 import lombok.Getter;
 
 /**
- * @author Artem Lebedev | 05/09/2023 - 12:04
+ * @author Artem Lebedev | 05/09/2023 - 12:04 <p>
+ * 	MESSAGES(0L)<p>
+ * 	ADMIN(1L)<p>
+ * 	FRIENDS(2L)<p>
+ * 	AUTH(3L)<p>
+ * 	USERS(4L)<p>
+ * 	NOTIFY(5L)<p>
+ * 	POSTS(6L)<p>
  */
 
 @Getter
 public enum EServiceName {
-	MESSAGES(1L),
-	ADMIN(2L),
-	FRIENDS(3L),
-	AUTH(4L),
-	USERS(5L),
-	NOTIFY(6L),
-	POSTS(7L);
+	MESSAGES(0L),
+	ADMIN(1L),
+	FRIENDS(2L),
+	AUTH(3L),
+	USERS(4L),
+	NOTIFY(5L),
+	POSTS(6L);
 
-	private final Long id;
+	private final Long num;
 
-	EServiceName(Long id){
-		this.id = id;
+	EServiceName(Long num){
+		this.num = num;
 	}
 }

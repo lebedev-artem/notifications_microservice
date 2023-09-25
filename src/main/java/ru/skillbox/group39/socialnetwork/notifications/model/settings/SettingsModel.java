@@ -1,6 +1,5 @@
 package ru.skillbox.group39.socialnetwork.notifications.model.settings;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,22 +22,22 @@ public class SettingsModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(name = "enable_like")
-	private Boolean enableLike = false;
-	@Column(name = "enable_post")
-	private Boolean enablePost = true;
-	@Column(name = "enable_comment")
-	private Boolean enablePostComment = true;
-	@Column(name = "enable_comment_comment")
-	private Boolean enableCommentComment = false;
-	@Column(name = "enable_message")
-	private Boolean enableMessage = true;
-	@Column(name = "enable_friend_request")
-	private Boolean enableFriendRequest = false;
-	@Column(name = "enable_friend_birthday")
-	private Boolean enableFriendBirthday = false;
-	@Column(name = "enable_send_email_message")
-	private Boolean enableSendEmailMessage = false;
+	@Column(name = "LIKE")
+	private Boolean LIKE = false;
+	@Column(name = "POST")
+	private Boolean POST = true;
+	@Column(name = "COMMENT")
+	private Boolean POST_COMMENT = true;
+	@Column(name = "COMMENT_COMMENT")
+	private Boolean COMMENT_COMMENT = false;
+	@Column(name = "MESSAGE")
+	private Boolean MESSAGE = true;
+	@Column(name = "FRIEND_REQUEST")
+	private Boolean FRIEND_REQUEST = false;
+	@Column(name = "FRIEND_BIRTHDAY")
+	private Boolean FRIEND_BIRTHDAY = false;
+	@Column(name = "SEND_EMAIL_MESSAGE")
+	private Boolean ENABLE_EMAIL_MESSAGE = false;
 	@Column(name = "user_id")
 	private Long userId;
 

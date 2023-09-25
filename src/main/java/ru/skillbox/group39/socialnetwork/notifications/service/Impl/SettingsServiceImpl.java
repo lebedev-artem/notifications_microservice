@@ -43,7 +43,8 @@ public class SettingsServiceImpl implements SettingsService {
 				Optional.of(settingsRepository
 						.findByUserId(getPrincipalId())
 						.orElseThrow(() -> new SettingsNotFoundException("User / settings not found")));
-
+		SettingsDto d = new SettingsDto();
+		modelMapper.map(sm, SettingsDto.class);
 		return new ResponseEntity<>(modelMapper.map(sm, SettingsDto.class), HttpStatus.OK);
 	}
 
@@ -58,7 +59,7 @@ public class SettingsServiceImpl implements SettingsService {
 			log.error(" ! User with id '{}' not found", userId);
 			return new ResponseEntity<>(
 					new ErrorResponse(
-							"Error while creating a setting for user id " + userId.toString(),
+							"Error while creating a setting for user id " + userId.toString() + ". " + e.getMessage(),
 							HttpStatus.BAD_REQUEST),
 					HttpStatus.BAD_REQUEST);
 		}

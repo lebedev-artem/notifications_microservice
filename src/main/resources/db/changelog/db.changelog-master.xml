@@ -15,4 +15,9 @@ xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         <include file="create-changeset-notifications-constraint.xml" relativeToChangelogFile="true"/>
         <include file="create-changeset-notifications-settings.xml" relativeToChangelogFile="true"/>
         <include file="create-changeset-notifications-settings-add-user-id-constraint.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-settings-change-columns.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-settings-change-column-comment-comment.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-settings-change-column-LIKE-like.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-settings-change-column-LIKE-like2.xml" relativeToChangelogFile="true"/>
+        <include file="create-changeset-notifications-simple-consumer-nullable-true.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

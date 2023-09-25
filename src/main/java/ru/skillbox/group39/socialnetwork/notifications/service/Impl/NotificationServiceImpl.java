@@ -1,21 +1,20 @@
 package ru.skillbox.group39.socialnetwork.notifications.service.Impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.FriendsClient;
+import ru.skillbox.group39.socialnetwork.notifications.client.HealthChecker;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSimpleDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationStampedDto;
 import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperCustom;
 import ru.skillbox.group39.socialnetwork.notifications.dto.count.Count;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.common.NotificationCommonDto;
@@ -51,6 +50,11 @@ import static ru.skillbox.group39.socialnetwork.notifications.security.service.U
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
+	@Value("${friends-service.host}")
+	private String friendsHost;
+	@Value("${friends-service.port}")
+	private String friendsPort;
+
 	private final NotificationCommonRepository notificationCommonRepository;
 	private final NotificationStampedRepository notificationStampedRepository;
 	private final AuthorRepository authorRepository;
@@ -68,18 +72,20 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	@Transactional
 	public void processCommonNotification(@NotNull NotificationCommonDto notificationCommonDto) {
-////		Обработка в зависимости от статуса уведомления
-//		switch (notificationCommonDto.getNotificationType()) {
-////			сохраняем
-//			case LIKE:
-//			case POST_COMMENT:
-//				repeatedEvent(notificationCommonDto);
-//			case POST:
-////				создаем уведомления для каждого
-//				Optional<AccountDto> accountDto =
-//						Optional.ofNullable(
-//								usersClient.getUserDetailsById(notificationCommonDto.getProducerId()));
-//				if (accountDto.isPresent()){
+//		Обработка в зависимости от статуса уведомления
+		switch (notificationCommonDto.getNotificationType()) {
+//			сохраняем
+			case LIKE:
+			case POST_COMMENT:
+				repeatedEvent(notificationCommonDto);
+			case POST:
+//				создаем уведомления для каждого
+				Optional<AccountDto> accountDto =
+						Optional.ofNullable(
+								usersClient.getUserDetailsById(notificationCommonDto.getProducerId()));
+				if (accountDto.isPresent()){
+					log.info(" do something");
+					repeatedEvent(notificationCommonDto);
 //					Optional<List<Long>> friendsIdList = Optional.ofNullable(friendsClient.getFriendsListById(notificationCommonDto.getProducerId()));
 //					if (friendsIdList.isPresent()) {
 //						for (Long id : friendsIdList.get()) {
@@ -96,19 +102,25 @@ public class NotificationServiceImpl implements NotificationService {
 //							processNativeModels(nsm);
 //						}
 //					}
-//				}
-//		}
+				}
+		}
 	}
 
 	@Transactional
 	private void repeatedEvent(NotificationCommonDto notificationCommonDto) {
 		NotificationCommonModel notificationCommonModel = ObjectMapperUtils.map(notificationCommonDto, NotificationCommonModel.class);
+		//del
+		log.info(notificationCommonDto.toString());
 		log.info(" * NotificationCommonDto mapped to NotificationCommonModel entity. {}", notificationCommonModel);
 
 		notificationCommonRepository.save(notificationCommonModel);
 		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common. '{}'", notificationCommonModel);
 
 		NotificationSimpleModel notificationSimpleModel = getNotificationSimpleModel(notificationCommonDto);
+
+		//del
+		NotificationSimpleDto dto = modelMapper.map(notificationSimpleModel, NotificationSimpleDto.class);
+		log.info(dto.toString());
 		notificationSimpleModel.setAuthor(getAuthorModel(notificationCommonDto.getProducerId()));
 		processNativeModels(notificationSimpleModel);
 
@@ -131,8 +143,10 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @param id id of any person's object: AuthorId, UserId, ProducerId, ConsumerId
 	 * @return AuthorModel: firstName, lastName, photo;
 	 */
+
 	private AuthorModel getAuthorModel(Long id) {
 		log.info(" * Trying get AccountDTO from users microservice via FeignClient");
+		HealthChecker.checkHealthyService(friendsHost, Integer.valueOf(friendsPort));
 		AccountDto accountDto = usersClient.getUserDetailsById(id);
 		return authorRepository.findById(
 				accountDto.getId()).orElse(AuthorModel.builder()
@@ -144,6 +158,9 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	private void saveStampedModel(NotificationStampedModel notificationStampedModel) {
+		//del
+		NotificationStampedDto dto = modelMapper.map(notificationStampedModel, NotificationStampedDto.class);
+		log.info(dto.toString());
 		try {
 			notificationStampedRepository.save(notificationStampedModel);
 			log.info(" * AuthorModel persist into DB/notifications/author_of_notification. '{}'", notificationStampedModel.getData().getAuthor());

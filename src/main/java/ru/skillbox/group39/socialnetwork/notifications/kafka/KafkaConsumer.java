@@ -25,13 +25,10 @@ public class KafkaConsumer {
 
 	@Value(value = "${spring.application.name}")
 	private String groupId;
-
 	@Value(value = "${kafka.topics.notify}")
 	private String notifyTopic;
 	@Value(value = "${kafka.topics.notify-common}")
 	private String notifyCommonTopic;
-
-	private final String KEYWORD_FOR_CONSUMER = "WORLD";
 
 	@Transactional
 	@KafkaListener(topics = "notify-topic", groupId = "${spring.application.name}", containerFactory = "kafkaListenerContainerFactory")
