@@ -44,10 +44,7 @@ public class KafkaConsumer {
 		} catch (JsonProcessingException e) {
 			throw new RuntimeException(e);
 		}
-
 		log.info("--|< Message data received from group '{}' from topic '{}': {}", groupId, notifyCommonTopic, notificationCommonDto);
-
-		notificationService.processCommonNotification(notificationCommonDto);
-
+		notificationService.kafkaGoodBuy(notificationCommonDto);
 	}
 }

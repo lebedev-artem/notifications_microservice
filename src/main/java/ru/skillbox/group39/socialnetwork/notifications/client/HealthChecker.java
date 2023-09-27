@@ -19,10 +19,9 @@ public class HealthChecker {
 	public static void checkHealthyService(String host, Integer port) {
 		try {
 			Socket clientSocket = new Socket(host, port);
-			log.info(" * Host '{}:{}' available", host, port);
 			clientSocket.close();
 		} catch (ConnectException e) {
-			log.info(" * Host and port combination invalid. {}", e.getMessage());
+			log.error(" * Host and port combination invalid. {}", e.getMessage());
 		} catch (Exception e) {
 			throw new ConnectException(String.format("Host %s:%d not available", host, port));
 		}

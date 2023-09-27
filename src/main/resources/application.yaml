@@ -11,7 +11,7 @@ jpa:
 
 spring:
   application:
-    name: notifications
+    name: notifications-dev
   output:
     ansi:
       enabled: always

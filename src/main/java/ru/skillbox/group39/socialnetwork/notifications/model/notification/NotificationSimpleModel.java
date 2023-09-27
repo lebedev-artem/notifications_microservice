@@ -4,12 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 19:30 <p>
@@ -35,9 +38,9 @@ import java.sql.Timestamp;
 public class NotificationSimpleModel {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+	@GenericGenerator(name = "uuid2", strategy = "uuid2")
+	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	private UUID id;
 
 	@Column(name = "producer_id", nullable = false)
 	private Long producerId;
@@ -50,7 +53,7 @@ public class NotificationSimpleModel {
 	private String notificationType;
 
 	@Column(name = "timestamp", nullable = false)
-	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	private Timestamp timestamp;
 
 	@Column(name = "consumer_id")
 	private Long consumerId;
@@ -58,7 +61,7 @@ public class NotificationSimpleModel {
 	@Column(name = "read", nullable = false)
 	private boolean read = Boolean.FALSE;
 
-	@OneToOne(fetch = FetchType.EAGER, optional = false,cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
-	@JoinColumn(unique = true, name = "author", nullable = false)
+	@OneToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name = "author")
 	private AuthorModel author;
 }

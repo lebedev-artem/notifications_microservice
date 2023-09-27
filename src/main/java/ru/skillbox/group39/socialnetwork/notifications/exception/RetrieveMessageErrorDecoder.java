@@ -18,7 +18,10 @@ public class RetrieveMessageErrorDecoder implements ErrorDecoder {
 	@Override
 	public Exception decode(String methodKey, @NotNull Response response) {
 		ExceptionMessage message;
-
+		if (response.body() == null) {
+			log.warn(" * Exception response.body == null");
+			return errorDecoder.decode(methodKey, response);
+		}
 		try (InputStream bodyIs = response.body().asInputStream()) {
 			ObjectMapper mapper = new ObjectMapper();
 			message = mapper.readValue(bodyIs, ExceptionMessage.class);

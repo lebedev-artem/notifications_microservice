@@ -17,32 +17,32 @@
             <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints nullable="false" primaryKey="true" primaryKeyName="pk_settings" unique="true"/>
             </column>
-            <column name="enable_like" type="BOOLEAN">
+            <column name="LIKE" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_post" type="BOOLEAN">
+            <column name="POST" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_comment" type="BOOLEAN">
+            <column name="POST_COMMENT" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_comment_comment" type="BOOLEAN">
+            <column name="COMMENT_COMMENT" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_message" type="BOOLEAN">
+            <column name="MESSAGE" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_friend_request" type="BOOLEAN">
+            <column name="FRIEND_REQUEST" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_friend_birthday" type="BOOLEAN">
+            <column name="FRIEND_BIRTHDAY" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
-            <column name="enable_send_email_message" type="BOOLEAN">
+            <column name="SEND_EMAIL_MESSAGE" type="BOOLEAN">
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="BIGINT">
-                <constraints nullable="false"/>
+                <constraints nullable="false" uniqueConstraintName="u-s-fk"/>
             </column>
         </createTable>
     </changeSet>

@@ -15,7 +15,6 @@ import ru.skillbox.group39.socialnetwork.notifications.client.config.FeignSuppor
 @FeignClient(name = "users-service", url = "${gtw.users-service}", configuration = FeignSupportConfig.class)
 //@FeignClient(name = "users-service", url = "${users-service.url}", configuration = FeignSupportConfig.class)
 public interface UsersClient {
-
 	@GetMapping(
 			value = "/account",
 			produces = {"application/json"})
