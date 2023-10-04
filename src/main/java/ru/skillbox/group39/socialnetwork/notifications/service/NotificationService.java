@@ -22,7 +22,6 @@ public interface NotificationService {
 	Object addEvent(EventNotificationDto eventNotificationDto);
 	void kafkaGoodBuy(NotificationCommonDto notificationCommonDto);
 	Optional<AccountDto> getUser(Long userId);
-
 	List<Long> getFriends(AccountDto accountDto);
 
 

@@ -38,9 +38,7 @@ import ru.skillbox.group39.socialnetwork.notifications.security.service.UserDeta
 public class WebSecurityConfig {
 
 	private final UserDetailsServiceImpl userDetailsService;
-
 	private final JwtUtils jwtUtils;
-
 	private final AuthEntryPointJwt unauthorizedHandler;
 
 	@Bean
@@ -82,7 +80,6 @@ public class WebSecurityConfig {
 				.anyRequest().authenticated();
 		http.authenticationProvider(authenticationProvider());
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-
 		return http.build();
 	}
 }
