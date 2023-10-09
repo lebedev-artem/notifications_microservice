@@ -13,10 +13,9 @@ import java.util.List;
  * @author Artem Lebedev | 13/09/2023 - 00:30
  */
 public interface NotificationStampedRepository extends JpaRepository<NotificationStampedModel, Long>, PagingAndSortingRepository<NotificationStampedModel,Long> {
-
-//	@Query("select n from NotificationStampedModel n")
-	@NotNull Page<NotificationStampedModel> findAll(@NotNull Pageable pageable);
 	Page<NotificationStampedModel> findAllByData_ConsumerId(Long consumerId, Pageable pageable);
+	@NotNull Page<NotificationStampedModel> findAll(@NotNull Pageable pageable);
 	List<NotificationStampedModel> findAllByData_ConsumerId(Long consumerId);
 	Long countByData_ConsumerId(Long consumerId);
+	Long countByData_Content(String content);
 }

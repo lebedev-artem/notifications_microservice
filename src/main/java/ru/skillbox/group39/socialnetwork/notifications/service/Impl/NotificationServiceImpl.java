@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.FriendsClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSimpleDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.UserPrincipalsNotFoundException;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
@@ -100,10 +101,14 @@ public class NotificationServiceImpl implements NotificationService {
 	public void processCommonNotification(@NotNull NotificationCommonDto commonDTO) {
 		log.info(" * service/NotificationServiceImpl/processCommonNotification");
 		processCommonModel(commonDTO);
+		if (commonDTO.getNotificationType() == null) {
+			commonDTO.setNotificationType(ENotificationType.HANDY);
+		}
 		switch (commonDTO.getNotificationType()) {
 			case LIKE:
 			case POST_COMMENT:
 			case FRIEND_REQUEST:
+			case HANDY:
 				log.info(" * Start processing {}", commonDTO.getNotificationType());
 				processNativeNotifications(getNotificationSimpleModel(commonDTO));
 			case POST:
@@ -144,11 +149,13 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationCommonRepository.save(commonModel);
 		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common. '{}'", commonModel);
 	}
-
+	@Transactional
 	public void processNativeNotifications(@NotNull NotificationSimpleModel notificationSimpleModel) {
 		log.info(" * Wrapping Notification_Simple_Model to Notification_Stamped_Model");
 		NotificationStampedModel stampedModel = new NotificationStampedModel(notificationSimpleModel);
 		try {
+			authorRepository.save(stampedModel.getData().getAuthor());
+			notificationSimpleRepository.save(stampedModel.getData());
 			notificationStampedRepository.save(stampedModel);
 			log.info(" * AuthorModel persist into DB/notifications/author. '{}'", stampedModel.getData().getAuthor());
 			log.info(" * NotificationSimpleModel saved into DB/notifications/notifications_simple. '{}'", stampedModel.getData());
@@ -183,13 +190,17 @@ public class NotificationServiceImpl implements NotificationService {
 	@NotNull
 	public AuthorModel getAuthorModelFromId(Long id) {
 		log.info(" * service/NotificationServiceImpl/getAuthorModelFromId");
-		AccountDto acDto = getAccountPrincipals(id);
-		return Optional.of(authorRepository.findById(id).
-				orElse(AuthorModel.builder()
-						.id(acDto.getId())
-						.firstName(acDto.getFirstName())
-						.lastName(acDto.getLastName())
-						.photo(acDto.getPhoto()).build())).get();
+		Optional<AuthorModel> aum = authorRepository.findById(id);
+		if (aum.isPresent()) {
+			return aum.get();
+		} else {
+			AccountDto acDto = getAccountPrincipals(id);
+			return AuthorModel.builder()
+					.id(acDto.getId())
+					.firstName(acDto.getFirstName())
+					.lastName(acDto.getLastName())
+					.photo(acDto.getPhoto()).build();
+		}
 	}
 
 	/**
@@ -232,7 +243,7 @@ public class NotificationServiceImpl implements NotificationService {
 		}
 
 		NotificationCommonDto commonDTO = ObjectMapperCustom.mapAnyToCommonNotificationDto(eventNotificationDto);
-		processCommonNotification(commonDTO);
+//		processCommonNotification(commonDTO);
 
 		NotificationSimpleModel simpleModel = getNotificationSimpleModel(commonDTO);
 
@@ -240,7 +251,7 @@ public class NotificationServiceImpl implements NotificationService {
 		simpleModel.setAuthor(aum);
 
 		processNativeNotifications(simpleModel);
-		return new ResponseEntity<>(modelMapper.map(simpleModel, NotificationSimpleDto.class), HttpStatus.OK);
+		return new ResponseEntity<>(ObjectMapperCustom.objectMapper().convertValue(simpleModel, NotificationSimpleDto.class), HttpStatus.OK);
 	}
 
 	@NotNull

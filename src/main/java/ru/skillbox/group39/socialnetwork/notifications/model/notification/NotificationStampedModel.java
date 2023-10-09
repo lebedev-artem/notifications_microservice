@@ -1,6 +1,7 @@
 package ru.skillbox.group39.socialnetwork.notifications.model.notification;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.SQLDelete;
@@ -15,6 +16,7 @@ import java.sql.Timestamp;
  */
 
 @Entity
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,7 +32,7 @@ public class NotificationStampedModel {
 	@Column(name = "timestamp", nullable = false)
 	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 
-	@OneToOne(fetch = FetchType.EAGER, optional = false, cascade = CascadeType.PERSIST)
+	@OneToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(unique = true, name = "data")
 	private NotificationSimpleModel data;
 

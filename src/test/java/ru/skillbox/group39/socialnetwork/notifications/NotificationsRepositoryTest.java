@@ -1,17 +1,12 @@
 package ru.skillbox.group39.socialnetwork.notifications;
 
 import org.jetbrains.annotations.NotNull;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
@@ -19,18 +14,16 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.common.EServiceName;
-
 import ru.skillbox.group39.socialnetwork.notifications.model.notification.AuthorModel;
 import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationCommonModel;
 import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationSimpleModel;
+import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationStampedModel;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.*;
-import ru.skillbox.group39.socialnetwork.notifications.service.Impl.NotificationServiceImpl;
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
+import static ru.skillbox.group39.socialnetwork.notifications.utils.TimestampUtils.NOW;
 
 /**
  * @author Artem Lebedev | 04/10/2023 - 10:46
@@ -40,23 +33,30 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestPropertySource(properties = {"spring.config.location=classpath:application-test.yaml"})
 @Testcontainers
 public class NotificationsRepositoryTest {
-
+	private UUID notificationSimpleModelId;
+	@Autowired
+	NotificationStampedRepository notificationStampedRepository;
+	@Autowired
+	AuthorRepository authorRepository;
+	@Autowired
+	NotificationSimpleRepository notificationSimpleRepository;
 	@Autowired
 	NotificationCommonRepository notificationCommonRepository;
 
 	@Container
 	static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>("postgres:15-alpine");
-
 	@Container
 	static KafkaContainer kafkaContainer = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:7.4.0"));
 
 	@BeforeAll
 	static void beforeAll() {
+		kafkaContainer.start();
 		postgres.start();
 	}
 
 	@AfterAll
 	static void afterAll() {
+		kafkaContainer.stop();
 		postgres.stop();
 	}
 
@@ -72,40 +72,168 @@ public class NotificationsRepositoryTest {
 		registry.add("spring.kafka.bootstrap-servers", kafkaContainer::getBootstrapServers);
 	}
 
-//	TODO
-//	@Order
+	@BeforeEach
+	@Transactional
+	public void setUp() {
+		AuthorModel authorModel = AuthorModel.builder()
+				.id(1L)
+				.firstName("Artem")
+				.lastName("Lebedev")
+				.photo("photo url")
+				.build();
+		authorRepository.saveAndFlush(authorModel);
+
+		NotificationSimpleModel notificationSimpleModel = NotificationSimpleModel.builder()
+				.producerId(1L)
+				.content("")
+				.notificationType(ENotificationType.POST.name())
+				.timestamp(new Timestamp(System.currentTimeMillis()))
+				.consumerId(2L)
+				.read(false)
+				.author(authorModel)
+				.build();
+		notificationSimpleRepository.saveAndFlush(notificationSimpleModel);
+
+		NotificationStampedModel notificationStampedModel =	NotificationStampedModel.builder()
+				.id(1L)
+				.data(notificationSimpleRepository.findFirstByOrderByTimestampDesc().get())
+				.read(false)
+				.timestamp(NOW())
+				.build();
+
+		notificationStampedRepository.save(notificationStampedModel);
+
+		NotificationCommonModel notificationCommonModel = NotificationCommonModel.builder()
+				.id(1L)
+				.producerId(1L)
+				.content("")
+				.eventId(UUID.fromString("3fa85f64-6543-4562-b3fc-2c963f66afa6"))
+				.service(EServiceName.POSTS.name())
+				.timestamp(NOW())
+				.notificationType(ENotificationType.POST.name())
+				.consumerId(2L)
+				.read(false)
+				.build();
+		notificationCommonRepository.save(notificationCommonModel);
+	}
+
+	private void addData(){
+		AuthorModel authorModel = AuthorModel.builder()
+				.id(2L)
+				.firstName("Artem")
+				.lastName("Lebedev")
+				.photo("photo url")
+				.build();
+		authorRepository.saveAndFlush(authorModel);
+
+		NotificationSimpleModel notificationSimpleModel = NotificationSimpleModel.builder()
+				.producerId(2L)
+				.content("")
+				.notificationType(ENotificationType.POST.name())
+				.timestamp(new Timestamp(System.currentTimeMillis()))
+				.consumerId(3L)
+				.read(false)
+				.author(authorModel)
+				.build();
+		notificationSimpleRepository.saveAndFlush(notificationSimpleModel);
+
+		NotificationStampedModel notificationStampedModel =	NotificationStampedModel.builder()
+				.id(2L)
+				.data(notificationSimpleRepository.findFirstByOrderByTimestampDesc().get())
+				.read(false)
+				.timestamp(NOW())
+				.build();
+
+		notificationStampedRepository.save(notificationStampedModel);
+		NotificationCommonModel notificationCommonModel = NotificationCommonModel.builder()
+				.id(2L)
+				.producerId(2L)
+				.content("")
+				.eventId(UUID.fromString("3fa85f64-6543-4562-b3fc-2c963f66afa7"))
+				.service(EServiceName.POSTS.name())
+				.timestamp(NOW())
+				.notificationType(ENotificationType.POST.name())
+				.consumerId(3L)
+				.read(false)
+				.build();
+		notificationCommonRepository.save(notificationCommonModel);
+	}
+
 	@Test
 	@Transactional
 	@Order(1)
-	public void processCommonModelTest_Successful() {
-		AuthorModel am = AuthorModel.builder()
-				.firstName("Artem")
-				.lastName("Lebedev")
-				.photo("url")
-				.build();
-		NotificationSimpleModel nsm = NotificationSimpleModel.builder()
-				.author(am)
-				.read(false)
-				.consumerId(233L)
-				.timestamp(new Timestamp(System.currentTimeMillis()))
-				.notificationType("POST")
-				.content("Test content")
-				.producerId(232L)
-				.build();
-		NotificationCommonModel ncm = new NotificationCommonModel(
-				null,
-				232L,
-				"Test content",
-				UUID.fromString("3fa85f64-6543-4562-b3fc-2c963f66afa6"),
-				EServiceName.POSTS.name(),
-				new Timestamp(System.currentTimeMillis()),
-				ENotificationType.LIKE.name(),
-				233L,
-				false);
+	void getStampedWhenItemIsInBase_ReturnRealCount() throws Exception {
+		Long cnt = (long) notificationStampedRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(1L, cnt);
+	}
 
-		notificationCommonRepository.save(ncm);
-		Long ncmid = ncm.getId();
-		assertNotNull(ncmid);
+	@Test
+	@Transactional
+	@Order(2)
+	void getSimpleWhenItemIsInBase_ReturnRealCount() throws Exception {
+		Long cnt = (long) notificationSimpleRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(1L, cnt);
+	}
+
+	@Test
+	@Transactional
+	@Order(3)
+	void getAuthorWhenItemIsInBase_ReturnRealCount() throws Exception {
+		Long cnt = (long) authorRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(1L, cnt);
+	}
+
+	@Test
+	@Transactional
+	@Order(4)
+	void getCommonWhenItemIsInBase_ReturnRealCount() throws Exception {
+		Long cnt = (long) notificationCommonRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(1L, cnt);
+	}
+
+
+	@Test
+	@Transactional
+	@Order(5)
+	void getStamped_afterAddOneStampedNotification_ReturnRealCount() throws Exception {
+		addData();
+		Long cnt = (long) notificationStampedRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(2L, cnt);
+	}
+
+	@Test
+	@Transactional
+	@Order(6)
+	void getSimple_afterAddOneStampedNotification_ReturnRealCount() throws Exception {
+		addData();
+		Long cnt = (long) notificationSimpleRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(2L, cnt);
+	}
+
+	@Test
+	@Transactional
+	@Order(7)
+	void getAuthor_afterAddOneStampedNotification_ReturnRealCount() throws Exception {
+		addData();
+		Long cnt = (long) authorRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(2L, cnt);
+	}
+
+	@Test
+	@Transactional
+	@Order(8)
+	void getCommon_afterAddOneStampedNotification_ReturnRealCount() throws Exception {
+		addData();
+		Long cnt = (long) notificationCommonRepository.findAll().size();
+		Assertions.assertNotNull(cnt);
+		Assertions.assertEquals(2L, cnt);
 	}
 
 }

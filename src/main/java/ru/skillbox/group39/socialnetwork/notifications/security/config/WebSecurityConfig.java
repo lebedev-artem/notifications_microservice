@@ -69,15 +69,15 @@ public class WebSecurityConfig {
 		http
 				.csrf().disable()
 				.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.authorizeHttpRequests()
-				.antMatchers("/api/v1/notifications/swagger-ui/**",
-						"/api/v1/notifications/h2-console/**",
-						"/api/v1/notifications/actuator/**",
-						"/swagger-ui/**",
-						"/api/v1/swagger-ui/**",
-						"/v3/api-docs/**").permitAll()
-				.anyRequest().authenticated();
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+//				.authorizeHttpRequests()
+//				.antMatchers("/api/v1/notifications/swagger-ui/**",
+//						"/api/v1/notifications/h2-console/**",
+//						"/api/v1/notifications/actuator/**",
+//						"/swagger-ui/**",
+//						"/api/v1/swagger-ui/**",
+//						"/v3/api-docs/**").permitAll()
+//				.anyRequest().authenticated();
 		http.authenticationProvider(authenticationProvider());
 		http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
 		return http.build();

@@ -21,7 +21,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.bind.annotation.ResponseBody;
 import ru.skillbox.group39.socialnetwork.notifications.controller.Impl.NotificationControllerImpl;
 import ru.skillbox.group39.socialnetwork.notifications.controller.NotificationController;
 import ru.skillbox.group39.socialnetwork.notifications.dto.count.Count;
@@ -237,44 +236,4 @@ public class NotificationsApplicationControllerIT {
 				.andDo(print())
 				.andExpect(status().isOk());
 	}
-
-
-
-//	@Test
-//	void addEvent_Successful() throws Exception {
-//		EventNotificationDto end = EventNotificationDto.builder()
-//				.consumerId(233L)
-//				.producerId(232L)
-//				.content("Test content")
-//				.notificationType(ENotificationType.POST)
-//				.build();
-//		Person person = userDetailsService.loadUserByUsername("artlebedev2006@gmail.com");
-//		String jwttoken = jwtUtils.generateToken(person, Duration.ofDays(1));
-//		var request = post("/api/v1/notifications/add")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(objectMapper.writeValueAsString(end))
-//				.header("Authorization", "Bearer " + jwttoken);
-//		NotificationSimpleModel nsm = NotificationSimpleModel.builder()
-//				.author(notificationService.getAuthorModelFromId(232L))
-//				.read(false)
-//				.consumerId(233L)
-//				.timestamp(new Timestamp(System.currentTimeMillis()))
-//				.notificationType("POST")
-//				.content("Test content")
-//				.producerId(232L)
-//				.build();
-//		NotificationSimpleDto nsd = objectMapper.convertValue(nsm, NotificationSimpleDto.class);
-//		ResponseEntity<?> response = new ResponseEntity<>(nsd, HttpStatus.OK);
-//
-//		NotificationCommonDto commonDTO = ObjectMapperCustom.mapAnyToCommonNotificationDto(end);
-//		doNothing().when(notificationService).processCommonNotification(commonDTO);
-//		doNothing().when(notificationService).processNativeNotifications(nsm);
-//
-//		when(notificationService.addEvent(end)).thenReturn(response);
-//
-//		mockMvc.
-//				perform(request)
-//				.andDo(print())
-//				.andExpect(status().isOk());
-//	}
 }

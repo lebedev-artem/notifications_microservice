@@ -5,10 +5,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
+import org.hibernate.type.PostgresUUIDType;
 import org.jetbrains.annotations.Nullable;
 
 import javax.persistence.*;
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
@@ -35,11 +35,15 @@ import java.util.UUID;
 @Table(name = "notifications_simple")
 @SQLDelete(sql = "UPDATE notifications_simple SET read = true WHERE id=?")
 @Where(clause = "read=false")
+@TypeDef(name="postgres-uuid",
+		defaultForType = UUID.class,
+		typeClass = PostgresUUIDType.class)
 public class NotificationSimpleModel {
 
 	@Id
 	@GenericGenerator(name = "uuid2", strategy = "uuid2")
 	@GeneratedValue(strategy = GenerationType.IDENTITY, generator = "uuid2")
+	@Type(type="org.hibernate.type.PostgresUUIDType")
 	private UUID id;
 
 	@Column(name = "producer_id", nullable = false)

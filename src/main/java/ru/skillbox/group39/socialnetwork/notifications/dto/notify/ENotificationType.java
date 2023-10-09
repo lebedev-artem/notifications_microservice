@@ -23,7 +23,8 @@ public enum ENotificationType {
 	FRIEND_BIRTHDAY(4L),
 	MESSAGE(5L),
 	LIKE(6L),
-	DEL_USER(7L);
+	DEL_USER(7L),
+	HANDY(8L);
 
 	private final Long num;
 
