@@ -1,6 +1,7 @@
 package ru.skillbox.group39.socialnetwork.notifications.dto.setting;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import lombok.NoArgsConstructor;
  */
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class SettingChangeDto {

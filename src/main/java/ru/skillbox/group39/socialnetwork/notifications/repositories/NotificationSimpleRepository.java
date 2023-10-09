@@ -11,14 +11,10 @@ import ru.skillbox.group39.socialnetwork.notifications.model.notification.Notifi
 
 import java.util.Optional;
 
-
 @Repository
 public interface NotificationSimpleRepository extends JpaRepository<NotificationSimpleModel, Long>, PagingAndSortingRepository<NotificationSimpleModel,Long> {
-
-	NotificationSimpleModel findByProducerId(Long producerId);
-
 	@Query("select n from NotificationSimpleModel n")
 	@NotNull Page<NotificationSimpleModel> findAll(@NotNull Pageable pageable);
-
-	@NotNull Optional<NotificationSimpleModel> findById(@NotNull Long id);
+	Optional<NotificationSimpleModel> findFirstByOrderByTimestampDesc();
+	Optional<NotificationSimpleModel> findByProducerId(Long producerId);
 }

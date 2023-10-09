@@ -3,6 +3,7 @@ package ru.skillbox.group39.socialnetwork.notifications.security.service;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,6 +14,7 @@ import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.EmailIsBlankException;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.EmailNotUniqueException;
+import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.UserPrincipalsNotFoundException;
 import ru.skillbox.group39.socialnetwork.notifications.security.model.Person;
 
 
@@ -62,9 +64,25 @@ public class UserDetailsServiceImpl implements UserService {
 	}
 
 	public static Long getPrincipalId() {
-		Person person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Long id = ((Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId();
+		Person person;
+		if (SecurityContextHolder.getContext().getAuthentication() != null) {
+			person = (Person) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} else throw new UserPrincipalsNotFoundException("Context is empty. May be user's service not available");
 		return person.getId();
+	}
+
+	public Person getHandyPerson(@NotNull AccountDto accountDto) {
+		return new Person(
+				accountDto.getEmail(),
+				accountDto.getPassword(),
+				createListOfRoles(
+						accountDto.getRoles())
+						.stream()
+						.map(SimpleGrantedAuthority::new)
+						.collect(Collectors.toList()),
+				accountDto.getId(),
+				accountDto.getFirstName(),
+				accountDto.getLastName());
 	}
 
 }

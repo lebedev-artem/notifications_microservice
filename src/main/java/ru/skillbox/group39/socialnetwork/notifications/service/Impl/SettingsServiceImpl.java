@@ -43,13 +43,15 @@ public class SettingsServiceImpl implements SettingsService {
 
 	@Override
 	public Object getSettings() {
+//		TODO
+//		if null then create
+
 		Optional<SettingsModel> sm =
 				Optional.of(settingsRepository
 						.findByUserId(getPrincipalId())
 						.orElseThrow(() -> new SettingsNotFoundException("User / settings not found")));
-		SettingsDto d = new SettingsDto();
-		d = objectMapper.convertValue(sm, SettingsDto.class);
-		return new ResponseEntity<>(d, HttpStatus.OK);
+		SettingsDto sdto = objectMapper.convertValue(sm, SettingsDto.class);
+		return new ResponseEntity<>(sdto, HttpStatus.OK);
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.FriendsClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSimpleDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.UserPrincipalsNotFoundException;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
@@ -67,6 +68,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public Object getCount() {
+		log.info(" * service/NotificationServiceImpl/getCount");
 		Long cnt = notificationStampedRepository.countByData_ConsumerId(getPrincipalId());
 		Count count = new Count(cnt);
 		return new NotificationsCountDto(LocalDateTime.now(), count);
@@ -97,35 +99,44 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	@Transactional
 	public void processCommonNotification(@NotNull NotificationCommonDto commonDTO) {
+		log.info(" * service/NotificationServiceImpl/processCommonNotification");
 		processCommonModel(commonDTO);
+		if (commonDTO.getNotificationType() == null) {
+			commonDTO.setNotificationType(ENotificationType.HANDY);
+		}
 		switch (commonDTO.getNotificationType()) {
 			case LIKE:
 			case POST_COMMENT:
-				log.info(" * Start processing LIKE / POST_COMMENT");
+			case FRIEND_REQUEST:
+			case HANDY:
+				log.info(" * Start processing {}", commonDTO.getNotificationType());
 				processNativeNotifications(getNotificationSimpleModel(commonDTO));
 			case POST:
-				log.info(" * Start processing POST");
+			case DEL_USER:
+				log.info(" * Start processing {}", commonDTO.getNotificationType());
 				Optional<AccountDto> userRequestingData = getUser(commonDTO.getProducerId());
 				Optional<AuthorModel> aum = Optional.of(getAuthorModelFromId(commonDTO.getProducerId()));
-				if (userRequestingData.isPresent()) {
-					List<Long> friendsIdList = getFriends(userRequestingData.get());
-					log.info(" * User id {} has {} friends", userRequestingData.get().getId(), friendsIdList.size());
-					if (!friendsIdList.isEmpty()) {
-						for (Long id : friendsIdList) {
-							NotificationSimpleModel nsm = NotificationSimpleModel.builder()
-									.producerId(commonDTO.getProducerId())
-									.content(commonDTO.getContent())
-									.notificationType(commonDTO.getNotificationType().toString())
-									.timestamp(commonDTO.getTimestamp())
-									.consumerId(id)
-									.read(false)
-									.author(aum.get())
-									.build();
+				if (userRequestingData.isEmpty()) {
+					return;
+				}
+				List<Long> friendsIdList = getFriends(userRequestingData.get());
+				log.info(" * User id {} has {} friends", userRequestingData.get().getId(), friendsIdList.size());
+				if (friendsIdList.isEmpty()) {
+					return;
+				}
+				for (Long id : friendsIdList) {
+					NotificationSimpleModel nsm = NotificationSimpleModel.builder()
+							.producerId(commonDTO.getProducerId())
+							.content(commonDTO.getContent())
+							.notificationType(commonDTO.getNotificationType().toString())
+							.timestamp(commonDTO.getTimestamp())
+							.consumerId(id)
+							.read(false)
+							.author(aum.get())
+							.build();
 
-							log.info(" * Created simple notification for friend id {}", id);
-							processNativeNotifications(nsm);
-						}
-					}
+					log.info(" * Created simple notification for friend id {}", id);
+					processNativeNotifications(nsm);
 				}
 		}
 	}
@@ -138,13 +149,13 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationCommonRepository.save(commonModel);
 		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common. '{}'", commonModel);
 	}
-
-	private void processNativeNotifications(@NotNull NotificationSimpleModel notificationSimpleModel) {
+	@Transactional
+	public void processNativeNotifications(@NotNull NotificationSimpleModel notificationSimpleModel) {
 		log.info(" * Wrapping Notification_Simple_Model to Notification_Stamped_Model");
 		NotificationStampedModel stampedModel = new NotificationStampedModel(notificationSimpleModel);
-
-
 		try {
+			authorRepository.save(stampedModel.getData().getAuthor());
+			notificationSimpleRepository.save(stampedModel.getData());
 			notificationStampedRepository.save(stampedModel);
 			log.info(" * AuthorModel persist into DB/notifications/author. '{}'", stampedModel.getData().getAuthor());
 			log.info(" * NotificationSimpleModel saved into DB/notifications/notifications_simple. '{}'", stampedModel.getData());
@@ -165,6 +176,7 @@ public class NotificationServiceImpl implements NotificationService {
 	 */
 
 	public AccountDto getAccountPrincipals(@NotNull Long id) {
+		log.info(" * service/NotificationServiceImpl/getAccountPrincipals");
 		AccountDto accPrincipals;
 		try {
 			accPrincipals = usersClient.getUserDetailsById(id);
@@ -177,13 +189,18 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@NotNull
 	public AuthorModel getAuthorModelFromId(Long id) {
-		AccountDto acDto = getAccountPrincipals(id);
-		return Optional.of(authorRepository.findById(id).
-				orElse(AuthorModel.builder()
-						.id(acDto.getId())
-						.firstName(acDto.getFirstName())
-						.lastName(acDto.getLastName())
-						.photo(acDto.getPhoto()).build())).get();
+		log.info(" * service/NotificationServiceImpl/getAuthorModelFromId");
+		Optional<AuthorModel> aum = authorRepository.findById(id);
+		if (aum.isPresent()) {
+			return aum.get();
+		} else {
+			AccountDto acDto = getAccountPrincipals(id);
+			return AuthorModel.builder()
+					.id(acDto.getId())
+					.firstName(acDto.getFirstName())
+					.lastName(acDto.getLastName())
+					.photo(acDto.getPhoto()).build();
+		}
 	}
 
 	/**
@@ -220,13 +237,13 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public Object addEvent(@NotNull EventNotificationDto eventNotificationDto) {
-
+		log.info(" * service/NotificationServiceImpl/addEvent");
 		if (checkEventNotificationDtoFields(eventNotificationDto)) {
 			return new ResponseEntity<>(new ErrorResponse("Check all fields. Any is null", HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
 		}
 
 		NotificationCommonDto commonDTO = ObjectMapperCustom.mapAnyToCommonNotificationDto(eventNotificationDto);
-		processCommonNotification(commonDTO);
+//		processCommonNotification(commonDTO);
 
 		NotificationSimpleModel simpleModel = getNotificationSimpleModel(commonDTO);
 
@@ -234,11 +251,12 @@ public class NotificationServiceImpl implements NotificationService {
 		simpleModel.setAuthor(aum);
 
 		processNativeNotifications(simpleModel);
-		return new ResponseEntity<>(modelMapper.map(simpleModel, NotificationSimpleDto.class), HttpStatus.OK);
+		return new ResponseEntity<>(ObjectMapperCustom.objectMapper().convertValue(simpleModel, NotificationSimpleDto.class), HttpStatus.OK);
 	}
 
 	@NotNull
 	private static Boolean checkEventNotificationDtoFields(@NotNull EventNotificationDto eventNotificationDto) {
+		log.info(" * service/NotificationServiceImpl/checkEventNotificationDtoFields");
 		return Stream.of(eventNotificationDto.getProducerId(),
 				eventNotificationDto.getConsumerId(),
 				eventNotificationDto.getNotificationType(),
@@ -247,6 +265,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public Object setAllRead() {
+		log.info(" * service/NotificationServiceImpl/setAllRead");
 		Long consumerId = getPrincipalId();
 		try {
 			log.info(" * Attempting to mark all notifications as read for user with id '{}'", consumerId);

@@ -1,6 +1,7 @@
 package ru.skillbox.group39.socialnetwork.notifications.model.notification;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.*;
@@ -20,6 +21,7 @@ import java.util.UUID;
 
 @Data
 @Entity
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "notifications_common")

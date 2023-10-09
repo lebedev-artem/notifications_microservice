@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 /**
  * @author Artem Lebedev | 24/08/2023 - 19:30 <p>
@@ -22,7 +23,7 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NotificationSimpleDto {
 
-	private Long id;
+	private UUID id;
 	private AuthorDto author;
 	private ENotificationType notificationType;
 	private Timestamp timestamp;

@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 public class SettingsRepositoryImpl{
 	private final JdbcTemplate jdbcTemplate;
 
-
 	@Modifying
 	public void updateSetting(Long id, String typeKey, Boolean typeValue) {
 		String snakeKey = toSnakeCase(typeKey);
