@@ -105,7 +105,7 @@ public class NotificationServiceImpl implements NotificationService {
 			commonDTO.setNotificationType(ENotificationType.HANDY);
 		}
 		switch (commonDTO.getNotificationType()) {
-			case LIKE:
+			case DO_LIKE:
 			case POST_COMMENT:
 			case FRIEND_REQUEST:
 			case HANDY:

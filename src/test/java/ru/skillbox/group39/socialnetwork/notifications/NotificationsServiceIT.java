@@ -27,13 +27,19 @@ import org.testcontainers.utility.DockerImageName;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.common.EServiceName;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.common.NotificationCommonDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingsDto;
+import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationCommonRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationStampedRepository;
 import ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl;
 import ru.skillbox.group39.socialnetwork.notifications.service.Impl.NotificationServiceImpl;
+import ru.skillbox.group39.socialnetwork.notifications.service.Impl.SettingsServiceImpl;
 
 
 import javax.transaction.Transactional;
 import java.sql.Timestamp;
+import java.util.UUID;
 
 
 /**
@@ -51,7 +57,11 @@ public class NotificationsServiceIT {
 	@Autowired
 	NotificationServiceImpl notificationService;
 	@Autowired
+	SettingsServiceImpl settingsService;
+	@Autowired
 	NotificationStampedRepository notificationStampedRepository;
+	@Autowired
+	NotificationCommonRepository notificationCommonRepository;
 	@Autowired
 	DBInitializer dbInitializer;
 
@@ -150,6 +160,38 @@ public class NotificationsServiceIT {
 		dbInitializer.addData_Three();
 		ResponseEntity<?> response = (ResponseEntity<?>) notificationService.setAllRead();
 		Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
+	}
+
+	@Test
+	void processCommonNotification_fullProcessSuccessful() {
+		NotificationCommonDto commonDTO = NotificationCommonDto.builder()
+				.service(EServiceName.POSTS)
+				.eventId(UUID.fromString("2d517a38-f8c9-453b-885d-8b89bdef9aed"))
+				.notificationType(ENotificationType.POST)
+				.consumerId(235L)
+				.producerId(233L)
+				.timestamp(new Timestamp(System.currentTimeMillis()))
+				.content("processCommonNotification_fullProcessSuccessful TEST")
+				.build();
+		notificationService.kafkaGoodBuy(commonDTO);
+		Assertions.assertEquals(1L, notificationCommonRepository.countByContent(commonDTO.getContent()));
+	}
+
+	@Test
+	void getSettings_WhenNoSettings() {
+		SettingsDto sdto = SettingsDto.builder()
+				.DO_LIKE(true)
+				.POST(true)
+				.POST_COMMENT(false)
+				.COMMENT_COMMENT(false)
+				.MESSAGE(true)
+				.FRIEND_REQUEST(true)
+				.FRIEND_BIRTHDAY(true)
+				.SEND_EMAIL_MESSAGE(false)
+				.build();
+		ResponseEntity<?> response = (ResponseEntity<?>) settingsService.getSettings();
+		Assertions.assertNotNull(response);
+		Assertions.assertEquals(sdto, response.getBody());
 	}
 
 

@@ -1,8 +1,6 @@
 package ru.skillbox.group39.socialnetwork.notifications.service.Impl;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
@@ -43,15 +41,13 @@ public class SettingsServiceImpl implements SettingsService {
 
 	@Override
 	public Object getSettings() {
-//		TODO
-//		if null then create
-
-		Optional<SettingsModel> sm =
-				Optional.of(settingsRepository
-						.findByUserId(getPrincipalId())
-						.orElseThrow(() -> new SettingsNotFoundException("User / settings not found")));
-		SettingsDto sdto = objectMapper.convertValue(sm, SettingsDto.class);
-		return new ResponseEntity<>(sdto, HttpStatus.OK);
+		Optional<SettingsModel> sm = settingsRepository.findByUserId(getPrincipalId());
+		if (sm.isEmpty()) {
+			return createSettings(getPrincipalId());
+		} else {
+			SettingsDto sdto = objectMapper.convertValue(sm, SettingsDto.class);
+			return new ResponseEntity<>(sdto, HttpStatus.OK);
+		}
 	}
 
 	@Override
@@ -75,12 +71,13 @@ public class SettingsServiceImpl implements SettingsService {
 						.POST(true)
 						.POST_COMMENT(false)
 						.COMMENT_COMMENT(false)
-						.LIKE(true)
-						.ENABLE_EMAIL_MESSAGE(false)
+						.DO_LIKE(true)
 						.FRIEND_BIRTHDAY(true)
 						.FRIEND_REQUEST(true)
 						.id(user.getId())
 						.MESSAGE(true)
+						.SEND_EMAIL_MESSAGE(false)
+						.userId(userId)
 						.build()));
 		settingsRepository.save(sm.get());
 

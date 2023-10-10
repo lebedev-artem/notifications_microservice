@@ -178,7 +178,7 @@ public class NotificationsApplicationControllerIT {
 
 		var request = get("/api/v1/notifications/settings");
 		SettingsDto sdto = SettingsDto.builder()
-				.LIKE(true)
+				.DO_LIKE(true)
 				.COMMENT_COMMENT(true)
 				.FRIEND_BIRTHDAY(true)
 				.FRIEND_REQUEST(true)
@@ -201,7 +201,7 @@ public class NotificationsApplicationControllerIT {
 		var request = post("/api/v1/notifications/settings")
 				.param("userId", String.valueOf(233L));
 		SettingsDto sdto = SettingsDto.builder()
-				.LIKE(true)
+				.DO_LIKE(true)
 				.COMMENT_COMMENT(true)
 				.FRIEND_BIRTHDAY(true)
 				.FRIEND_REQUEST(true)
