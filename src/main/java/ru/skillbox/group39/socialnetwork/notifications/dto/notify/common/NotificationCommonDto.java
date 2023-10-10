@@ -2,6 +2,7 @@ package ru.skillbox.group39.socialnetwork.notifications.dto.notify.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
@@ -24,6 +25,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class NotificationCommonDto {
 	private Long producerId;

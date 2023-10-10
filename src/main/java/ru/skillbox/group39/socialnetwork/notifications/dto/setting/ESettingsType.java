@@ -10,7 +10,7 @@ import lombok.Getter;
 
 @Getter
 public enum ESettingsType {
-	LIKE("LIKE"),
+	DO_LIKE("DO_LIKE"),
 	POST("POST"),
 	POST_COMMENT("POST_COMMENT"),
 	COMMENT_COMMENT("COMMENT_COMMENT"),

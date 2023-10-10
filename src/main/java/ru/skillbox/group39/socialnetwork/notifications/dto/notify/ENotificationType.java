@@ -11,7 +11,7 @@ COMMENT_COMMENT(2L)<p>
 FRIEND_REQUEST(3L)<p>
 FRIEND_BIRTHDAY(4L)<p>
 MESSAGE(5L)<p>
-LIKE(6L)<p>
+DO_LIKE(6L)<p>
  */
 
 @Getter
@@ -22,7 +22,7 @@ public enum ENotificationType {
 	FRIEND_REQUEST(3L),
 	FRIEND_BIRTHDAY(4L),
 	MESSAGE(5L),
-	LIKE(6L),
+	DO_LIKE(6L),
 	DEL_USER(7L),
 	HANDY(8L);
 

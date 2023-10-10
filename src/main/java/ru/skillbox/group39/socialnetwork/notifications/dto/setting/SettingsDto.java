@@ -27,8 +27,8 @@ import lombok.NoArgsConstructor;
 //@JsonNaming(PropertyNamingStrategy.UpperCamelCaseStrategy.class)
 public class SettingsDto {
 
-    @JsonProperty("LIKE")
-    private Boolean LIKE;
+    @JsonProperty("DO_LIKE")
+    private Boolean DO_LIKE;
     @JsonProperty("POST")
     private Boolean POST;
     @JsonProperty("POST_COMMENT")

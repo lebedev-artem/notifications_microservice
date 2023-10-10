@@ -23,9 +23,9 @@ public class SettingsModel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@JsonProperty("LIKE")
-	@Column(name = "LIKE")
-	private Boolean LIKE;
+	@Column(name = "DO_LIKE")
+	@JsonProperty("DO_LIKE")
+	private Boolean DO_LIKE;
 	@Column(name = "POST")
 	@JsonProperty("POST")
 	private Boolean POST;
@@ -46,7 +46,7 @@ public class SettingsModel {
 	private Boolean FRIEND_BIRTHDAY;
 	@Column(name = "SEND_EMAIL_MESSAGE")
 	@JsonProperty("SEND_EMAIL_MESSAGE")
-	private Boolean ENABLE_EMAIL_MESSAGE;
+	private Boolean SEND_EMAIL_MESSAGE;
 	@Column(name = "user_id")
 	private Long userId;
 

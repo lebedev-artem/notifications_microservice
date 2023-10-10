@@ -9,4 +9,6 @@ import ru.skillbox.group39.socialnetwork.notifications.model.notification.Notifi
  */
 @Repository
 public interface NotificationCommonRepository extends JpaRepository<NotificationCommonModel, Long> {
+	Long countByContent(String content);
+
 }
