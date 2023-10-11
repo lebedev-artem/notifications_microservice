@@ -135,7 +135,7 @@ public class NotificationsApplicationControllerIT {
 				.consumerId(233L)
 				.producerId(232L)
 				.content("Test content")
-				.notificationType(ENotificationType.POST)
+				.notificationType(ENotificationType.POST.name())
 				.build();
 
 		var request = post("/api/v1/notifications/add")
