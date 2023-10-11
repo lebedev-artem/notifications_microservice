@@ -25,7 +25,7 @@ public class NotificationSimpleDto {
 
 	private UUID id;
 	private AuthorDto author;
-	private ENotificationType notificationType;
+	private String notificationType;
 	private Timestamp timestamp;
 	private String content;
 

@@ -102,17 +102,17 @@ public class NotificationServiceImpl implements NotificationService {
 		log.info(" * service/NotificationServiceImpl/processCommonNotification");
 		processCommonModel(commonDTO);
 		if (commonDTO.getNotificationType() == null) {
-			commonDTO.setNotificationType(ENotificationType.HANDY);
+			commonDTO.setNotificationType(ENotificationType.HANDY.name());
 		}
 		switch (commonDTO.getNotificationType()) {
-			case DO_LIKE:
-			case POST_COMMENT:
-			case FRIEND_REQUEST:
-			case HANDY:
+			case "DO_LIKE":
+			case "POST_COMMENT":
+			case "FRIEND_REQUEST":
+			case "HANDY":
 				log.info(" * Start processing {}", commonDTO.getNotificationType());
 				processNativeNotifications(getNotificationSimpleModel(commonDTO));
-			case POST:
-			case DEL_USER:
+			case "POST":
+			case "DEL_USER":
 				log.info(" * Start processing {}", commonDTO.getNotificationType());
 				Optional<AccountDto> userRequestingData = getUser(commonDTO.getProducerId());
 				Optional<AuthorModel> aum = Optional.of(getAuthorModelFromId(commonDTO.getProducerId()));
