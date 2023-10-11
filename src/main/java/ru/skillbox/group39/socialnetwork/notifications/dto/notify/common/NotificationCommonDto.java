@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -33,7 +32,7 @@ public class NotificationCommonDto {
 	private UUID eventId;
 	private EServiceName service;
 	private Timestamp timestamp;
-	private ENotificationType notificationType;
+	private String notificationType;
 	private Long consumerId;
 
 	@Override

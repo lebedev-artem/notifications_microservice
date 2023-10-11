@@ -16,19 +16,19 @@ DO_LIKE(6L)<p>
 
 @Getter
 public enum ENotificationType {
-	POST(0L),
-	POST_COMMENT(1L),
-	COMMENT_COMMENT(2L),
-	FRIEND_REQUEST(3L),
-	FRIEND_BIRTHDAY(4L),
-	MESSAGE(5L),
-	DO_LIKE(6L),
-	DEL_USER(7L),
-	HANDY(8L);
+	POST("POST"),
+	POST_COMMENT("POST_COMMENT"),
+	COMMENT_COMMENT("COMMENT_COMMENT"),
+	FRIEND_REQUEST("FRIEND_REQUEST"),
+	FRIEND_BIRTHDAY("FRIEND_BIRTHDAY"),
+	MESSAGE("MESSAGES"),
+	DO_LIKE("DO_LIKE"),
+	DEL_USER("DEL_USER"),
+	HANDY("HANDY");
 
-	private final Long num;
+	private final String asString;
 
-	ENotificationType(Long num){
-		this.num = num;
+	ENotificationType(String asString){
+		this.asString = asString;
 	}
 }

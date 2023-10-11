@@ -1,7 +1,5 @@
 package ru.skillbox.group39.socialnetwork.notifications.dto.setting;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.PropertyNamingStrategy;
-import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -28,19 +26,19 @@ import lombok.NoArgsConstructor;
 public class SettingsDto {
 
     @JsonProperty("DO_LIKE")
-    private Boolean DO_LIKE;
+    public Boolean DO_LIKE;
     @JsonProperty("POST")
-    private Boolean POST;
+    public Boolean POST;
     @JsonProperty("POST_COMMENT")
-    private Boolean POST_COMMENT;
+    public Boolean POST_COMMENT;
     @JsonProperty("COMMENT_COMMENT")
-    private Boolean COMMENT_COMMENT;
+    public Boolean COMMENT_COMMENT;
     @JsonProperty("MESSAGE")
-    private Boolean MESSAGE;
+    public Boolean MESSAGE;
     @JsonProperty("FRIEND_REQUEST")
-    private Boolean FRIEND_REQUEST;
+    public Boolean FRIEND_REQUEST;
     @JsonProperty("FRIEND_BIRTHDAY")
-    private Boolean FRIEND_BIRTHDAY;
+    public Boolean FRIEND_BIRTHDAY;
     @JsonProperty("SEND_EMAIL_MESSAGE")
-    private Boolean SEND_EMAIL_MESSAGE;
+    public Boolean SEND_EMAIL_MESSAGE;
 }

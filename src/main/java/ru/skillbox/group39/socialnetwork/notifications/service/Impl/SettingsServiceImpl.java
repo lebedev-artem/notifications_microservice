@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skillbox.group39.socialnetwork.notifications.client.UsersClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.frontout.SettingItem;
+import ru.skillbox.group39.socialnetwork.notifications.dto.setting.ESettingsType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingChangeDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingsDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.ErrorResponse;
@@ -20,6 +22,8 @@ import ru.skillbox.group39.socialnetwork.notifications.repositories.SettingsRepo
 import ru.skillbox.group39.socialnetwork.notifications.service.SettingsService;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl.getPrincipalId;
@@ -45,8 +49,56 @@ public class SettingsServiceImpl implements SettingsService {
 		if (sm.isEmpty()) {
 			return createSettings(getPrincipalId());
 		} else {
-			return objectMapper.convertValue(sm, SettingsDto.class);
+			SettingsDto sDto = objectMapper.convertValue(sm, SettingsDto.class);
+			return thisShitBecauseWeLostTwoFrontEndDeveloper(sDto);
+//			return objectMapper.convertValue(sm, SettingsDto.class);
 		}
+	}
+
+	@NotNull
+	private List<SettingItem> thisShitBecauseWeLostTwoFrontEndDeveloper(SettingsDto sDto) {
+		List<SettingItem> settingItemList = new ArrayList<>();
+		SettingItem s1 = SettingItem.builder()
+				.notificationType(ESettingsType.DO_LIKE.name())
+				.enable(sDto.getDO_LIKE())
+				.build();
+		settingItemList.add(s1);
+		SettingItem s2 = SettingItem.builder()
+				.notificationType(ESettingsType.POST.name())
+				.enable(sDto.getPOST())
+				.build();
+		settingItemList.add(s2);
+		SettingItem s3 = SettingItem.builder()
+				.notificationType(ESettingsType.POST_COMMENT.name())
+				.enable(sDto.POST_COMMENT)
+				.build();
+		settingItemList.add(s3);
+		SettingItem s4 = SettingItem.builder()
+				.notificationType(ESettingsType.COMMENT_COMMENT.name())
+				.enable(sDto.COMMENT_COMMENT)
+				.build();
+		settingItemList.add(s4);
+		SettingItem s5 = SettingItem.builder()
+				.notificationType(ESettingsType.MESSAGE.name())
+				.enable(sDto.MESSAGE)
+				.build();
+		settingItemList.add(s5);
+		SettingItem s6 = SettingItem.builder()
+				.notificationType(ESettingsType.FRIEND_REQUEST.name())
+				.enable(sDto.FRIEND_REQUEST)
+				.build();
+		settingItemList.add(s6);
+		SettingItem s7 = SettingItem.builder()
+				.notificationType(ESettingsType.FRIEND_BIRTHDAY.name())
+				.enable(sDto.FRIEND_BIRTHDAY)
+				.build();
+		settingItemList.add(s7);
+		SettingItem s8 = SettingItem.builder()
+				.notificationType(ESettingsType.SEND_EMAIL_MESSAGE.name())
+				.enable(sDto.SEND_EMAIL_MESSAGE)
+				.build();
+		settingItemList.add(s8);
+		return settingItemList;
 	}
 
 	@Override
