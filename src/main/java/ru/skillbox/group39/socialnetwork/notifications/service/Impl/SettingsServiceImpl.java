@@ -45,8 +45,7 @@ public class SettingsServiceImpl implements SettingsService {
 		if (sm.isEmpty()) {
 			return createSettings(getPrincipalId());
 		} else {
-			SettingsDto sdto = objectMapper.convertValue(sm, SettingsDto.class);
-			return new ResponseEntity<>(sdto, HttpStatus.OK);
+			return objectMapper.convertValue(sm, SettingsDto.class);
 		}
 	}
 

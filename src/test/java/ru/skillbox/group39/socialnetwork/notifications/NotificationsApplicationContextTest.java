@@ -12,6 +12,4 @@ public class NotificationsApplicationContextTest {
 	@Test
 	public void contextLoads() throws Exception {
 	}
-
-
 }
