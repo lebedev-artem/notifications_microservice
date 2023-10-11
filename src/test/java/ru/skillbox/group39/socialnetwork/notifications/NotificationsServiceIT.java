@@ -145,7 +145,7 @@ public class NotificationsServiceIT {
 				.consumerId(233L)
 				.producerId(235L)
 				.content("addEvent_Successful")
-				.notificationType(ENotificationType.POST)
+				.notificationType(ENotificationType.POST.name())
 				.timestamp(new Timestamp(System.currentTimeMillis()))
 				.build();
 		ResponseEntity<?> response = (ResponseEntity<?>) notificationService.addEvent(end);
@@ -167,7 +167,7 @@ public class NotificationsServiceIT {
 		NotificationCommonDto commonDTO = NotificationCommonDto.builder()
 				.service(EServiceName.POSTS)
 				.eventId(UUID.fromString("2d517a38-f8c9-453b-885d-8b89bdef9aed"))
-				.notificationType(ENotificationType.POST)
+				.notificationType(ENotificationType.POST.name())
 				.consumerId(235L)
 				.producerId(233L)
 				.timestamp(new Timestamp(System.currentTimeMillis()))
