@@ -152,7 +152,6 @@ public class SettingsServiceImpl implements SettingsService {
 		} catch (RuntimeException e) {
 			return new ResponseEntity<>(new ErrorResponse("Error while updating a setting. " + e.getMessage(), HttpStatus.BAD_REQUEST), HttpStatus.BAD_REQUEST);
 		}
-
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 }

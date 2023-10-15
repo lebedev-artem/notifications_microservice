@@ -38,7 +38,6 @@ public interface NotificationController {
 	Object getCount();
 
 	// ---------------------------------------------------------------------------------------------------------------------
-
 	@Operation(
 			description = "Получение страницы событий",
 			security = {@SecurityRequirement(name = "JWT")}, tags = {"NotificationSimpleModel service"})
@@ -75,7 +74,6 @@ public interface NotificationController {
 	Object addEvent(@Parameter(in = ParameterIn.DEFAULT, required = true)
 	                @Valid @RequestBody EventNotificationDto eventNotificationDto);
 // ---------------------------------------------------------------------------------------------------------------------
-
 	@Operation(
 			description = "Отметить все события, как прочитанные",
 			security = {@SecurityRequirement(name = "JWT")},
@@ -89,7 +87,6 @@ public interface NotificationController {
 	Object setAllRead(HttpServletRequest request);
 
 	// ---------------------------------------------------------------------------------------------------------------------
-
 	@Operation(
 			description = "Получение настроек оповещений",
 			security = {@SecurityRequirement(name = "JWT")},
@@ -108,7 +105,6 @@ public interface NotificationController {
 	Object getSetting();
 
 // ---------------------------------------------------------------------------------------------------------------------
-
 	@Operation(
 			description = "Создание настроек оповещений",
 			security = {@SecurityRequirement(name = "JWT")},
@@ -127,7 +123,6 @@ public interface NotificationController {
 	                     @RequestParam(required = false) Long userId);
 
 // ---------------------------------------------------------------------------------------------------------------------
-
 	@Operation(
 			description = "Коррекция настроек оповещений",
 			security = {@SecurityRequirement(name = "JWT")},

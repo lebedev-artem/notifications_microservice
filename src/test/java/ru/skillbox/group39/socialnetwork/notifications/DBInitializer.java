@@ -13,7 +13,6 @@ import ru.skillbox.group39.socialnetwork.notifications.repositories.Notification
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationStampedRepository;
 
-import javax.persistence.Column;
 import java.sql.Timestamp;
 import java.util.UUID;
 

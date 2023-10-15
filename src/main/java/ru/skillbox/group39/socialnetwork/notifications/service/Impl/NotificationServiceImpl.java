@@ -3,7 +3,6 @@ package ru.skillbox.group39.socialnetwork.notifications.service.Impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -63,7 +62,6 @@ public class NotificationServiceImpl implements NotificationService {
 	private final AuthorRepository authorRepository;
 	private final UsersClient usersClient;
 	private final FriendsClient friendsClient;
-	private final ModelMapper modelMapper;
 	private final JwtUtils jwtUtils;
 
 	@Override
@@ -149,6 +147,7 @@ public class NotificationServiceImpl implements NotificationService {
 		notificationCommonRepository.save(commonModel);
 		log.info(" * NotificationCommonModel saved to DB/notifications/notifications_common. '{}'", commonModel);
 	}
+
 	@Transactional
 	public void processNativeNotifications(@NotNull NotificationSimpleModel notificationSimpleModel) {
 		log.info(" * Wrapping Notification_Simple_Model to Notification_Stamped_Model");
@@ -174,7 +173,6 @@ public class NotificationServiceImpl implements NotificationService {
 	 * @param id id of any person's object: AuthorId, UserId, ProducerId, ConsumerId
 	 * @return AuthorModel: firstName, lastName, photo;
 	 */
-
 	public AccountDto getAccountPrincipals(@NotNull Long id) {
 		log.info(" * service/NotificationServiceImpl/getAccountPrincipals");
 		AccountDto accPrincipals;
