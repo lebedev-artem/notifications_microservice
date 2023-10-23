@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.client.config;
+package ru.skillbox.group39.socialnetwork.notifications.config;
 
 import feign.codec.Encoder;
 import feign.codec.ErrorDecoder;

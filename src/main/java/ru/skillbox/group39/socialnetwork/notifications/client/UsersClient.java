@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
-import ru.skillbox.group39.socialnetwork.notifications.client.config.FeignSupportConfig;
+import ru.skillbox.group39.socialnetwork.notifications.config.FeignSupportConfig;
 
 /**
  * Below two options of working with Users micro service:

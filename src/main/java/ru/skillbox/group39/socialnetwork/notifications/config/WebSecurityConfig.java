@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.security.config;
+package ru.skillbox.group39.socialnetwork.notifications.config;
 
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -74,6 +74,9 @@ public class WebSecurityConfig {
 				.antMatchers("/api/v1/notifications/swagger-ui/**",
 						"/api/v1/notifications/h2-console/**",
 						"/api/v1/notifications/actuator/**",
+						"/actuator/**",
+						"/actuator/prometheus",
+						"/actuator/prometheus/**",
 						"/swagger-ui/**",
 						"/api/v1/swagger-ui/**",
 						"/v3/api-docs/**").permitAll()
