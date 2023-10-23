@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.kafka.config;
+package ru.skillbox.group39.socialnetwork.notifications.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

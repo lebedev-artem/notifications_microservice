@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skillbox.group39.socialnetwork.notifications.dto.event.EventNotificationDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationStampedDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingChangeDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.ErrorResponse;
 import ru.skillbox.group39.socialnetwork.notifications.service.NotificationService;
@@ -25,6 +26,8 @@ import ru.skillbox.group39.socialnetwork.notifications.service.SettingsService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
+
 import static ru.skillbox.group39.socialnetwork.notifications.security.service.UserDetailsServiceImpl.getPrincipalId;
 
 @RestController
@@ -43,12 +46,22 @@ public class NotificationControllerImpl implements NotificationController {
 	}
 
 	@Override
+	public Long getCountBot() {
+		return notificationService.getCountBot();
+	}
+
+	@Override
 	public Object getPageNotifications(Integer page, Integer size, String sort) {
 		log.info(" * GET \"/\"");
 		log.info(" * Payload: page?{}, size?{}, sort?{}", page, size, sort);
 		Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
 		log.info(" * Pageable: {}", pageable);
 		return notificationService.getPageStampedNotifications(pageable);
+	}
+
+	@Override
+	public List<NotificationStampedDto> getNotificationsForThisMan() {
+		return notificationService.getNotificationsForThisMan();
 	}
 
 	@Override

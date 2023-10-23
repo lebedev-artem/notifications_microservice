@@ -19,6 +19,8 @@ import ru.skillbox.group39.socialnetwork.notifications.dto.setting.SettingChange
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping("/api/v1/notifications")
@@ -36,6 +38,10 @@ public interface NotificationController {
 			value = "/count",
 			method = RequestMethod.GET)
 	Object getCount();
+
+	@Operation(description = "Получить счетчик количества событий")
+	@RequestMapping(value = "/countthisman", method = RequestMethod.GET)
+	Long getCountBot();
 
 	// ---------------------------------------------------------------------------------------------------------------------
 	@Operation(
@@ -56,6 +62,13 @@ public interface NotificationController {
 			@RequestParam(required = false, defaultValue = "0") Integer page,
 			@RequestParam(required = false, defaultValue = "5") Integer size,
 			@RequestParam(required = false, defaultValue = "timestamp") @Nullable String sort);
+
+	@Operation(
+			description = "Получение страницы событий")
+	@RequestMapping(value = "/forthisman",
+			produces = APPLICATION_JSON_VALUE,
+			method = RequestMethod.GET)
+	List<NotificationStampedDto> getNotificationsForThisMan();
 
 	// ---------------------------------------------------------------------------------------------------------------------
 	@Operation(

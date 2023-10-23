@@ -13,6 +13,7 @@ import ru.skillbox.group39.socialnetwork.notifications.client.FriendsClient;
 import ru.skillbox.group39.socialnetwork.notifications.client.dto.AccountDto;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.ENotificationType;
 import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationSimpleDto;
+import ru.skillbox.group39.socialnetwork.notifications.dto.notify.NotificationStampedDto;
 import ru.skillbox.group39.socialnetwork.notifications.exception.exceptions.UserPrincipalsNotFoundException;
 import ru.skillbox.group39.socialnetwork.notifications.repositories.NotificationSimpleRepository;
 import ru.skillbox.group39.socialnetwork.notifications.security.jwt.JwtUtils;
@@ -70,6 +71,11 @@ public class NotificationServiceImpl implements NotificationService {
 		Long cnt = notificationStampedRepository.countByData_ConsumerId(getPrincipalId());
 		Count count = new Count(cnt);
 		return new NotificationsCountDto(LocalDateTime.now(), count);
+	}
+
+	@Override
+	public Long getCountBot() {
+		return notificationStampedRepository.countByData_ConsumerId(getPrincipalId());
 	}
 
 	@Override
@@ -231,6 +237,17 @@ public class NotificationServiceImpl implements NotificationService {
 
 		notificationStampedRepository.deleteAll(page);
 		return new ResponseEntity<>(page, HttpStatus.OK);
+	}
+
+	@Override
+	public List<NotificationStampedDto> getNotificationsForThisMan() {
+		log.debug(" * service/NotificationServiceImpl/getPageNotificationStamped");
+		Long consumerId = getPrincipalId();
+
+		List<NotificationStampedModel> listOfModels = notificationStampedRepository.findAllByData_ConsumerId(consumerId);
+		List<NotificationStampedDto> listOfDto = ObjectMapperUtils.mapAll(listOfModels, NotificationStampedDto.class);
+//		notificationStampedRepository.deleteAll(listOfModels);
+		return listOfDto;
 	}
 
 	@Override

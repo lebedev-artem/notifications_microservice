@@ -1,4 +1,4 @@
-package ru.skillbox.group39.socialnetwork.notifications.kafka.config;
+package ru.skillbox.group39.socialnetwork.notifications.config;
 
 import org.apache.kafka.clients.admin.AdminClientConfig;
 import org.apache.kafka.clients.admin.NewTopic;

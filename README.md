@@ -1,7 +1,12 @@
 # Notifications_microservice
 
+```bash
+docker stop notifications && docker rm notifications && docker image rm notifications && docker build -t notifications . && docker run -d -p 8086:8086 --name notifications notifications
+```
 
-
+```bash
+docker build -t notifications . && docker run -d -p 8086:8086 --name notifications notifications
+```
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.

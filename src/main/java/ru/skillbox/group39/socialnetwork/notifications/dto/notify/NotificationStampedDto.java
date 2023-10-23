@@ -18,14 +18,14 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class NotificationStampedDto {
 
-    private Timestamp timeStamp;
+    private Timestamp timestamp;
     private NotificationSimpleDto data;
 
     @Override
     public String toString() {
         return "\nStamped notification object" +
                 "\n{" +
-                "\n Timestamp:              '" + timeStamp + '\'' +
+                "\n Timestamp:              '" + timestamp + '\'' +
                 "\n Data:" +
                 "\n {" +
                 "\n     id:                 '" + data.getId() + '\'' +

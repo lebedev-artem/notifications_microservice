@@ -30,7 +30,7 @@ public class NotificationStampedModel {
 	private Long id;
 
 	@Column(name = "timestamp", nullable = false)
-	private Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+	private Timestamp timestamp;
 
 	@OneToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(unique = true, name = "data")
