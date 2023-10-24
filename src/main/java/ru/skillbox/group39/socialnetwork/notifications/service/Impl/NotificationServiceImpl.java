@@ -246,7 +246,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		List<NotificationStampedModel> listOfModels = notificationStampedRepository.findAllByData_ConsumerId(consumerId);
 		List<NotificationStampedDto> listOfDto = ObjectMapperUtils.mapAll(listOfModels, NotificationStampedDto.class);
-//		notificationStampedRepository.deleteAll(listOfModels);
+		notificationStampedRepository.deleteAll(listOfModels);
 		return listOfDto;
 	}
 

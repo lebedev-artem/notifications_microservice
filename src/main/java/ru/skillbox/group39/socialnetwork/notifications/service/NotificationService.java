@@ -20,7 +20,7 @@ public interface NotificationService {
 	Object getCount();
 	Long getCountBot();
 	Object getPageStampedNotifications(Pageable pageable);
-	public List<NotificationStampedDto> getNotificationsForThisMan();
+	List<NotificationStampedDto> getNotificationsForThisMan();
 	Object setAllRead();
 	Object addEvent(EventNotificationDto eventNotificationDto);
 	void kafkaGoodBuy(NotificationCommonDto notificationCommonDto);
