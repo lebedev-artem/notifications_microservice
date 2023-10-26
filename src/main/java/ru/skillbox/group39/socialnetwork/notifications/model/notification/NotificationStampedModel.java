@@ -37,7 +37,7 @@ public class NotificationStampedModel {
 	private NotificationSimpleModel data;
 
 	@Column(name = "read")
-	private boolean read = Boolean.FALSE;
+	private boolean read;
 
 	public NotificationStampedModel(@NotNull NotificationSimpleModel data) {
 		this.timestamp = data.getTimestamp();

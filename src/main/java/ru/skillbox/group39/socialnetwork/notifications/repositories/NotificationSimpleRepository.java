@@ -9,6 +9,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import ru.skillbox.group39.socialnetwork.notifications.model.notification.NotificationSimpleModel;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,4 +18,6 @@ public interface NotificationSimpleRepository extends JpaRepository<Notification
 	@NotNull Page<NotificationSimpleModel> findAll(@NotNull Pageable pageable);
 	Optional<NotificationSimpleModel> findFirstByOrderByTimestampDesc();
 	Optional<NotificationSimpleModel> findByProducerId(Long producerId);
+	Optional<List<NotificationSimpleModel>> findByConsumerId(Long consumerId);
+
 }

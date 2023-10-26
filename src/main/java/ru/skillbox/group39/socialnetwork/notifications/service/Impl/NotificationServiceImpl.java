@@ -37,6 +37,7 @@ import ru.skillbox.group39.socialnetwork.notifications.utils.ObjectMapperUtils;
 import javax.transaction.Transactional;
 import java.nio.file.attribute.UserPrincipalNotFoundException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -158,6 +159,7 @@ public class NotificationServiceImpl implements NotificationService {
 	public void processNativeNotifications(@NotNull NotificationSimpleModel notificationSimpleModel) {
 		log.info(" * Wrapping Notification_Simple_Model to Notification_Stamped_Model");
 		NotificationStampedModel stampedModel = new NotificationStampedModel(notificationSimpleModel);
+		stampedModel.setRead(false);
 		try {
 			authorRepository.save(stampedModel.getData().getAuthor());
 			notificationSimpleRepository.save(stampedModel.getData());
@@ -235,6 +237,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 		Page<NotificationStampedModel> page = notificationStampedRepository.findAllByData_ConsumerId(consumerId, pageable);
 
+		notificationSimpleRepository.deleteAll(notificationSimpleRepository.findByConsumerId(consumerId).orElse(new ArrayList<>()));
 		notificationStampedRepository.deleteAll(page);
 		return new ResponseEntity<>(page, HttpStatus.OK);
 	}
@@ -246,6 +249,8 @@ public class NotificationServiceImpl implements NotificationService {
 
 		List<NotificationStampedModel> listOfModels = notificationStampedRepository.findAllByData_ConsumerId(consumerId);
 		List<NotificationStampedDto> listOfDto = ObjectMapperUtils.mapAll(listOfModels, NotificationStampedDto.class);
+
+		notificationSimpleRepository.deleteAll(notificationSimpleRepository.findByConsumerId(consumerId).orElse(new ArrayList<>()));
 		notificationStampedRepository.deleteAll(listOfModels);
 		return listOfDto;
 	}
